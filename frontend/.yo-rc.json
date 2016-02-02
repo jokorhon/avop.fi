@@ -1,7 +1,7 @@
 {
   "generator-react-webpack": {
     "appName": "avopFi",
-    "style": "less",
-    "postcss": false
+    "style": "scss",
+    "postcss": true
   }
 }
