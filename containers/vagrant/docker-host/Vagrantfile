@@ -1,0 +1,21 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Configure cached packages to be shared between instances of the same base box.
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
+  # Define a Docker centos 7 host (Vagrant VM) with a Linux kernel
+  config.vm.define "dockerhost" do |host|
+    host.vm.box = "centos/7"
+    host.vm.provision "docker"
+    # disable SSH
+    host.vm.provision "shell", inline:
+      "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill"
+    # forward ports as required
+    #host.vm.network "forwarded_port",
+    #  guest: xxx, host: xxx, auto_correct: true
+  end
+end

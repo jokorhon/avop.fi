@@ -1,0 +1,39 @@
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+
+# disable parallellism so that the containers come up in order
+ENV['VAGRANT_NO_PARALLEL'] = "1"
+ENV['FORWARD_DOCKER_PORTS'] = "1"
+
+DOCKER_HOST_NAME = "dockerhost"
+DOCKER_HOST_VAGRANTFILE = "docker-host/Vagrantfile"
+DOCKER_FOLDER = "../docker/"
+
+Vagrant.configure(2) do |config|
+   #Kehitystyön tietokantapalvelin (postgresql)
+   config.vm.define "avop-db" do |avopdb|
+     avopdb.vm.provider "docker" do |db|
+         # use a vagrant host if required (OSX & Windows)
+        db.vagrant_vagrantfile = "#{DOCKER_HOST_VAGRANTFILE}"
+        db.vagrant_machine = "#{DOCKER_HOST_NAME}"
+        db.build_dir = "#{DOCKER_FOLDER}"
+        db.dockerfile = "DockerfileDB"
+        db.build_args = ["-t=avop-db"]
+        db.ports = ["8080:8080"]
+        db.name = "avop-db"
+        db.remains_running = true 
+     end
+  end
+  
+  # Kehitystyön sovelluspalvelin (apache)
+   config.vm.define "avop-app" do |avopapp|
+     avopapp.vm.provider "docker" do |app|
+        app.build_dir = "#{DOCKER_FOLDER}"
+        app.dockerfile = "DockerfileApp"
+        app.build_args = ["-t=avop-db"]
+        app.ports = ["8080:8080"]
+        app.name = "avop-app"
+        app.remains_running = true 
+     end
+  end
+end
+
