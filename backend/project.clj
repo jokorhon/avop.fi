@@ -3,8 +3,8 @@
   :url "https://arvo.fi"
   :min-lein-version "2.0.0"
   :source-paths      ["src/clojure"]
-  ;; :java-source-paths ["src/java"]
-  ;; :javac-options     ["-target" "1.8" "-source" "1.8"]
+  :java-source-paths ["src/java"]
+  :javac-options     ["-target" "1.8" "-source" "1.8"]
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [compojure "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
