@@ -15,7 +15,7 @@ Vagrant.configure(2) do |config|
    #Kehitystyön tietokantapalvelin (postgresql)
    config.vm.define "avop-db" do |avopdb|
      avopdb.vm.provider "docker" do |db|
-         # use a vagrant host if required (OSX & Windows)
+         # kaytetaan vagrant host tarvittaessa (OSX & Windows)
         db.vagrant_vagrantfile = "#{DOCKER_HOST_VAGRANTFILE}"
         db.vagrant_machine = "#{DOCKER_HOST_NAME}"
         db.build_dir = "#{DOCKER_FOLDER}/postgresql"
@@ -29,6 +29,8 @@ Vagrant.configure(2) do |config|
   # Kehitystyön sovelluspalvelin (apache)
    config.vm.define "avop-app" do |avopapp|
      avopapp.vm.provider "docker" do |app|
+         # kaytetaan vagrant host tarvittaessa (OSX & Windows)
+        app.vagrant_vagrantfile = "#{DOCKER_HOST_VAGRANTFILE}"
         app.build_dir = "#{DOCKER_FOLDER}/apache"
         app.build_args = ["-t=avop-db"]
         app.name = "avop-app"

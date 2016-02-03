@@ -1,9 +1,6 @@
 #Dockerfile for centos7 + apache
 FROM centos:centos7
 MAINTAINER Oscar Perez  <oscar.perez@gofore.com>
-LABEL Vendor="CentOS"
-LABEL License=GPLv2
-LABEL Version=2.4.6-31
 
 RUN yum -y update && yum clean all
 
