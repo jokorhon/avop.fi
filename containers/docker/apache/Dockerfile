@@ -11,7 +11,7 @@ RUN yum -y update && yum clean all
 #BUG: No possible to use AUFS storage driver. See: https://github.com/docker/docker/issues/6980
 RUN yum -y install httpd && yum clean all
 
-EXPOSE 8080
+EXPOSE 80
 
 # Simple startup script to avoid some issues observed with container restart
 ADD run-httpd.sh /run-httpd.sh

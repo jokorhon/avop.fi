@@ -20,8 +20,8 @@ Vagrant.configure(2) do |config|
         db.vagrant_machine = "#{DOCKER_HOST_NAME}"
         db.build_dir = "#{DOCKER_FOLDER}/postgresql"
         db.build_args = ["-t=avop-db"]
-        db.ports = ["5432:5432"]
         db.name = "avop-db"
+        db.ports = ["5432:5432"]
         db.remains_running = true 
      end
   end
@@ -31,8 +31,8 @@ Vagrant.configure(2) do |config|
      avopapp.vm.provider "docker" do |app|
         app.build_dir = "#{DOCKER_FOLDER}/apache"
         app.build_args = ["-t=avop-db"]
-        app.ports = ["8080:8080"]
         app.name = "avop-app"
+        app.ports = ["8080:80"]
         app.remains_running = true 
      end
   end
