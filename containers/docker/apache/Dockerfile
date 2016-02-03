@@ -8,6 +8,7 @@ LABEL Version=2.4.6-31
 RUN yum -y update && yum clean all
 
 #Installing apache
+#BUG: No possible to use AUFS storage driver. See: https://github.com/docker/docker/issues/6980
 RUN yum -y install httpd && yum clean all
 
 EXPOSE 8080

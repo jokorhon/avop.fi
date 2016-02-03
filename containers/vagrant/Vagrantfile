@@ -8,7 +8,10 @@ DOCKER_HOST_NAME = "dockerhost"
 DOCKER_HOST_VAGRANTFILE = "docker-host/Vagrantfile"
 DOCKER_FOLDER = "../docker/"
 
+
 Vagrant.configure(2) do |config|
+   #Kaytetaan oletus insecure key
+   config.ssh.insert_key = false
    #Kehitystyön tietokantapalvelin (postgresql)
    config.vm.define "avop-db" do |avopdb|
      avopdb.vm.provider "docker" do |db|
