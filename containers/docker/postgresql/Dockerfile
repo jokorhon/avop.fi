@@ -27,7 +27,8 @@ RUN sh /usr/pgsql-9.4/bin/postgresql94-setup initdb
 #Access from all over --- Only for DEV environments BFW! <--- READ THIS ADD ./postgresql.conf /var/lib/pgsql/9.4/data/postgresql.conf
 ADD ./pg_hba.conf /var/lib/pgsql/9.4/data/pg_hba.conf
 
-#Add start script for postgres ADD ./start_postgres.sh /start_postgres.sh
+#Add start script for postgres 
+ADD ./start_postgres.sh /start_postgres.sh
 RUN chmod +x /start_postgres.sh
 
 EXPOSE 5432 #Run pgEngine CMD ["/start_postgres.sh"]
