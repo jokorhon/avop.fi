@@ -15,8 +15,7 @@ Vagrant.configure(2) do |config|
          # use a vagrant host if required (OSX & Windows)
         db.vagrant_vagrantfile = "#{DOCKER_HOST_VAGRANTFILE}"
         db.vagrant_machine = "#{DOCKER_HOST_NAME}"
-        db.build_dir = "#{DOCKER_FOLDER}"
-        db.dockerfile = "DockerfileDB"
+        db.build_dir = "#{DOCKER_FOLDER}/postgresql"
         db.build_args = ["-t=avop-db"]
         db.ports = ["5432:5432"]
         db.name = "avop-db"
@@ -27,8 +26,7 @@ Vagrant.configure(2) do |config|
   # Kehitystyön sovelluspalvelin (apache)
    config.vm.define "avop-app" do |avopapp|
      avopapp.vm.provider "docker" do |app|
-        app.build_dir = "#{DOCKER_FOLDER}"
-        app.dockerfile = "DockerfileApp"
+        app.build_dir = "#{DOCKER_FOLDER}/apache"
         app.build_args = ["-t=avop-db"]
         app.ports = ["8080:8080"]
         app.name = "avop-app"
