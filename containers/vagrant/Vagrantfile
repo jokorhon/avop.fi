@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
         db.build_dir = "#{DOCKER_FOLDER}"
         db.dockerfile = "DockerfileDB"
         db.build_args = ["-t=avop-db"]
-        db.ports = ["8080:8080"]
+        db.ports = ["5432:5432"]
         db.name = "avop-db"
         db.remains_running = true 
      end
