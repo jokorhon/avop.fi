@@ -7,9 +7,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.cache.scope = :box
   end
 
-  # Define a Docker centos 7 host (Vagrant VM) with a Linux kernel
+  # Define a Docker enabled centos 7.2 host (Vagrant VM) 
   config.vm.define "dockerhost" do |host|
-    host.vm.box = "centos/7"
+    host.vm.box = "williamyeh/centos7-docker"
     host.vm.provision "docker"
     # disable SSH
     host.vm.provision "shell", inline:
