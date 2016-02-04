@@ -9,8 +9,9 @@ RUN yum -y install sudo epel-release && yum clean all
 # Install Node.js and npm
 RUN yum install -y nodejs npm
 
+WORKDIR workspace
 # Install app dependencies
-RUN cd /src; npm install
+RUN npm install
 
 EXPOSE  8080
-RUN npm install
+
