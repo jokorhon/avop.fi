@@ -1,12 +1,10 @@
 db:
   build: containers/postgresql
-  container_name: avop_db
   ports:
    - "5432:5432"
 
 web:
   build: containers/node
-  container_name: avop_web
   ports: 
    - "8081:8080"
   volumes:
@@ -16,7 +14,6 @@ web:
 
 integration:
   build: containers/leiningen
-  container_name: avop_integration
   ports: 
    - "3000:3000"
   volumes:
