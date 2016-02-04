@@ -1,12 +1,16 @@
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
-ENV['FORWARD_DOCKER_PORTS'] = "1"
-
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 # Docker lapinakyvyys vaati vahintaan Vagrant 1.6
 Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+ENV['FORWARD_DOCKER_PORTS'] = "1"
+
+# Require 'yaml' module
+require 'yaml'
+
+containers = YAML.load_file('../containers.yml')
 
 DOCKER_HOST_NAME = "dockerhost"
 DOCKER_FOLDER = "../docker/"
@@ -15,16 +19,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    #Kaytetaan oletus insecure key
    config.ssh.insert_key = false
    
-   # Disable synced folders for the Docker container
-   # (prevents an NFS error on "vagrant up")
-   config.vm.synced_folder ".", "/vagrant", disabled: true
+  # Mennaan lapi jokaiselle kontainereille
+  containers.each do |container|
+    config.vm.define container["name"] do |cntr|
 
-   #Maaritellaan docker host
-   config.vm.provider "docker" do |docker|
-      docker.image = "xx"
-      docker.name = "avop"
-      #Postgresql ja web portit
-      docker.ports = ["5432:5432", "80:8080"]
+      # muuten tulee NFS virhe "vagrant up" vaiheessa
+      cntr.vm.synced_folder ".", "/vagrant", disabled: true
+
+      cntr.vm.provider "docker" do |docker|
+        docker.build_dir = "#{DOCKER_FOLDER}" + container["image"]
+        docker.ports = container["ports"]
+        docker.name = container["name"]
+      end
+    end
   end
 end
 

@@ -1,0 +1,7 @@
+---
+- name: avop-apache
+  image: apache
+  ports: ['8080:80']
+- name: avop-postgresql
+  image: postgresql
+  ports: ['5432:5432']
