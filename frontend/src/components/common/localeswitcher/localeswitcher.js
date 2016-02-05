@@ -2,9 +2,9 @@ require('./localeswitcher.scss');
 
 import React from 'react';
 import counterpart from 'counterpart';
-import localizations_fi from '../../localizations/localizations_fi';
-import localizations_en from '../../localizations/localizations_en';
-import localizations_sv from '../../localizations/localizations_sv';
+import localizations_fi from '../../../localizations/localizations_fi';
+import localizations_en from '../../../localizations/localizations_en';
+import localizations_sv from '../../../localizations/localizations_sv';
 
 export default class LocaleSwitcher extends React.Component {
 

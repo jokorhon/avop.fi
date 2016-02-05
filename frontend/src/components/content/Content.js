@@ -17,28 +17,27 @@ export default class Content extends React.Component {
   render() {
     return (
       <section>
-        <div className="row">
+        <div className="row content-section">
 
           <div className="one-half column">
-            <Translate component="h4" content="content.kysely.information" />
-            <Translate component="p" content="content.kysely.about1" />
-            <Translate component="p" content="content.kysely.about2" />
+            <Translate component="h4" content="content.kysely.information"/>
+            <Translate component="p" content="content.kysely.about1"/>
+            <Translate component="p" content="content.kysely.about2"/>
           </div>
 
           <div className="one-half column">
-            <div id="theme">
-              <div id="login-box">
-                <Translate component="h4" content="content.login.header" />
-                <Translate component="p" content="content.login.description" />
-                <HakaLogin></HakaLogin>
-              </div>
+            <div id="haka">
+              <Translate component="h4" content="content.login.header"/>
+              <Translate component="p" content="content.login.description"/>
+              <HakaLogin></HakaLogin>
             </div>
           </div>
         </div>
 
+        <div className="separator"></div>
 
         <div className="content-section">
-          <div className="u-full-width separator">
+          <div className="u-full-width ">
             <Translate component="h4" content="content.tulokset.header"></Translate>
           </div>
 
@@ -52,7 +51,7 @@ export default class Content extends React.Component {
             </div>
           </div>
 
-          <div className="row organization-row" >
+          <div className="row organization-row">
             <div className="one-half column">
               <Tietoarkisto></Tietoarkisto>
             </div>

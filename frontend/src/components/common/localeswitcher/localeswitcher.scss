@@ -1,0 +1,44 @@
+@import '../../../styles/globals';
+
+#languages {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  float: right;
+  span {
+    border-radius: 5px;
+    margin-right: 20px;
+    padding: 5px;
+    background-color: $theme-blue;
+    animation-duration: 0.3s;
+    animation-name: slideout;
+
+    @keyframes slideout {
+      from { background-color: $theme-blue-hover; }
+      to { background-color: $theme-blue; }
+    }
+
+    &:hover {
+      border-radius: 5px;
+      background-color: $theme-blue-hover;
+      animation-duration: 0.3s;
+      animation-name: slidein;
+
+      @keyframes slidein {
+        from { background-color: $theme-blue; }
+        to { background-color: $theme-blue-hover; }
+      }
+    }
+  }
+}
+
+/* Larger than mobile */
+@media (max-width: 550px) {
+  #languages {
+    float: none;
+    margin-top: 0;
+    span {
+      text-align: center;
+      display: block;
+    }
+  }
+}
