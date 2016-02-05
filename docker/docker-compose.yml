@@ -14,7 +14,7 @@ web:
   ports: 
    - "8081:8080"
   volumes:
-   - ../frontend:/workspace
+   - "../frontend:/src/app"
   links:
    - db
 
@@ -23,6 +23,6 @@ integration:
   ports: 
    - "3000:3000"
   volumes:
-   - ../backend:/backend
+   - "../backend:/backend"
   links:
    - db

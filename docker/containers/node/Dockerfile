@@ -1,20 +1,16 @@
-FROM centos:centos7
+FROM node:4.2.6
 
 MAINTAINER Oscar Perez  <oscar.perez@gofore.com>
 
-# Enable Extra Packages for Enterprise Linux (EPEL) for CentOS
-RUN yum -y update && yum clean all
-RUN yum -y install sudo epel-release && yum clean all
+RUN mkdir /src
 
-# Install Node.js and npm
-RUN yum install -y nodejs npm
+WORKDIR /src
 
-VOLUME ["/workspace"]
+ADD app/package.json /src/package.json
 
-WORKDIR workspace
-
-# Install app dependencies
 RUN npm install
 
-EXPOSE  8080
+# replace this with your application's default port
+EXPOSE 3000
 
+CMD npm start
