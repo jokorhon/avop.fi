@@ -10,30 +10,32 @@ export default class LocaleSwitcher extends React.Component {
 
   constructor() {
     super();
+
+    let browserLanguage = window.navigator.userLanguage || window.navigator.language;
+
     counterpart.registerTranslations('fi', localizations_fi);
     counterpart.registerTranslations('en', localizations_en);
     counterpart.registerTranslations('sv', localizations_sv);
-    counterpart.setLocale('fi');
+
+    if(browserLanguage.startsWith('fi')) {
+      counterpart.setLocale('fi');
+    } else if(browserLanguage.startsWith('sv')) {
+      counterpart.setLocale('sv');
+    } else {
+      counterpart.setLocale('en');
+    }
   }
 
-  setLocaleFi() {
-    counterpart.setLocale('fi');
-  }
-
-  setLocaleEn() {
-    counterpart.setLocale('en');
-  }
-
-  setLocaleSv() {
-    counterpart.setLocale('sv');
+  setLocale(code) {
+    counterpart.setLocale(code);
   }
 
   render () {
     return (
         <div id="languages">
-          <span onClick={this.setLocaleFi}>Suomeksi</span>
-          <span onClick={this.setLocaleSv}>På Svenska</span>
-          <span onClick={this.setLocaleEn}>In English</span>
+          <span className="language-selection" onClick={this.setLocale.bind(this, 'fi')}>Suomeksi</span>
+          <span className="language-selection" onClick={this.setLocale.bind(this, 'sv')}>På Svenska</span>
+          <span className="language-selection" onClick={this.setLocale.bind(this, 'en')}>In English</span>
         </div>
     );
   }

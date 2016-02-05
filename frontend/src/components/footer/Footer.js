@@ -8,7 +8,7 @@ let Footer = () =>
     <div className="footer-wrap">
       <div className="row">
         <div className="u-full-width">
-          <h4>Yhteystiedot</h4>
+          <Translate component="h4" content="footer.header"/>
         </div>
 
       </div>
