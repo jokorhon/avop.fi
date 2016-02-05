@@ -1,0 +1,22 @@
+
+@import '../../styles/globals';
+
+header {
+  background-color: $theme-blue;
+  position: relative;
+  color: white;
+
+
+  #logo {
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
+  #logotext {
+    margin-bottom: 10px;
+  }
+
+
+
+
+}
