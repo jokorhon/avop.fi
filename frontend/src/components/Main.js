@@ -1,22 +1,27 @@
 require('normalize.css');
-require('styles/App.css');
+require('skeleton-css-webpack');
+require('./main.scss');
 
 import React from 'react';
-
-let yeomanImage = require('../images/yeoman.png');
+import Header from './header/Header';
+import Content from './content/Content';
+import Footer from './footer/Footer';
 
 class AppComponent extends React.Component {
+
   render() {
     return (
-      <div className="index">
-        <img src={yeomanImage} alt="Yeoman Generator" />
-        <div className="notice">Please edit <code>src/components/Main.js</code> to get started!</div>
+      <div>
+        <Header></Header>
+        <div className="container">
+          <Content></Content>
+          <Footer></Footer>
+        </div>
       </div>
     );
   }
 }
 
-AppComponent.defaultProps = {
-};
+AppComponent.defaultProps = {};
 
 export default AppComponent;
