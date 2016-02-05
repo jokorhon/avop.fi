@@ -1,5 +1,11 @@
+db-data:
+  build: containers/postgresql
+  entrypoint: /bin/bash
+
 db:
   build: containers/postgresql
+  volumes_from:
+   - db-data
   ports:
    - "5432:5432"
 
