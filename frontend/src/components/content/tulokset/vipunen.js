@@ -1,4 +1,5 @@
 import React from 'react';
+import Translate from 'react-translate-component';
 
 let vipunen_logo = require('../../../images/vipunen-fi-allekkain.png');
 
@@ -8,7 +9,7 @@ export default class Vipunen extends React.Component {
     return (
       <div className="organization">
         <img src={vipunen_logo} alt="Vipunen" />
-        <p className="description">Kyselyn tuloksista johdettuja tilastoraportteja on avoimesti saatavilla opetushallinnon tilastopalvelu Vipusessa:</p>
+        <Translate component="p" className="description" content="content.tulokset.vipunen" />
       </div>
     );
   }

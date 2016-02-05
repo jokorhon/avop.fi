@@ -13,7 +13,7 @@ class AppComponent extends React.Component {
     return (
       <div>
         <Header></Header>
-        <div className="container" >
+        <div className="container">
           <Content></Content>
           <Footer></Footer>
         </div>

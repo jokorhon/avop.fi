@@ -28,8 +28,8 @@ export default class Content extends React.Component {
           <div className="one-half column">
             <div id="theme">
               <div id="login-box">
-                <h4>Ammattikorkeakouluopiskelija</h4>
-                <p>Vastaa kyseelyy kirjautumalla oman korkeakoulusi tunnuksilla:</p>
+                <Translate component="h4" content="content.login.header" />
+                <Translate component="p" content="content.login.description" />
                 <HakaLogin></HakaLogin>
               </div>
             </div>
@@ -39,7 +39,7 @@ export default class Content extends React.Component {
 
         <div className="content-section">
           <div className="u-full-width separator">
-            <h4 >Kyselyn tulokset</h4>
+            <Translate component="h4" content="content.tulokset.header"></Translate>
           </div>
 
           <div className="row organization-row">

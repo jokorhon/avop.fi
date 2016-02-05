@@ -1,4 +1,5 @@
 import React from 'react';
+import Translate from 'react-translate-component';
 
 let tietoarkisto_logo = require('../../../images/yhteiskuntatieteellinentietoarkisto.jpg');
 
@@ -8,7 +9,7 @@ export default class Tietoarkisto extends React.Component {
     return (
       <div className="organization">
         <img src={tietoarkisto_logo} alt="Opintopolku.fi"/>
-        <p className="description">Koko kyselyaineisto on saatavissa tutkimuskäyttöön yhteiskuntatieteellisestä tietoarkistosta</p>
+        <Translate component="p" className="description" content="content.tulokset.tietoarkisto" />
       </div>
     );
   }
