@@ -1,0 +1,26 @@
+dbdata:
+  build: postgresql
+  entrypoint: /bin/bash
+
+db:
+  build: postgresql
+  volumes_from:
+   - dbdata
+  ports:
+   - "5432:5432"
+
+web:
+  build: ../frontend
+  ports: 
+   - "8100:8000"
+  volumes:
+   - "../frontend:/src"
+  links:
+   - db
+
+integration:
+  build: ../backend
+  volumes:
+   - "../backend:/backend"
+  links:
+   - db
