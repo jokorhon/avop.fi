@@ -12,12 +12,14 @@
     animation-duration: 0.3s;
     animation-name: slideout;
 
+
     @keyframes slideout {
       from { background-color: $theme-blue-hover; }
       to { background-color: $theme-blue; }
     }
 
     &:hover {
+      cursor: pointer;
       border-radius: 5px;
       background-color: $theme-blue-hover;
       animation-duration: 0.3s;

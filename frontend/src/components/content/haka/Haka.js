@@ -3,6 +3,7 @@ require('./haka.scss');
 import React from 'react';
 import Ajax from 'simple-ajax';
 import Modal from 'react-modal';
+import HakaModal from './hakamodal';
 
 let hakaLoginImage = require('../../../images/haka_landscape_large.gif');
 
@@ -53,9 +54,7 @@ export default class HakaLogin extends React.Component {
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style={customStyles} >
-
-          <button onClick={this.closeModal.bind(this)}>close</button>
-
+          <HakaModal></HakaModal>
         </Modal>
 
       </div>

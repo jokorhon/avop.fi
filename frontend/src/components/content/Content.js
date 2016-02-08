@@ -2,7 +2,7 @@ require('./content.scss');
 
 import React from 'react';
 import Translate from 'react-translate-component';
-import HakaLogin from './haka/Haka';
+import HakaLogin from './haka/haka';
 import Opintopolku from './tulokset/opintopolku';
 import Vipunen from './tulokset/vipunen';
 import Tietoarkisto from './tulokset/tietoarkisto';
