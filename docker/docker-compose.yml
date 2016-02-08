@@ -1,28 +1,4 @@
-db-data:
-  build: containers/postgresql
-  entrypoint: /bin/bash
-
-db:
-  build: containers/postgresql
-  volumes_from:
-   - db-data
-  ports:
-   - "5432:5432"
-
 web:
-  build: containers/node
+  build: ../frontend
   ports: 
-   - "8081:8080"
-  volumes:
-   - "../frontend:/src/app"
-  links:
-   - db
-
-integration:
-  build: containers/leiningen
-  ports: 
-   - "3000:3000"
-  volumes:
-   - "../backend:/backend"
-  links:
-   - db
+   - "8100:8000"

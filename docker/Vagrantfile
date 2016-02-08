@@ -15,6 +15,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    config.vm.box = "ubuntu/trusty64"
    config.ssh.insert_key = false
    config.vm.provision :docker
-   config.vm.provision :docker_compose, yml: "/vagrant/docker-compose.yml", rebuild: true, run: "always"   
+   config.vm.provision :docker_compose, yml: "/docker-compose.yml", rebuild: true, run: "always"   
 end
 
