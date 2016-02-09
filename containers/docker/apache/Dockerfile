@@ -22,11 +22,11 @@ COPY attribute-map.xml /etc/shibboleth/attribute-map.xml
 COPY attribute-policy.xml /etc/shibboleth/attribute-policy.xml
 
 # Apache conf
-COPY arvo.conf /etc/httpd/conf.d/arvo.conf
+COPY avopfi.conf /etc/httpd/conf.d/avopfi.conf
 
 # Cert
-COPY local.arvo.fi.cert /etc/pki/tls/certs/local.arvo.fi.cert
-COPY local.arvo.fi.key /etc/pki/tls/certs/local.arvo.fi.key
+COPY local.avop.fi.cert /etc/pki/tls/certs/local.avop.fi.cert
+COPY local.avop.fi.key /etc/pki/tls/certs/local.avop.fi.key
 
 EXPOSE 80
 EXPOSE 443

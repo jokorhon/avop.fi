@@ -1,6 +1,6 @@
 (defproject backend "1.0.0-SNAPSHOT"
-  :description "arvo.fi front"
-  :url "https://arvo.fi"
+  :description "avop.fi front"
+  :url "https://avop.fi"
   :min-lein-version "2.0.0"
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]

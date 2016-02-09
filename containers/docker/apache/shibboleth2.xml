@@ -4,7 +4,7 @@
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"    
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     clockSkew="180">
-    <ApplicationDefaults entityID="https://test.arvo.fi/Shibboleth.sso"
+    <ApplicationDefaults entityID="https://avopfitest.csc.fi/Shibboleth.sso"
                          REMOTE_USER="eppn persistent-id targeted-id"
                          signing="front" encryption="true" attributePrefix="shib-">
         <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
@@ -26,7 +26,7 @@
         <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
         <AttributeResolver type="Query" subjectMatch="true"/>
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
-        <CredentialResolver type="File" key="/etc/pki/tls/certs/local.arvo.fi.key" certificate="/etc/pki/tls/certs/local.arvo.fi.cert"/>
+        <CredentialResolver type="File" key="/etc/pki/tls/certs/local.avop.fi.key" certificate="/etc/pki/tls/certs/local.avop.fi.cert"/>
     </ApplicationDefaults>
     <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
     <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
