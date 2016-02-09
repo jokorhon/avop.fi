@@ -23,6 +23,7 @@ COPY attribute-policy.xml /etc/shibboleth/attribute-policy.xml
 
 # Apache conf
 COPY avopfi.conf /etc/httpd/conf.d/avopfi.conf
+COPY shib_apache.conf /etc/httpd/conf.d/shib.conf
 
 # Cert
 COPY local.avop.fi.cert /etc/pki/tls/certs/local.avop.fi.cert

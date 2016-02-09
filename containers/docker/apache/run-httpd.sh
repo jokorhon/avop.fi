@@ -5,10 +5,10 @@
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
-exec /usr/sbin/apachectl -DFOREGROUND &
+exec /usr/sbin/apachectl -DFOREGROUND > /dev/null 2>&1 &
 
 # Shibboleth daemon
 # exec /bin/systemctl start shibd.service
-exec /usr/sbin/shibd &
+exec /usr/sbin/shibd > /dev/null 2>&1 &
 
 exec bash
