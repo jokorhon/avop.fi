@@ -1,9 +1,16 @@
 /* Base Application Styles */
+
+@import '../styles/globals';
+@import '../styles/typography';
+
 body {
   line-height: 1.6;
   color: #000;
+  font-family: $font-body;
+  font-size: $font-size-body;
 }
 
 .separator {
   border-top: 1px solid #eee;
 }
+

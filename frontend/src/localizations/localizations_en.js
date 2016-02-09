@@ -34,6 +34,19 @@ let localizations_en = {
       contribution: 'Tekninen toteutus ja käytön tuki:',
       description: 'CSC - Tieteen tietotekniikan keskus Oy'
     }
+  },
+  hakaloginmodal: {
+    homeorganization: 'Kotiorganisaatio',
+    help: 'Ohjeet',
+    instructions1: 'Tavoittelemasi verkkosivusto vaatii tunnistautumisen. Tunnistautumisen jälkeen palvelussa tarvittavat käyttäjätiedot siirtyvät automaattisesti palveluun.',
+    select_homeorganization: 'Valitse kotiorganisaatiosi',
+    remember_selection: 'Muista valinta tälle istunnolle',
+    instructions2: 'Vaihtoehtoisesti voit kirjoittaa organisaatiosi nimen',
+    about1: 'Haka on Suomen korkeakoulujen yhteinen käyttäjätunnistusjärjestelmä. Haka on avoin kaikille Suomen korkeakouluille ja niiden toimintaa tukeville organisaatioille.',
+    about2: 'Haka-luottamusverkoston operaattorina toimii CSC - Tieteen tietotekniikan keskus Oy.',
+    csc: 'CSC - Tieteen tietotekniikan keskus Oy',
+    pl: 'PL 405',
+    postnumber: '02101 Espoo'
   }
 };
 

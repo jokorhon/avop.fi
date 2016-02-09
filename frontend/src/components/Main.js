@@ -4,7 +4,7 @@ require('./main.scss');
 
 import React from 'react';
 import Header from './header/Header';
-import Content from './content/Content';
+import Content from './content/content';
 import Footer from './footer/Footer';
 
 class AppComponent extends React.Component {
