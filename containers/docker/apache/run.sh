@@ -1,7 +1,5 @@
 #!/bin/bash
-# First build image with $ docker build -t arvo_apache .
-# Then run apache, example $ ./run.sh $(ipconfig getifaddr en0)
-
+# Check README.md on how to use
 MY_IP=$1
 exec docker run --rm -it \
   --add-host=appserver:$MY_IP \
