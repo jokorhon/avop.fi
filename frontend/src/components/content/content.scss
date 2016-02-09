@@ -13,6 +13,10 @@
   }
 }
 
+.content-section {
+  padding-top: 2rem;
+}
+
 
 #themeimage {
   height: 36.6rem;
@@ -28,6 +32,7 @@
     position: absolute;
     right: 2rem;
     top: 2rem;
+    margin-left: 2rem;
     background-color: white;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -38,13 +43,16 @@
 
 }
 
-.content-section {
-  padding-top: 2rem;
-}
 
 @media (max-width: 850px) {
   #theme {
     margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 470px) {
+  #haka-login h4 {
+    font-size: 1.6rem !important;
   }
 }
 

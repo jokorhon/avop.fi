@@ -2,15 +2,29 @@ footer {
 
   border: 1px solid #dcdcdc;
   border-radius: 3px;
+  margin-bottom: 2rem;
+
 
   .footer-wrap {
+    .bold {
+      font-weight: bold;
+    }
+
     margin: 3px;
     background-color: #dcdcdc;
     border-radius: 3px;
     padding: 10px;
-    h4 {
-
+    img {
+      max-width: 100%;
     }
+    word-wrap: break-word;
   }
 
+}
+
+@media (max-width: 550px) {
+  .organization {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }
