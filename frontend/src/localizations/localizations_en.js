@@ -4,7 +4,7 @@ let localizations_en = {
   },
   content: {
     kysely: {
-      information: 'Tietoa kyselystä',
+      information: 'IN ENGLISH - Tietoa kyselystä',
       about1: 'AVOP on Ammattikorkeakoulujen valmistumisvaiheen opiskelijapalautekysely, jonka tarkoituksena on mitata ammattikorkeakoulutuksen laatua opiskelijoiden näkökulmasta. Kyselyn tuloksia hyödynnetään sekä paikallisesti korkeakoulun oman toiminnan kehittämisessä että valtakunnallisesti koulutuksen ohjauksessa ja rahoituksessa.',
       about2: 'AVOP -kkyselymittaristo on syntynyt Arene ry:n, SAMOK ry:n, Oppiskelun ja koulutuksen tutkimussäätiön (OTUS) ja opetus- ja kulttuuriministeriön yhteisenä hankkeena. Kyselymittariston käyttönotosta ja sen kehittämisestä vastaa Arene ry.'
     },
@@ -35,18 +35,16 @@ let localizations_en = {
       description: 'CSC - Tieteen tietotekniikan keskus Oy'
     }
   },
-  hakaloginmodal: {
-    homeorganization: 'Kotiorganisaatio',
-    help: 'Ohjeet',
-    instructions1: 'Tavoittelemasi verkkosivusto vaatii tunnistautumisen. Tunnistautumisen jälkeen palvelussa tarvittavat käyttäjätiedot siirtyvät automaattisesti palveluun.',
-    select_homeorganization: 'Valitse kotiorganisaatiosi',
-    remember_selection: 'Muista valinta tälle istunnolle',
-    instructions2: 'Vaihtoehtoisesti voit kirjoittaa organisaatiosi nimen',
-    about1: 'Haka on Suomen korkeakoulujen yhteinen käyttäjätunnistusjärjestelmä. Haka on avoin kaikille Suomen korkeakouluille ja niiden toimintaa tukeville organisaatioille.',
-    about2: 'Haka-luottamusverkoston operaattorina toimii CSC - Tieteen tietotekniikan keskus Oy.',
-    csc: 'CSC - Tieteen tietotekniikan keskus Oy',
-    pl: 'PL 405',
-    postnumber: '02101 Espoo'
+  profiledata: {
+    header: 'Palautekyselyn taustatiedot',
+    about: 'Palautekyselyyn välitetään taustatiedoiksi koulutus, ammattikorkeakoulu, koulutuksen kunta, tutkinnon suorituskieli ja koulutustyyppi. Henkilöön liittyviä tietoja ei välitetä palautekyselylle.',
+    education: 'Koulutus',
+    school: 'Ammattikorkeakoulu',
+    municipality: 'Kunta',
+    language: 'Tutkinnon suorituskieli',
+    form_of_education: 'Koulutusmuoto',
+    reminder: 'Tarkistathan, että koulutuksesi tiedot ovat oikein. Siirtymällä palautekyselyyn hyväksyt tietojen käyttäjmisen palautekyselyn taustatietona.',
+    survey: 'Siirry palautekyselyyn'
   }
 };
 
