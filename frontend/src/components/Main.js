@@ -4,7 +4,7 @@ require('./main.scss');
 
 import React from 'react';
 import Header from './header/Header';
-import Content from './content/content';
+import Content from './content/Content';
 import Footer from './footer/Footer';
 import counterpart from 'counterpart';
 import ProfileData from './profiledata/profiledata';

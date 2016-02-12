@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import Translate from 'react-translate-component';
 
 export default class ProfileData extends React.Component {
@@ -12,7 +12,6 @@ export default class ProfileData extends React.Component {
               <tbody>
                 <tr>
                   <Translate component="td" content="profiledata.education"></Translate>
-
                 </tr>
                 <tr>
                   <Translate component="td" content="profiledata.school"></Translate>
