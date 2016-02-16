@@ -22,7 +22,7 @@
    :koulutusmuoto "Päiväopiskelu"})
 
 (def shibbo-attribs 
-  [:national-identification-number])
+  ["national-identification-number"])
 
 (defroutes app-routes
   (context 
@@ -30,17 +30,15 @@
     (GET "/" [] "avop.fi API")
     (GET "/opiskeluoikeudet" request
       (let [
-            personal-id (:national-identification-number 
-                         (shibbo/get-attributes shibbo-attribs request env))
+            personal-id 
+            ( 
+             (shibbo/get-attributes shibbo-attribs request env) 
+             "national-identification-number")
             virta-resp (virta/get-pending-degrees personal-id)]
         (response virta-resp))))
   (GET "/auth" {:keys [headers params body] :as request} 
     (response 
-     (do 
-       (println (shibbo/get-attributes shibbo-attribs request env))
-       ;;(println (:headers request))
-       (:headers request)
-       )))
+     (:headers request)))
   (GET "/" [] (redirect "/api"))
   (route/not-found "Not Found"))
 

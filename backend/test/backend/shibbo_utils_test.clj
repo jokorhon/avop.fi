@@ -14,8 +14,7 @@
           request {:headers (prefixize "shib-" test-data)}
           names (keys test-data)
           attribs (get-attributes names request env)]
-      (do
-        (is (= attribs test-data)))))
+      (is (= attribs test-data))))
   
   (testing "get shibboleth attributes from request attributes"
     (let [env {}

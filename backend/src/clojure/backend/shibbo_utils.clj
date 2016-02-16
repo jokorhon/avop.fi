@@ -22,8 +22,6 @@
   could be used in development/test."
   [names request prefix]
   (let [prefixed (map #(str prefix %) names)]
-    (println prefixed)
-    (println (:headers request))
     (deprefixize prefix (select-keys (:headers request) prefixed))))
 
 (defn get-attributes [names request env]  
