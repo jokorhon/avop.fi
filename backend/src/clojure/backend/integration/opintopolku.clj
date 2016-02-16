@@ -1,5 +1,6 @@
-(ns backend.opintopolku
+(ns backend.integration.opintopolku
   (:require 
+   [clojure.string :as str]
    [environ.core :refer [env]]
    [clj-http.client :as client]))
 
@@ -9,7 +10,8 @@
   (str (:opintopolku-base-url env) rest-path code-type "_" code))
 
 (defn get-code-data [code code-type]
-  (client/get (build-url code code-type) {:as :json}))
+  (:body (client/get (build-url code code-type) 
+                     {:as :json :socket-timeout 2000 :conn-timeout 1000})))
 
 (defn get-oppilaitos-data [code]
   (get-code-data code "oppilaitosnumero"))
@@ -21,5 +23,10 @@
   (get-code-data code "koulutus"))
 
 (defn get-oppilaitos-code-by-domain [domain]
-  (get-code-data (clojure.string/replace domain "." "") "oppilaitosdomain"))
+  (get-code-data (str/replace domain "." "") "oppilaitosdomain"))
 
+(defn extract-metadata [body] 
+  (into {} 
+        (map 
+         #(vector (str/lower-case (:kieli %)) (:nimi %)) 
+         (:metadata body))))

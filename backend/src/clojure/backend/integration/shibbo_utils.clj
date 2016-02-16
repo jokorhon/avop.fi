@@ -1,4 +1,4 @@
-(ns backend.shibbo-utils)
+(ns backend.integration.shibbo-utils)
 
 (defn ^:private deprefixize [p m] 
   (into {} 

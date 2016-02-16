@@ -1,4 +1,4 @@
-(ns backend.virta
+(ns backend.integration.virta
   (:use [clojure.java.data])
   (:require
    [environ.core :refer [env]]
