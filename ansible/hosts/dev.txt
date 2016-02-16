@@ -1,4 +1,4 @@
-[apache]
+[backend]
 localhost ansible_connection=local
 
 [frontend]
@@ -8,9 +8,9 @@ localhost ansible_connection=local
 #localhost ansible_connection=local
 
 [all:children]
-apache
 postgresql
 frontend
+backend
 
 [all:vars]
 environment_id=dev
