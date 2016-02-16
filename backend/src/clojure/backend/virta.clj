@@ -1,6 +1,7 @@
 (ns backend.virta
   (:use [clojure.java.data])
-  (:require 
+  (:require
+   [environ.core :refer [env]]
    [clojure.tools.logging :as log]
    [environ.core :refer [env]])
   (:import 
@@ -16,16 +17,18 @@
        (.getOpiskeluoikeus 
         (.getOpiskeluoikeudet opiskeluoikeudet-response))))
 
-(defn get-study-enrights [person-id]
+(defn get-study-enrights 
+  "Use Java source generated from wsdl"
+  [person-id]
   (log/debug "fetching " person-id)
   (let [port (-> (OpiskelijanTiedotService. (URL. (env :virta-url))) 
                  (.getOpiskelijanTiedotSoap11))
         request (doto (OpiskeluoikeudetRequest.)
                   (.setKutsuja 
                    (doto (Kutsuja.)
-                     (.setAvain "salaisuus")
-                     (.setJarjestelma "arvofi")
-                     (.setTunnus "arvofi")))
+                     (.setAvain (:virta-salaisuus env))
+                     (.setJarjestelma (:virta-jarjestelma env))
+                     (.setTunnus (:virta-tunnus env))))
                   (.setHakuehdot 
                    (doto (HakuEhdotOrganisaatioVapaa.)
                      (.setHenkilotunnus person-id))))]
@@ -34,8 +37,3 @@
 (defn get-pending-degrees [person-id]
   (let [study-enrights (get-study-enrights person-id)]
     study-enrights))
-  
-
-
-
-

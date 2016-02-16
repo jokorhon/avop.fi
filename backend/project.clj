@@ -21,7 +21,4 @@
     [lein-ring "0.9.7"]]
   :ring {:handler backend.handler/app
          :port 3000
-         :nrepl {:start? true :port 59258}}
-  :profiles
-  {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
-                        [ring/ring-mock "0.3.0"]]}})
+         :nrepl {:start? true :port 59258}})
