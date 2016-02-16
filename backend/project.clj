@@ -5,16 +5,22 @@
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options     ["-target" "1.8" "-source" "1.8"]
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [compojure "1.4.0"]                 
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [compojure "1.4.0"]
+                 [ring/ring-devel "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [ring/ring-json "0.4.0"]
-                 [org.clojure/java.data "0.1.1"]                 
-                 [liberator "0.13"]
+                 [rmarianski/ring-jetty-servlet-adapter "0.0.4"]
+                 [org.clojure/java.data "0.1.1"] 
                  [korma "0.4.0"]
+                 [environ "1.0.2"]
+                 [clj-http "2.0.1"]
                  [org.postgresql/postgresql "9.4.1207"]]
-  :plugins [[lein-ring "0.9.7"]]
+  :plugins [
+    [lein-environ "1.0.2"]
+    [lein-ring "0.9.7"]]
   :ring {:handler backend.handler/app
+         :port 3000
          :nrepl {:start? true :port 59258}}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]

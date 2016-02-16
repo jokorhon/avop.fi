@@ -1,6 +1,10 @@
 (ns backend.virta
   (:use [clojure.java.data])
+  (:require 
+   [clojure.tools.logging :as log]
+   [environ.core :refer [env]])
   (:import 
+   (java.net URL)
    (fi.csc.virta OpiskelijanTiedotService OpiskeluoikeudetRequest HakuEhdotOrganisaatioVapaa Kutsuja)))
 
 (defn extract-study-enright-data 
@@ -13,7 +17,8 @@
         (.getOpiskeluoikeudet opiskeluoikeudet-response))))
 
 (defn get-study-enrights [person-id]
-  (let [port (-> (OpiskelijanTiedotService.) 
+  (log/debug "fetching " person-id)
+  (let [port (-> (OpiskelijanTiedotService. (URL. (env :virta-url))) 
                  (.getOpiskelijanTiedotSoap11))
         request (doto (OpiskeluoikeudetRequest.)
                   (.setKutsuja 
@@ -23,10 +28,14 @@
                      (.setTunnus "arvofi")))
                   (.setHakuehdot 
                    (doto (HakuEhdotOrganisaatioVapaa.)
-                     (.setKansallinenOppijanumero "aed09afd87a8c6d76b76bbd"))))]
+                     (.setHenkilotunnus person-id))))]
     (extract-study-enright-data (.opiskeluoikeudet port request))))
 
 (defn get-pending-degrees [person-id]
   (let [study-enrights (get-study-enrights person-id)]
     study-enrights))
   
+
+
+
+

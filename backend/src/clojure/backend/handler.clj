@@ -1,11 +1,17 @@
 (ns backend.handler
+  (:use [clojure.java.data])
   (:require
    [backend.virta :as virta]
+   [backend.shibbo-utils :as shibbo]
+   [environ.core :refer [env]]
    [ring.util.response :refer :all]
+   [ring.adapter.jetty-servlet :as jetty]
    [compojure.core :refer :all]
    [compojure.route :as route]
+   [ring.middleware.reload :refer [wrap-reload]]
    [ring.middleware.json :refer [wrap-json-response]]
-   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
+   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]) 
+  (:gen-class))
 
 (def demo-data 
   {
@@ -15,15 +21,35 @@
    :lang "suomi",
    :koulutusmuoto "Päiväopiskelu"})
 
+(def shibbo-attribs 
+  [:national-identification-number])
+
 (defroutes app-routes
   (context 
    "/api" []
-   (GET "/" [] "API")
-   (GET "/opiskeluoikeudet" []
-        (let [virta-resp (virta/get-pending-degrees "aed09afd87a8c6d76b76bbd")]      
-          (response virta-resp))))
+    (GET "/" [] "avop.fi API")
+    (GET "/opiskeluoikeudet" request
+      (let [
+            personal-id (:national-identification-number 
+                         (shibbo/get-attributes shibbo-attribs request env))
+            virta-resp (virta/get-pending-degrees personal-id)]
+        (response virta-resp))))
+  (GET "/auth" {:keys [headers params body] :as request} 
+    (response 
+     (do 
+       (println (shibbo/get-attributes shibbo-attribs request env))
+       ;;(println (:headers request))
+       (:headers request)
+       )))
   (GET "/" [] (redirect "/api"))
   (route/not-found "Not Found"))
 
 (def app
   (wrap-json-response app-routes site-defaults))
+
+(defn start-server
+  []
+  (jetty/run-jetty (wrap-reload  #'app) {:port 3000 :join? false}))
+
+(defn -main [& args]
+  (start-server))
