@@ -2,6 +2,8 @@
 <VirtualHost *:443>
     ServerName {{ apache.server_name }}
 
+    DocumentRoot /var/www/html/dist
+
     LogLevel warn
     SSLEngine on
     SSLProtocol all -SSLv2 -SSLv3
