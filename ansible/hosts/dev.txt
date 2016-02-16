@@ -1,0 +1,12 @@
+[apache]
+localhost ansible_connection=local
+
+[postgresql]
+#localhost ansible_connection=local
+
+[all:children]
+apache
+postgresql
+
+[all:vars]
+environment_id=dev
