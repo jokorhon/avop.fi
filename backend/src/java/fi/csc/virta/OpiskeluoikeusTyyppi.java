@@ -539,6 +539,13 @@ public class OpiskeluoikeusTyyppi {
     }
 
     /**
+     * Hack to get this value working with clojure.java.data's from-java
+     */
+    public Boolean getAikuiskoulutus() {
+        return aikuiskoulutus;
+    }
+
+    /**
      * Sets the value of the aikuiskoulutus property.
      * 
      * @param value
