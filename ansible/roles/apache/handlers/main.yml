@@ -1,0 +1,10 @@
+---
+- name: restart httpd service
+  service:
+    name: httpd
+    state: restarted
+
+- name: restart shibboleth service
+  service:
+    name: shibd
+    state: restarted

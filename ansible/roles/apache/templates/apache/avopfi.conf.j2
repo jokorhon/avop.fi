@@ -1,0 +1,50 @@
+# NameVirtualHost *:443
+<VirtualHost *:443>
+    ServerName {{ apache.server_name }}
+
+    LogLevel warn
+    SSLEngine on
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+    SSLCertificateFile /etc/pki/tls/certs/{{ apache.certificate }}
+    SSLCertificateKeyFile /etc/pki/tls/certs/{{ apache.certificate_key }}
+    SetEnvIf User-Agent ".*MSIE.*" \
+    nokeepalive ssl-unclean-shutdown \
+    downgrade-1.0 force-response-1.0
+
+    CustomLog logs/ssl_request_log \
+    "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+    ProxyPass        /api http://{{ apache.appserver }}:3000/
+    ProxyPassReverse /api http://{{ apache.appserver }}:3000/
+
+    # Shibboleth config
+    <Location />
+        AuthType shibboleth
+        Require shibboleth
+    </Location>
+    <Location /auth>
+        AuthType shibboleth
+        ShibRequireSession On
+{% if environment_id == "dev" %}
+        ShibUseHeaders On
+{% endif %}
+        require valid-user
+    </Location>
+    
+    <Location /api>
+        AuthType shibboleth
+        ShibRequireSession On
+{% if environment_id == "dev" %}
+        ShibUseHeaders On
+{% endif %}
+        require valid-user
+    </Location>
+    
+</VirtualHost>
+
+# Redirect http to https
+<VirtualHost *:80>
+    ServerName {{ apache.server_name }}
+    Redirect / https://{{ apache.server_name }}/
+</VirtualHost>

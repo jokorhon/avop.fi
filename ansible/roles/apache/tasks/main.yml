@@ -1,0 +1,106 @@
+---
+- name: install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - httpd
+    - mod_ssl
+    - openssl
+
+- name: shibboleth repo
+  copy:
+    src: shibboleth.repo
+    dest: "/etc/yum.repos.d/shibboleth.repo"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install shibboleth
+  yum:
+    name: shibboleth # was shibboleth.x86_64
+    state: present
+    update_cache: yes
+
+- name: fetch haka test certificate
+  get_url:
+    dest: /etc/shibboleth/haka_testi_2015.crt
+    url: "https://confluence.csc.fi/download/attachments/31195585/haka_testi_2015_sha2.crt?version=1"
+  notify:
+    - restart shibboleth service
+
+- name: fetch haka metadata
+  get_url:
+    dest: /etc/shibboleth
+    url: "https://haka.funet.fi/metadata/haka_test_metadata_signed.xml"
+  notify:
+    - restart shibboleth service
+
+- name: shibboleth configuration files
+  copy:
+    dest: "/etc/shibboleth/{{ item }}"
+    src: "shibboleth/{{ item }}"
+    mode: 0644
+    owner: root
+    group: root
+  with_items:
+    - attribute-map.xml
+    - attribute-policy.xml
+  notify:
+    - restart shibboleth service
+
+- name: shibboleth configuration templates
+  template:
+    dest: "/etc/shibboleth/shibboleth2.xml"
+    src: "shibboleth/shibboleth2.xml.j2"
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart shibboleth service
+
+- name: shibboleth service
+  service:
+    name: shibd
+    state: started
+    enabled: yes
+
+- name: apache shibboleth configuration
+  copy:
+    dest: "/etc/httpd/conf.d/shib_apache.conf"
+    src: "apache/shib_apache.conf"
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart httpd service
+
+- name: apache site configuration
+  template:
+    dest: "/etc/httpd/conf.d/avopfi.conf"
+    src: "apache/avopfi.conf.j2"
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart httpd service
+
+- name: copy ssl certificate
+  copy:
+    dest: "/etc/pki/tls/certs/{{ item }}"
+    src: "cert/{{ item }}"
+    mode: 0600
+    owner: root
+    group: root
+  with_items:
+    - local.avop.fi.cert
+    - local.avop.fi.key
+  notify:
+    - restart httpd service
+
+- name: httpd service
+  service:
+    name: httpd
+    enabled: yes
+    state: started
