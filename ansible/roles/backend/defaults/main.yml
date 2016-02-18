@@ -1,0 +1,5 @@
+---
+avop_service_user: "avop"
+tomcat_version: "8.0.32"
+tomcat_url: "http://www.nic.funet.fi/pub/mirrors/apache.org/tomcat/tomcat-8/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+java_provider: "openjdk" # "openjdk" or "oracle", currently only openjdk supported

@@ -1,0 +1,5 @@
+---
+- name: restart avop-tomcat service
+  service:
+    name: avop-tomcat
+    state: restarted

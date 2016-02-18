@@ -1,0 +1,16 @@
+# Systemd unit file for tomcat
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+ExecStart=/home/{{ avop_service_user }}/tomcat/current/bin/startup.sh
+ExecStop=/bin/kill -15 $MAINPID
+
+User={{ avop_service_user }}
+Group={{ avop_service_user }}
+
+[Install]
+WantedBy=multi-user.target

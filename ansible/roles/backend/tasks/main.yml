@@ -1,0 +1,73 @@
+---
+- name: service user
+  user:
+    name: "{{ avop_service_user }}"
+    comment: "Avop Service User"
+    password: "*"
+    createhome: yes
+
+- name: install openjdk
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+  when: java_provider == "openjdk"
+
+- name: tomcat directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ avop_service_user }}"
+    group: "{{ avop_service_user }}"
+    mode: 0755
+  with_items:
+    - "/home/{{ avop_service_user }}/download"
+    - "/home/{{ avop_service_user }}/tomcat"
+
+- name: download tomcat
+  get_url:
+    url: "{{ tomcat_url }}"
+    dest: "/home/{{ avop_service_user }}/download/tomcat.tar.gz"
+  become: yes
+  become_user: "{{ avop_service_user }}"
+
+- name: unpack tomcat
+  unarchive:
+    copy: no
+    src: "/home/{{ avop_service_user }}/download/tomcat.tar.gz"
+    dest: "/home/{{ avop_service_user }}/tomcat"
+  become: yes
+  become_user: "{{ avop_service_user }}"
+
+- name: tomcat symlink
+  file:
+    src: "/home/{{ avop_service_user }}/tomcat/apache-tomcat-{{ tomcat_version}}"
+    dest: "/home/{{ avop_service_user }}/tomcat/current"
+    state: link
+    owner: "{{ avop_service_user }}"
+    group: "{{ avop_service_user }}"
+
+- name: tomcat server.xml
+  template:
+    src: server.xml.j2
+    dest: "/home/{{ avop_service_user }}/tomcat/current/conf/server.xml"
+    mode: 0644
+    owner: "{{ avop_service_user }}"
+    group: "{{ avop_service_user }}"
+  notify:
+    - restart avop-tomcat service
+
+# setenv.sh
+
+- name: tomcat unit file
+  template:
+    src: avop-tomcat.service.j2
+    dest: "/etc/systemd/system/avop-tomcat.service"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: tomcat service
+  service:
+    name: avop-tomcat
+    state: started
+    enabled: yes
