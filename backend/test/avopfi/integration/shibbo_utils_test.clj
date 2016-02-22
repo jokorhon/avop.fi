@@ -1,7 +1,7 @@
-(ns backend.shibbo-utils-test
+(ns avopfi.integration.shibbo-utils-test
   (:import javax.servlet.ServletRequest)
   (:require [clojure.test :refer :all]
-            [backend.shibbo-utils :refer :all]))
+            [avopfi.integration.shibbo-utils :refer :all]))
 
 (def test-data {"foo" "foo value" "bar" "bar value"})
 

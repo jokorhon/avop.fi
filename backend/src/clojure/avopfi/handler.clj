@@ -1,10 +1,10 @@
-(ns backend.handler
+(ns avopfi.handler
   (:require
-   [backend.routes :refer [app-routes]]
+   [avopfi.routes :refer [app-routes]]
    [ring.adapter.jetty-servlet :as jetty]
    [ring.middleware.reload :refer [wrap-reload]]
    [ring.middleware.json :refer [wrap-json-response]]
-   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]) 
+   [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
   (:gen-class))
 
 (def app

@@ -2,7 +2,7 @@
 
 ## Build image
 	
-	$ docker build -t avopfi_apache_apache .
+	$ docker build -t avopfi_apache .
 
 ## Run image 
 	

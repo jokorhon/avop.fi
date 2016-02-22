@@ -14,6 +14,7 @@
                  [org.clojure/java.data "0.1.1"] 
                  [korma "0.4.0"]
                  [environ "1.0.2"]
+                 [clojure.java-time "0.2.0"]
                  [clj-http "2.0.1"]
                  [org.postgresql/postgresql "9.4.1207"]]
   :plugins [
