@@ -57,7 +57,7 @@
   (try 
     (->>
      virta-degrees
-     (filter (partial has-organization?))
+     (filter (partial has-organization? home-organization))
      (map degree->ui-map))
     (catch Exception e 
       (let [msg (.getMessage e)] 
