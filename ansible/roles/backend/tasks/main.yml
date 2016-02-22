@@ -35,6 +35,8 @@
     copy: no
     src: "/home/{{ avop_service_user }}/download/tomcat.tar.gz"
     dest: "/home/{{ avop_service_user }}/tomcat"
+  args:
+    creates: "/home/{{ avop_service_user }}/tomcat/apache-tomcat-{{ tomcat_version}}/bin/catalina.sh"
   become: yes
   become_user: "{{ avop_service_user }}"
 
