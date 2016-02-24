@@ -88,14 +88,23 @@
 
 - name: copy ssl certificate
   copy:
-    dest: "/etc/pki/tls/certs/{{ item }}"
-    src: "cert/{{ item }}"
+    dest: "/etc/pki/tls/certs/local.avop.fi.cert"
+    src: "cert/local.avop.fi.cert"
     mode: 0600
     owner: root
     group: root
-  with_items:
-    - local.avop.fi.cert
-    - local.avop.fi.key
+  when: environment_id == "dev"
+  notify:
+    - restart httpd service
+
+- name: copy ssl certificate key
+  copy:
+    dest: "/etc/pki/tls/private/local.avop.fi.key"
+    src: "cert/local.avop.fi.key"
+    mode: 0600
+    owner: root
+    group: root
+  when: environment_id == "dev"
   notify:
     - restart httpd service
 
