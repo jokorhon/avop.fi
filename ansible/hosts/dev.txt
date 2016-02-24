@@ -14,5 +14,3 @@ backend
 
 [all:vars]
 environment_id=dev
-postgresql_avop_user=avop
-postgresql_avop_password=avop
