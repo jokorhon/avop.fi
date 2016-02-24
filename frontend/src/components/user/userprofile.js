@@ -1,7 +1,7 @@
 import React from 'react';
 import Translate from 'react-translate-component';
 
-export default class ProfileData extends React.Component {
+export default class Userprofile extends React.Component {
 
     render() {
         return (
@@ -15,7 +15,6 @@ export default class ProfileData extends React.Component {
                 </tr>
                 <tr>
                   <Translate component="td" content="profiledata.school"></Translate>
-                  <td>{this.props.profiledata.school}</td>
                 </tr>
                 <tr>
                   <Translate component="td" content="profiledata.municipality"></Translate>
