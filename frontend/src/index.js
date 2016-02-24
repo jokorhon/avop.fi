@@ -1,10 +1,20 @@
 import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/Main';
+import {Router, Route, browserHistory, Redirect} from 'react-router';
+import Main from './components/Main';
+import Userprofile from './components/user/userprofile';
+import Home from './components/home/Home';
 
 // Render the main component into the dom
 ReactDOM.render(
-  <App />,
-document.getElementById('container')
+  <Router history={browserHistory}>
+    <Redirect from="/" to="/home" />
+    <Route path="/" component={Main}>
+      <Route path="home" component={Home} />
+      <Route path="user" component={Userprofile} />
+      <Route path="*" component={Main} />
+    </Route>
+  </Router>,
+  document.getElementById('container')
 );
