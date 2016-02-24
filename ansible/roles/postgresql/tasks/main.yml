@@ -44,8 +44,8 @@
     mode: 0644
     owner: postgres
     group: postgres
-#  notify:
-#    - restart postgresql service
+  notify:
+    - restart postgresql service
 
 - name: pg_hba
   template:
@@ -54,14 +54,14 @@
     mode: 0644
     owner: postgres
     group: postgres
-#  notify:
-#    - reload postgresql service
+  notify:
+    - reload postgresql service
 
-#- name: postgresql service
-#  service:
-#    name: "postgresql-{{ postgresql_version }}"
-#    state: started
-#    enabled: yes
+- name: postgresql service
+  service:
+    name: "postgresql-{{ postgresql_version }}"
+    state: started
+    enabled: yes
 
 - name: database user
   postgresql_user:
