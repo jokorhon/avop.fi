@@ -9,7 +9,7 @@
     SSLProtocol all -SSLv2 -SSLv3
     SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
     SSLCertificateFile /etc/pki/tls/certs/{{ apache.certificate }}
-    SSLCertificateKeyFile /etc/pki/tls/certs/{{ apache.certificate_key }}
+    SSLCertificateKeyFile /etc/pki/tls/private/{{ apache.certificate_key }}
     SetEnvIf User-Agent ".*MSIE.*" \
     nokeepalive ssl-unclean-shutdown \
     downgrade-1.0 force-response-1.0
