@@ -8,3 +8,4 @@ postgresql_repo:
 #postgresql_avop_user: set this in environment specific vars
 #postgresql_avop_password: set this in environment specific vars
 postgresql_avop_database: "avop"
+postgresql_data_directory: "/var/lib/pgsql/{{ postgresql_version }}/data"

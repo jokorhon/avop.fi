@@ -6,3 +6,4 @@ apache:
   appserver: "localhost"
 postgresql_avop_user: "{{ vault_postgresql_avop_user }}"
 postgresql_avop_password: "{{ vault_postgresql_avop_password }}"
+postgresql_data_directory: "/data/pgsql/{{ postgresql_version }}/data"
