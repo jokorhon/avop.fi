@@ -27,7 +27,7 @@
 
 - name: set postgresql data directory
   lineinfile:
-    dest: /usr/lib/systemd/system/postgresql-9.5.service
+    dest: /usr/lib/systemd/system/postgresql-{{ postgresql_version }}.service
     line: "Environment=PGDATA={{ postgresql_data_directory }}/"
     regexp: "^Environment=PGDATA=.*"
   register: postgresql_unitfile
