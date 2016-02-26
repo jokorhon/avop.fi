@@ -14,12 +14,14 @@
                  [org.clojure/java.data "0.1.1"] 
                  [korma "0.4.0"]
                  [environ "1.0.2"]
+                 [migratus "0.8.11"]
                  [clojure.java-time "0.2.0"]
                  [clj-http "2.0.1"]
                  [org.postgresql/postgresql "9.4.1207"]]
   :plugins [
     [lein-environ "1.0.2"]
+    [migratus-lein "0.1.7"]
     [lein-ring "0.9.7"]]
-  :ring {:handler backend.handler/app
+  :ring {:handler avopfi.handler/app
          :port 3000
          :nrepl {:start? true :port 59258}})
