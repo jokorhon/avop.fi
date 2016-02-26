@@ -25,15 +25,15 @@
 
 - name: fetch haka test certificate
   get_url:
-    dest: /etc/shibboleth/haka_testi_2015.crt
-    url: "https://confluence.csc.fi/download/attachments/31195585/haka_testi_2015_sha2.crt?version=1"
+    dest: "/etc/shibboleth/{{ haka_cert_file }}"
+    url: "{{ haka_cert_url }}"
   notify:
     - restart shibboleth service
 
 - name: fetch haka metadata
   get_url:
-    dest: /etc/shibboleth
-    url: "https://haka.funet.fi/metadata/haka_test_metadata_signed.xml"
+    dest: "/etc/shibboleth/{{ haka_metadata_file }}"
+    url: "{{ haka_metadata_url }}"
   notify:
     - restart shibboleth service
 
