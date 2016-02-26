@@ -5,7 +5,7 @@ localhost ansible_connection=local
 localhost ansible_connection=local
 
 [postgresql]
-#localhost ansible_connection=local
+localhost ansible_connection=local
 
 [all:children]
 postgresql

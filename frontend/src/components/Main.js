@@ -4,10 +4,8 @@ require('./main.scss');
 
 import React from 'react';
 import Header from './header/Header';
-import Content from './content/Content';
 import Footer from './footer/Footer';
 import counterpart from 'counterpart';
-import ProfileData from './profiledata/profiledata';
 
 import localizations_fi from '../localizations/localizations_fi';
 import localizations_en from '../localizations/localizations_en';
@@ -15,7 +13,7 @@ import localizations_sv from '../localizations/localizations_sv';
 
 class AppComponent extends React.Component {
 
-  constructor(props) {
+  constructor() {
     super();
 
     let browserLanguage = window.navigator.userLanguage || window.navigator.language;
@@ -31,47 +29,20 @@ class AppComponent extends React.Component {
       counterpart.setLocale('en');
     }
 
-    this.state = {
-      profileData: props.profileData
-    };
-
-  }
-
-  setProfileData(profileData) {
-    this.setState({
-      profileData: profileData
-    });
   }
 
   render() {
-    if(this.state.profileData) {
-      return (
-        <div>
-          <Header></Header>
-          <div className="container">
-            <ProfileData profiledata={this.state.profileData}></ProfileData>
-            <Footer></Footer>
-          </div>
-        </div>
-      )
-    } else {
-
     return (
       <div>
         <Header></Header>
         <div className="container">
-          <Content></Content>
+          {this.props.children}
           <Footer></Footer>
         </div>
       </div>
-    );
-    }
+    )
   }
 }
-
-AppComponent.defaultProps = {
-  profileData: undefined
-};
 
 export default AppComponent;
 
