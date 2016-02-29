@@ -1,7 +1,8 @@
 #!/bin/sh
+AVOPFIPATH=/home/mostro/projects/avop.fi/ansible
 docker rm -f -v apache-temp
 docker run \
-  -v /home/mostro/projects/avop.fi/ansible:/ansible:ro \
+  -v $AVOPFIPATH/ansible:/ansible:ro \
   -w /ansible \
   --name=apache-temp \
   ansible/centos7-ansible:stable \
