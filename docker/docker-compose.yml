@@ -1,4 +1,0 @@
-web:
-  build: apache
-  ports: 
-   - "8100:8000"
