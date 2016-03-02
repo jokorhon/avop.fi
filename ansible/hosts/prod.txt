@@ -1,0 +1,16 @@
+[backend]
+avopfiprod.csc.fi
+
+[frontend]
+avopfiprod.csc.fi
+
+[postgresql]
+avopfiprod.csc.fi
+
+[all:children]
+postgresql
+frontend
+backend
+
+[all:vars]
+environment_id=prod
