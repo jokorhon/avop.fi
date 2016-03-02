@@ -31,10 +31,7 @@
   become_user: "{{ avop_service_user }}"
 
 - name: unpack tomcat
-  unarchive:
-    copy: no
-    src: "/home/{{ avop_service_user }}/download/tomcat.tar.gz"
-    dest: "/home/{{ avop_service_user }}/tomcat"
+  unarchive: src="/home/{{ avop_service_user }}/download/tomcat.tar.gz" dest="/home/{{ avop_service_user }}/tomcat" copy=no
   args:
     creates: "/home/{{ avop_service_user }}/tomcat/apache-tomcat-{{ tomcat_version}}/bin/catalina.sh"
   become: yes
