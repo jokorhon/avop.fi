@@ -57,7 +57,7 @@ Ajaminen paikallisesti (esim. kehittäjän virtuaalikoneessa)
 
 ### Uuden ympäristön lisääminen
 
-1. Tee uusi inventory (hosts/<ympäristö>.txt)
+1. Tee uusi inventory (hosts/[ympäristö].txt)
   Tarvitset seuraavat ryhmät
   
       [backend]
@@ -75,14 +75,14 @@ Ajaminen paikallisesti (esim. kehittäjän virtuaalikoneessa)
       environment_id=<ympäristö>
 
 2. Tee uudelle ympäristölle ympäristökohtaiset muuttujat
-   (vars/environment/<ympäristö>.yml ja <ympäristö>_vault.yml)
+   (vars/environment/[ympäristö].yml ja [ympäristö]_vault.yml)
    _vault.yml pitää luoda näin
 
-   `ansible-vault create --vault-password-file=vault.password vars/environment/<ympäristö>_vault.yml`
+   `ansible-vault create --vault-password-file=vault.password vars/environment/[ympäristö]_vault.yml`
    
 3. Määrittele ympäristökohtaiset muuttujat
 
-  vars/environment/<ympäristö>.yml:
+  vars/environment/[ympäristö].yml:
   
       ---
       apache:
@@ -93,4 +93,4 @@ Ajaminen paikallisesti (esim. kehittäjän virtuaalikoneessa)
       postgresql_avop_user: "{{ vault_postgresql_avop_user }}"
       postgresql_avop_password: "{{ vault_postgresql_avop_password }}"
       
-  vault_-alkuiset määritellään <ympäristö>_vault.yml:ssä.
+  vault_-alkuiset määritellään [ympäristö]_vault.yml:ssä.
