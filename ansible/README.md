@@ -50,10 +50,12 @@ muuttujatiedostojen salausavain.
 Ajaminen paikallisesti (esim. kehittäjän virtuaalikoneessa)
 
     # tarvitsee ajaa vain kerran (tai kun middleware-asetuksiin on tehty muutoksia)
-    ansible-playbook -i hosts/dev.txt setup.yml
+    ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password setup.yml
     # deployt, tarvitsee ajaa kun buildeja
-    ansible-playbook -i hosts/dev.txt deploy-frontend.yml
-    ansible-playbook -i hosts/dev.txt deploy-backend.yml
+    ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password deploy-frontend.yml
+    ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password deploy-backend.yml
+
+Muissa ympäristöissä korvaa inventory (hosts/dev.txt) oikean ympäristön inventoryllä.
 
 ### Uuden ympäristön lisääminen
 
