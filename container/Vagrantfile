@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # https://github.com/fgrehm/vagrant-cachier#quick-start
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+    config.cache.synced_folder_opts = {
+      type: :nfs,
+      mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+    }
+  end
+ 
+  config.vm.box = "centos/7"
+
+  provisioner = Vagrant::Util::Platform.windows? ? :guest_ansible : :ansible
+
+  config.vm.network "private_network", ip: "192.168.50.62"
+  config.ssh.insert_key = false
+  config.ssh.username = "root"
+  config.ssh.password = "vagrant"
+  config.vm.synced_folder "../ansible", "/ansible"
+
+  # Kehitystyön sovelluspalvelin
+  config.vm.provision "ansible" do |ansible|
+    ansible.verbose = "v"
+    ansible.playbook = "../ansible/setup.yml"
+    ansible.limit = "all"
+    ansible.inventory_path = "../ansible/hosts/dev.txt" 
+    ansible.raw_arguments = ["--vault-password-file=../ansible/vault.password","-vv"]
+  end
+end
