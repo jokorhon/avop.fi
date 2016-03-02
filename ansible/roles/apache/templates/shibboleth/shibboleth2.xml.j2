@@ -20,13 +20,14 @@
         <Errors supportContact="root@localhost"
             helpLocation="/about.html"
             styleSheet="/shibboleth-sp/main.css"/>
-        <!--
+{% if environment_id == "prod" %}
 	<MetadataProvider type="XML" uri="{{ haka_metadata_url }}" backingFilePath="/etc/shibboleth/{{ haka_metadata_file }}" reloadInterval="7200">
             <MetadataFilter type="Signature" certificate="{{ haka_cert_file }}"/>
 	</MetadataProvider>
-	-->
-        <MetadataProvider type="XML" path="/etc/shibboleth/{{ haka_metadata_file }}">
+{% else %}
+	<MetadataProvider type="XML" path="/etc/shibboleth/{{ haka_metadata_file }}">
         </MetadataProvider>
+{% endif %}
         <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
         <AttributeResolver type="Query" subjectMatch="true"/>
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
