@@ -1,6 +1,7 @@
 ---
 - hosts: frontend
-  sudo: true
+  become: yes
+  become_user: root
   vars_files:
     - "vars/environment/{{ environment_id }}.yml"
     - "vars/environment/{{ environment_id }}_vault.yml"
@@ -12,7 +13,8 @@
   vars_files:
     - "vars/environment/{{ environment_id }}.yml"
     - "vars/environment/{{ environment_id }}_vault.yml"
-  sudo: true
+  become: yes
+  become_user: root
   roles:
     - role: backend
       tags: [ 'backend' ]
@@ -21,7 +23,8 @@
   vars_files:
     - "vars/environment/{{ environment_id }}.yml"
     - "vars/environment/{{ environment_id }}_vault.yml"
-  sudo: true
+  become: yes
+  become_user: root
   roles:
     - role: postgresql
       tags: [ 'postgresql' ]
