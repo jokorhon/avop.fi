@@ -1,17 +1,21 @@
-# Arvo.fi backend
+# avopfi
+
+generated using Luminus version 2.9.x
+
+FIXME
 
 ## Prerequisites
 
-You will need [Leiningen][] 2.0.0 or above installed.
+You will need [Leiningen][1] 2.0 or above installed.
 
-[leiningen]: https://github.com/technomancy/leiningen
+[1]: https://github.com/technomancy/leiningen
 
 ## Running
 
 To start a web server for the application, run:
 
-    lein ring server
+    lein run
 
 ## License
 
-Copyright © 2016 CSC
+Copyright © 2016 FIXME

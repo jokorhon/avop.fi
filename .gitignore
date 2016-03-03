@@ -6,3 +6,10 @@ node_modules
 npm-debug.log
 *~
 vault.password
+
+/backend/target
+.lein-*
+profiles.clj
+.env
+.nrepl-port
+/backend/log
