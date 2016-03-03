@@ -1,11 +1,11 @@
 [backend]
-localhost ansible_connection=ssh
+192.168.50.62 ansible_connection=ssh
 
 [frontend]
-localhost ansible_connection=ssh
+192.168.50.62 ansible_connection=ssh
 
 [postgresql]
-localhost ansible_connection=ssh
+192.168.50.62 ansible_connection=ssh
 
 [all:children]
 postgresql

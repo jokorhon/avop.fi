@@ -6,11 +6,31 @@
     password: "*"
     createhome: yes
 
-- name: install openjdk
+- name: install openjdk 
   yum:
     name: java-1.8.0-openjdk
     state: present
   when: java_provider == "openjdk"
+
+- name: download oraclejdk
+  command: 'wget -q -O {{java_archive}} --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" {{java_url}} creates={{java_archive}}'
+  when: java_provider == "oracle"
+
+- name: unpack oraclejdk
+  command: 'tar -zxf {{java_archive}} -C {{java_folder}} creates={{java_name}}'
+  when: java_provider == "oracle"
+
+- name: fix oracle ownership
+  file: state=directory path={{java_name}} owner=root group=root recurse=yes
+  when: java_provider == "oracle"
+
+- name: make java available for system
+  command: 'alternatives --install "/usr/bin/java" "java" "{{java_name}}/bin/java" 2000'
+  when: java_provider == "oracle"
+
+- name: clean up downloaded oracle jdk file
+  file: state=absent path={{java_archive}}
+  when: java_provider == "oracle"
 
 - name: tomcat directories
   file:
