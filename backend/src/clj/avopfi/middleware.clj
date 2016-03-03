@@ -1,5 +1,6 @@
 (ns avopfi.middleware
   (:require [avopfi.layout :refer [*app-context* error-page]]
+            [avopfi.auth.backend :refer [shibbo-backend authz-backend]]
             [clojure.tools.logging :as log]
             [config.core :refer [env]]
             [ring-ttl-session.core :refer [ttl-memory-store]]
@@ -8,7 +9,7 @@
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
             [ring.middleware.format :refer [wrap-restful-format]]
             [avopfi.config :refer [defaults]]            
-            [buddy.auth.middleware :refer [wrap-authentication]]
+            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
             [buddy.auth.backends.token :refer [token-backend]]
             [buddy.auth.accessrules :refer [restrict]]
             [buddy.auth :refer [authenticated?]])
@@ -59,8 +60,8 @@
 (defn on-403 [request response]
   {:status  403
    :headers {"Content-Type" "application/json"}
-   :body   {:status 403 
-            :message  (str  "Access to " (:uri request) " is not authorized")}})
+   :body   {:status 403
+            :message  (str  "Access to " (:uri request) " is forbidden")}})
 
 (defn wrap-restricted [handler]
   (restrict handler {:handler authenticated?
@@ -73,7 +74,9 @@
   (-> ((:middleware defaults) handler)
       wrap-formats
       wrap-webjars
-      (wrap-authentication (token-backend {:authfn authenticate}))
+      (wrap-authentication (shibbo-backend)
+                           (token-backend {:authfn authenticate}))
+      (wrap-authorization (authz-backend))
       (wrap-defaults
         (-> site-defaults
             (assoc-in [:security :anti-forgery] false)

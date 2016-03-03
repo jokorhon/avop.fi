@@ -1,6 +1,9 @@
 (ns avopfi.integration.shibbo-utils
   (:import (javax.servlet ServletRequest)))
 
+(def ^:private shibbo-attribs
+  ["shib-session-id" "learner-id" "national-identification-number" "unique-id" "home-organization"])
+
 (defn ^:private deprefixize [p m] 
   (into {} 
         (map #(vector 
@@ -29,8 +32,8 @@
            #((complement clojure.string/blank?) (last %))
            (deprefixize prefix (select-keys (:headers request) prefixed))))))
 
-(defn get-attributes [names request env]  
+(defn get-attributes [request env]
   (do 
     (if (:is-dev env) 
-      (get-header-attributes names request "shib-")
-      (get-ajp-attributes names request))))
+      (get-header-attributes shibbo-attribs request "shib-")
+      (get-ajp-attributes shibbo-attribs request))))

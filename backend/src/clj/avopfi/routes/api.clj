@@ -1,9 +1,9 @@
 (ns avopfi.routes.api
   (:require [avopfi.layout :as layout]
+            [buddy.auth :refer [throw-unauthorized]]
             [clojure.java.data :refer :all]
             [clojure.core.match :refer [match]]
             [avopfi.integration.virta :as virta]
-            [avopfi.integration.shibbo-utils :as shibbo]
             [avopfi.integration.opintopolku :as op]
             [avopfi.db.core :as db]
             [config.core :refer [env]]
@@ -15,9 +15,6 @@
 (defn home-page []
   (layout/render
    "home.html" {:docs (-> "docs/docs.md" io/resource slurp)}))
-
-(def shibbo-attribs 
-  ["learner-id" "national-identification-number" "unique-id" "home-organization"])
 
 (defn get-oppilaitos-code-by-domain [domain]
   (let [mapping 
@@ -68,10 +65,8 @@
            (virta/get-pending-degrees-by-pid n)
          :else nil))
 
-(defn request->study-rights [request attribs]
-  (let [shibbo-vals
-        (shibbo/get-attributes attribs request env)
-        virta-degrees (get-virta-degrees shibbo-vals)
+(defn shibbo-vals->study-rights [shibbo-vals]
+  (let [virta-degrees (get-virta-degrees shibbo-vals)
         valid-rights 
         (filter-degrees virta-degrees (shibbo-vals "home-organization"))]
     valid-rights))
@@ -87,7 +82,10 @@
       "/api" []
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
-      (ok (request->study-rights request shibbo-attribs)))
+      (let [shibbo-vals (:identity request)]
+        (if (not (map? shibbo-vals))
+          (throw-unauthorized)
+          (ok (shibbo-vals->study-rights shibbo-vals)))))
     (POST "/vastaus" request (ok (process-registration request))))
   (GET "/auth" {:keys [headers params body] :as request} 
     (ok 
@@ -96,6 +94,7 @@
 
 (defroutes public-routes
   (context "/public" []
-    (GET "/students/:study-right-id{.{0,100}}" [study-right-id] 
-      (get-visitors study-right-id)))
-  )
+    (GET "/students/:study-right-id{.{0,100}}" [study-right-id :as {i :identity}]
+      (if (not (= "valid" i))
+        (throw-unauthorized)
+        (get-visitors study-right-id)))))
