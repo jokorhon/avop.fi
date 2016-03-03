@@ -2,10 +2,11 @@
 
 ## Prerequisites
 
-You will need the following tools: Node.js (version?) and npm (version?)
+You will need the following tools: Node.js and npm (tested with Node version 5.0.0 and npm 3.3.12)
 
 ## Running
 
+  * npm update - Run first this in order to update all libraries dependent on the application
   * npm start - käynnistää sovelluksen lokaalisti webpack-dev-server:iin
   * npm run serve:dist - käynnistää dev-serverin dist-versiolla
   * npm run dist - tekee dist-version ja kopioi staattiset tiedostot
