@@ -32,8 +32,8 @@
 
 (def app-routes
   (routes
-   #'api-routes
-   (wrap-routes #'public-routes middleware/wrap-restricted)
+    (wrap-routes #'api-routes middleware/wrap-restricted)
+    (wrap-routes #'public-routes middleware/wrap-restricted)
    (route/not-found
       (:body
         (error-page {:status 404
