@@ -37,7 +37,9 @@
   :min-lein-version "2.0.0"
 
   :jvm-opts ["-server"]
-  :source-paths ["src/clj", "src/java"]
+  :source-paths ["src/clj" "src/java"]
+  :java-source-paths ["src/java"]
+  :javac-options ["-target" "1.8" "-source" "1.8"]
   :resource-paths ["resources"]
 
   :main avopfi.core
@@ -49,7 +51,7 @@
 
   :plugins [[lein-environ "1.0.1"]
             [migratus-lein "0.2.6"]
-            [lein-uberwar "0.1.0"]]
+            [lein-uberwar "0.2.0"]]
   :profiles
   {:uberjar {:omit-source true
              :env {:production true}

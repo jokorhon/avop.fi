@@ -22,6 +22,16 @@ To start a web server for the application, run:
 
 You can also start application from REPL by running first `lein repl` and then `(start)` in the REPL.
 
+### Running uberjar
+
+    java -Dis-dev="true" -Dvirta-tunnus="avopfi" \
+    -Dvirta-jarjestelma="avopfi" -Dvirta-salaisuus="salaisuus" \
+    -Dvirta-url="http://virtawstesti.csc.fi/luku/opiskelijatiedot.wsdl" \
+    -Dopintopolku-base-url="https://testi.virkailija.opintopolku.fi/" \
+    -Ddatabase-url="jdbc:postgresql://192.168.99.100/avopfi?user=avopfi&password=avopfi" \
+    -jar avopfi.jar
+
+
 ## Development tips
 
 If the real apache Shibboleth NativeSP proxy is not used, there's a 
