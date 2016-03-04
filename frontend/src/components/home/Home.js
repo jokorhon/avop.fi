@@ -26,7 +26,7 @@ export default class Content extends React.Component {
                 <Translate component="h4" content="content.login.header"/>
                 <Translate component="p" content="content.login.description"/>
                 <div id="haka" onClick={this.login}>
-                  <a href={config.hakaLoginUrl}>
+                  <a href={config.hakaLoginUrl + config.loginTarget}>
                     <img src={hakaLoginImage} alt="haka-login"/>
                   </a>
                 </div>

@@ -7,7 +7,7 @@ export default class Userprofile extends React.Component {
     fetch('/api/opiskeluoikeudet',
       {credentials: 'same-origin'})
       .then(response => {
-        if (response.status >= 400) {
+        if (response.status >= 400 || response.status === 302) {
           throw new Error('Failed fetch');
         }
         return response.json();

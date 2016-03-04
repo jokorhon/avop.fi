@@ -3,7 +3,8 @@
 import baseConfig from './base';
 
 let config = {
-  appEnv: 'test'  // don't remove the appEnv property here
+  appEnv: 'test',
+  loginTarget: '?target=https://avopfitest.csc.fi/user'
 };
 
 export default Object.freeze(Object.assign(baseConfig, config));
