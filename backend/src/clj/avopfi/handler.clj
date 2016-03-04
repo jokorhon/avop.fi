@@ -3,6 +3,7 @@
             [avopfi.layout :refer [error-page]]
             [avopfi.routes.api :refer [api-routes public-routes]]
             [avopfi.middleware :as middleware]
+            [avopfi.db.migrations :as migrations]
             [clojure.tools.logging :as log]
             [compojure.route :as route]
             [config.core :refer [env]]
@@ -12,11 +13,10 @@
 
 (defn init
   "init will be called once when
-   app is deployed as a servlet on
-   an app server such as Tomcat
-   put any initialization code here"
+   app is deployed."
   []
   (logger/init env)
+  (migrations/migrate ["migrate"])
   (doseq [component (:started (mount/start))]
     (log/info component "started"))
   ((:init defaults)))
