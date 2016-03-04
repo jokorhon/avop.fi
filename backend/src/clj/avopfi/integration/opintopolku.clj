@@ -14,16 +14,16 @@
           (build-url code code-type)
           {:as :json :socket-timeout 2000 :conn-timeout 1000})))
 
-(defn get-oppilaitos-data [code]
+(defn get-school-data [code]
   (get-code-data! code "oppilaitosnumero"))
 
-(defn get-kunta-data [code]
+(defn get-municipality-data [code]
   (get-code-data! code "kunta"))
 
-(defn get-koulutus-data [code]
+(defn get-education-data [code]
   (get-code-data! code "koulutus"))
 
-(defn ^:deprecated get-oppilaitos-code-by-domain 
+(defn ^:deprecated get-school-code-by-domain
   "Koodisto service mapping from HAKA home-organization domain name 
   to VIRTA's oppilaitos code"
   [domain]

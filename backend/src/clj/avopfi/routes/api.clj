@@ -29,21 +29,21 @@
   [degree]
   (let [
         timespan (virta/select-active-timespan (:jakso degree))
-        community-id (:koulutuskunta timespan)
+        municipality-id (:koulutuskunta timespan)
         education-id (:koulutuskoodi timespan)
         org-id (-> degree :myontaja :koodi)
         lang (:koulutuskieli timespan)
-        community (op/extract-metadata (op/get-kunta-data community-id))
-        education (op/extract-metadata (op/get-koulutus-data education-id))
+        municipality (op/extract-metadata (op/get-municipality-data municipality-id))
+        education (op/extract-metadata (op/get-education-data education-id))
         education-type (virta/conclude-study-type 
                         (degree :tyyppi) 
                         (degree :aikuiskoulutus))
-        org (op/extract-metadata (op/get-oppilaitos-data org-id))]
-    {:community {:id community-id :name  community} 
+        school (op/extract-metadata (op/get-school-data org-id))]
+    {:municipality {:id municipality-id :name  municipality}
      :lang lang 
      :degree {:id education-id :name education}
      :type education-type
-     :organization {:id org-id :name org}
+     :school {:id org-id :name school}
      }))
 
 (defn filter-degrees [virta-degrees home-organization]
