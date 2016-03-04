@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router'
 import Translate from 'react-translate-component';
 import TranslateProperty from '../common/translateproperty';
 
@@ -8,12 +9,14 @@ export default class Userprofile extends React.Component {
       {credentials: 'same-origin'})
       .then(response => {
         if (response.status >= 400 || response.status === 302) {
-          throw new Error('Failed fetch');
+          throw Error(response.status);
         }
         return response.json();
       })
       .then(study_rights => {
         cb(null, {study_rights});
+      }).catch(() => {
+        browserHistory.push('/error');
       });
   }
 
