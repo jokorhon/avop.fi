@@ -44,7 +44,11 @@ let localizations_en = {
     language: 'Tutkinnon suorituskieli',
     form_of_education: 'Koulutusmuoto',
     reminder: 'Tarkistathan, että koulutuksesi tiedot ovat oikein. Siirtymällä palautekyselyyn hyväksyt tietojen käyttäjmisen palautekyselyn taustatietona.',
-    survey: 'Siirry palautekyselyyn'
+    survey: 'Siirry palautekyselyyn',
+    type: {
+      day: 'Päivopiskelu',
+      multi: 'Monimuoto-opiskelu'
+    }
   }
 };
 

@@ -2,13 +2,14 @@ import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, browserHistory, Redirect} from 'react-router';
+import AsyncProps from 'async-props'
 import Main from './components/Main';
 import Userprofile from './components/user/userprofile';
 import Home from './components/home/Home';
 
 // Render the main component into the dom
 ReactDOM.render(
-  <Router history={browserHistory}>
+  <Router history={browserHistory} render={(props) => <AsyncProps {...props}/>}>
     <Redirect from="/" to="/home" />
     <Route path="/" component={Main}>
       <Route path="home" component={Home} />

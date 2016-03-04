@@ -1,12 +1,12 @@
 require('./content.scss');
 
 import React from 'react';
+import config from 'config';
 import Translate from 'react-translate-component';
 import Opintopolku from './tulokset/opintopolku';
 import Vipunen from './tulokset/vipunen';
 import Tietoarkisto from './tulokset/tietoarkisto';
 import Arvo from './tulokset/arvo';
-
 
 let hakaLoginImage = require('../../images/haka_landscape_large.gif');
 
@@ -26,7 +26,7 @@ export default class Content extends React.Component {
                 <Translate component="h4" content="content.login.header"/>
                 <Translate component="p" content="content.login.description"/>
                 <div id="haka" onClick={this.login}>
-                  <a href="https://avop.fi/Shibboleth.sso/Login">
+                  <a href={config.hakaLoginUrl}>
                     <img src={hakaLoginImage} alt="haka-login"/>
                   </a>
                 </div>
