@@ -8,9 +8,8 @@ import Userprofile from './components/user/userprofile';
 import Home from './components/home/Home';
 
 // Render the main component into the dom
-// enable push state later: history={browserHistory}
 ReactDOM.render(
-  <Router render={(props) => <AsyncProps {...props}/>}>
+  <Router history={browserHistory} render={(props) => <AsyncProps {...props}/>}>
     <Redirect from="/" to="/home" />
     <Route path="/" component={Main}>
       <Route path="home" component={Home} />
