@@ -48,7 +48,8 @@ let localizations_sv = {
     type: {
       day: 'Päivopiskelu',
       multi: 'Monimuoto-opiskelu'
-    }
+    },
+    submit: 'Siirry palautekyselyyn'
   }
 };
 

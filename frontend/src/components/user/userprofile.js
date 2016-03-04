@@ -17,6 +17,10 @@ export default class Userprofile extends React.Component {
       });
   }
 
+  goToArvo() {
+    window.location = 'http://avopvastaustest.csc.fi/TK3HAK';
+  }
+
   render() {
     let study_right = this.props.study_rights[0];
     return (
@@ -60,6 +64,9 @@ export default class Userprofile extends React.Component {
           </tbody>
         </table>
         <Translate component="p" content="profiledata.reminder"></Translate>
+        <button onClick={this.goToArvo}>
+          <Translate component="span" content="profiledata.submit"></Translate>
+        </button>
       </div>
     )
   }
