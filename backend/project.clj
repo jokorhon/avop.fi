@@ -42,9 +42,14 @@
 
   :main avopfi.core
   :migratus {:store :database}
+  :uberwar {:handler avopfi.handler/app
+            :init avopfi.handler/init
+            :destroy avopfi.handler/destroy
+            :name "avopfi.war"}
 
   :plugins [[lein-environ "1.0.1"]
-            [migratus-lein "0.2.6"]]
+            [migratus-lein "0.2.6"]
+            [lein-uberwar "0.1.0"]]
   :profiles
   {:uberjar {:omit-source true
              :env {:production true}
