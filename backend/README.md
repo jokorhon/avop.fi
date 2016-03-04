@@ -22,6 +22,19 @@ To start a web server for the application, run:
 
 You can also start application from REPL by running first `lein repl` and then `(start)` in the REPL.
 
+## Development tips
+
+If the real apache Shibboleth NativeSP proxy is not used, there's a 
+possibility to spoof Shibboleth auth headers in dev mode with browser 
+plugin.
+
+| Header | Example value |
+| ---- |---- |
+| shib-shib-session-id | whatever |
+| shib-national-identification-number | 010280-123A |
+| shib-home-organization | yliopisto.fi |    
+
+
 ## License
 
 Copyright © 2016 CSC
