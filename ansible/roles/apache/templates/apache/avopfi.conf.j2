@@ -17,8 +17,11 @@
     CustomLog logs/ssl_request_log \
     "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
 
-    ProxyPass        /api ajp://{{ apache.appserver }}:8009
-    ProxyPassReverse /api ajp://{{ apache.appserver }}:8009
+    #ProxyPass        /api ajp://{{ apache.appserver }}:8009
+    #ProxyPassReverse /api ajp://{{ apache.appserver }}:8009
+    
+    ProxyPass        /api http://{{ apache.appserver }}:3000/api
+    ProxyPassReverse /api http://{{ apache.appserver }}:3000/api
 
     # Shibboleth config
     <Location />
@@ -29,8 +32,10 @@
         AuthType shibboleth
         ShibRequireSession On
 {% if environment_id == "dev" %}
-        ShibUseHeaders On
+# enable when tomcat works
+#        ShibUseHeaders On
 {% endif %}
+        ShibUseHeaders On
         require valid-user
     </Location>
     
@@ -38,8 +43,10 @@
         AuthType shibboleth
         ShibRequireSession On
 {% if environment_id == "dev" %}
-        ShibUseHeaders On
+# enable when tomcat works
+#        ShibUseHeaders On
 {% endif %}
+        ShibUseHeaders On
         require valid-user
     </Location>
     
