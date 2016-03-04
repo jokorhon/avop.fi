@@ -26,7 +26,7 @@
 - name: copy war
   copy:
     src: "../backend/target/{{ backend_war_name }}"
-    dest: "{{ backend_tomcat_path }}/webapps/backend.war"
+    dest: "{{ backend_tomcat_path }}/webapps/backend.jar"
     owner: "{{ avop_service_user }}"
     group: "{{ avop_service_user }}"
     mode: 0644
