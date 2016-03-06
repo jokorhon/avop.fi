@@ -28,9 +28,7 @@ export default class TranslateProperty extends React.Component {
     if (str === undefined) {
       str = this.props.data[TranslateProperty.defaultLang];
     }
-    return (
-      <span>{str}</span>
-    );
+    return (<span>{str}</span>);
   }
 }
 

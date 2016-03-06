@@ -28,6 +28,7 @@
 (defn degree->ui-map 
   [degree]
   (let [
+        degree-id (:avain degree)
         timespan (virta/select-active-timespan (:jakso degree))
         municipality-id (:koulutuskunta timespan)
         education-id (:koulutuskoodi timespan)
@@ -39,7 +40,9 @@
                         (degree :tyyppi) 
                         (degree :aikuiskoulutus))
         school (op/extract-metadata (op/get-school-data org-id))]
-    {:municipality {:id municipality-id :name  municipality}
+    {
+     :id degree-id
+     :municipality {:id municipality-id :name  municipality}
      :lang lang 
      :degree {:id education-id :name education}
      :type education-type

@@ -46,7 +46,7 @@ let localizations_en = {
     reminder: 'Tarkistathan, että koulutuksesi tiedot ovat oikein. Siirtymällä palautekyselyyn hyväksyt tietojen käyttäjmisen palautekyselyn taustatietona.',
     survey: 'Siirry palautekyselyyn',
     type: {
-      day: 'Päivopiskelu',
+      day: 'Päiväopiskelu',
       multi: 'Monimuoto-opiskelu'
     },
     submit: 'Siirry palautekyselyyn'
