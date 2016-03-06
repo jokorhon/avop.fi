@@ -43,7 +43,7 @@ let localizations_fi = {
     municipality: 'Kunta',
     language: 'Tutkinnon suorituskieli',
     form_of_education: 'Koulutusmuoto',
-    reminder: 'Tarkistathan, että koulutuksesi tiedot ovat oikein. Siirtymällä palautekyselyyn hyväksyt tietojen käyttäjmisen palautekyselyn taustatietona.',
+    reminder: 'Tarkistathan, että koulutuksesi tiedot ovat oikein. Siirtymällä palautekyselyyn hyväksyt tietojen käyttämisen palautekyselyn taustatietona.',
     survey: 'Siirry palautekyselyyn',
     type: {
       day: 'Päiväopiskelu',
