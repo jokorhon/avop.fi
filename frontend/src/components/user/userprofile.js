@@ -27,10 +27,9 @@ export default class Userprofile extends React.Component {
   }
 
   selectStudyRight(event) {
-
-    console.log()
     this.setState({
-      selectedStudyRight: this.props.study_rights.find(x => x.id === event.target.value)
+      selectedStudyRight: this.props.study_rights
+        .find(x => x.id === event.target.value)
     });
   }
 
@@ -44,11 +43,10 @@ export default class Userprofile extends React.Component {
           <select onChange={this.selectStudyRight.bind(this)} value={this.state.selectedStudyRight.id}>
             {
               this.props.study_rights.map(sr =>
-                <option value={sr.id}>
-                  <TranslateProperty
-                    data={sr.degree.name}>
-                  </TranslateProperty>
-                </option>
+                <TranslateProperty component="option"
+                                   value={sr.id}
+                                   data={sr.degree.name}>
+                </TranslateProperty>
               )
             }
           </select>
@@ -58,27 +56,21 @@ export default class Userprofile extends React.Component {
           <tbody>
           <tr>
             <Translate component="td" content="profiledata.education"></Translate>
-            <td>
-              <TranslateProperty
-                data={this.state.selectedStudyRight.degree.name}>
-              </TranslateProperty>
-            </td>
+            <TranslateProperty component="td"
+                               data={this.state.selectedStudyRight.degree.name}>
+            </TranslateProperty>
           </tr>
           <tr>
             <Translate component="td" content="profiledata.school"></Translate>
-            <td>
-              <TranslateProperty
-                data={this.state.selectedStudyRight.school.name}>
-              </TranslateProperty>
-            </td>
+            <TranslateProperty component="td"
+                               data={this.state.selectedStudyRight.school.name}>
+            </TranslateProperty>
           </tr>
           <tr>
             <Translate component="td" content="profiledata.municipality"></Translate>
-            <td>
-              <TranslateProperty
-                data={this.state.selectedStudyRight.municipality.name}>
-              </TranslateProperty>
-            </td>
+            <TranslateProperty component="td"
+                               data={this.state.selectedStudyRight.municipality.name}>
+            </TranslateProperty>
           </tr>
           <tr>
             <Translate component="td" content="profiledata.language"></Translate>

@@ -1,8 +1,12 @@
 import React from 'react';
-let translator = require('counterpart');
+import translate from 'counterpart';
 
 export default class TranslateProperty extends React.Component {
   static defaultLang = 'fi';
+
+  static defaultProps = {
+    component: 'span'
+  };
 
   constructor(props) {
     super(props);
@@ -12,11 +16,12 @@ export default class TranslateProperty extends React.Component {
   }
 
   componentDidMount() {
-    this.getTranslator().onLocaleChange((l) => this.localeChanged(l));
+    this.getTranslator()
+      .onLocaleChange(this.localeChanged.bind(this));
   }
 
   getTranslator() {
-    return translator;
+    return translate;
   }
 
   localeChanged(newLocale) {
@@ -28,7 +33,8 @@ export default class TranslateProperty extends React.Component {
     if (str === undefined) {
       str = this.props.data[TranslateProperty.defaultLang];
     }
-    return (<span>{str}</span>);
+    return React.createElement(this.props.component,
+      this.props, str);
   }
 }
 
