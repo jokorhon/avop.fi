@@ -22,10 +22,6 @@ export default class Userprofile extends React.Component {
       .catch(() => browserHistory.push('/error'));
   }
 
-  goToArvo() {
-    window.location = 'http://avopvastaustest.csc.fi/TK3HAK';
-  }
-
   selectStudyRight(event) {
     this.setState({
       selectedStudyRight: this.props.study_rights
@@ -38,55 +34,56 @@ export default class Userprofile extends React.Component {
       <div>
         <Translate component="h4" content="profiledata.header"/>
         <Translate component="p" content="profiledata.about"/>
-
-        {(this.props.study_rights.length > 1) ?
-          <select onChange={this.selectStudyRight.bind(this)} value={this.state.selectedStudyRight.id}>
-            {
-              this.props.study_rights.map(sr =>
-                <TranslateProperty component="option"
-                                   value={sr.id}
-                                   data={sr.degree.name}>
-                </TranslateProperty>
-              )
-            }
-          </select>
-          : ''}
-
-        <table>
-          <tbody>
-          <tr>
-            <Translate component="td" content="profiledata.education"></Translate>
-            <TranslateProperty component="td"
-                               data={this.state.selectedStudyRight.degree.name}>
-            </TranslateProperty>
-          </tr>
-          <tr>
-            <Translate component="td" content="profiledata.school"></Translate>
-            <TranslateProperty component="td"
-                               data={this.state.selectedStudyRight.school.name}>
-            </TranslateProperty>
-          </tr>
-          <tr>
-            <Translate component="td" content="profiledata.municipality"></Translate>
-            <TranslateProperty component="td"
-                               data={this.state.selectedStudyRight.municipality.name}>
-            </TranslateProperty>
-          </tr>
-          <tr>
-            <Translate component="td" content="profiledata.language"></Translate>
-            <td>{this.state.selectedStudyRight.lang}</td>
-          </tr>
-          <tr>
-            <Translate component="td" content="profiledata.form_of_education"></Translate>
-            <Translate component="td"
-                       content={this.state.selectedStudyRight.type == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
-          </tr>
-          </tbody>
-        </table>
-        <Translate component="p" content="profiledata.reminder"></Translate>
-        <button onClick={this.goToArvo}>
-          <Translate component="span" content="profiledata.submit"></Translate>
-        </button>
+        <form method="post" action="/api/submit-registration">
+          {(this.props.study_rights.length > 1) ?
+            <select name="study-right-id" onChange={this.selectStudyRight.bind(this)} value={this.state.selectedStudyRight.id}>
+              {
+                this.props.study_rights.map(sr =>
+                  <TranslateProperty component="option"
+                                     value={sr.id}
+                                     data={sr.degree.name}>
+                  </TranslateProperty>
+                )
+              }
+            </select>
+            : <input type="hidden" name="study-right-id" value={this.state.selectedStudyRight.id} />
+          }
+          <table>
+            <tbody>
+            <tr>
+              <Translate component="td" content="profiledata.education"></Translate>
+              <TranslateProperty component="td"
+                                 data={this.state.selectedStudyRight.degree.name}>
+              </TranslateProperty>
+            </tr>
+            <tr>
+              <Translate component="td" content="profiledata.school"></Translate>
+              <TranslateProperty component="td"
+                                 data={this.state.selectedStudyRight.school.name}>
+              </TranslateProperty>
+            </tr>
+            <tr>
+              <Translate component="td" content="profiledata.municipality"></Translate>
+              <TranslateProperty component="td"
+                                 data={this.state.selectedStudyRight.municipality.name}>
+              </TranslateProperty>
+            </tr>
+            <tr>
+              <Translate component="td" content="profiledata.language"></Translate>
+              <td>{this.state.selectedStudyRight.lang}</td>
+            </tr>
+            <tr>
+              <Translate component="td" content="profiledata.form_of_education"></Translate>
+              <Translate component="td"
+                         content={this.state.selectedStudyRight.type == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
+            </tr>
+            </tbody>
+          </table>
+          <Translate component="p" content="profiledata.reminder"></Translate>
+          <button type="submit">
+            <Translate component="span" content="profiledata.submit"></Translate>
+          </button>
+        </form>
       </div>
     )
   }

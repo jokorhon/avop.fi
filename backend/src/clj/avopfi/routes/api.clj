@@ -75,7 +75,8 @@
     valid-rights))
 
 (defn process-registration [request]
-  (db/create-visitor! {:study_right_id "foo" :arvo_answer_hash "FOOXX71"}))
+  (db/create-visitor! {:study_right_id (str (gensym)) :arvo_answer_hash "TK3HAK"})
+  (see-other "http://avopvastaustest.csc.fi/TK3HAK"))
 
 (defn get-visitors [study-right-id]
   (db/get-visitors-by-srid {:study_right_id study-right-id}))
@@ -89,7 +90,7 @@
         (if (not (map? shibbo-vals))
           (throw-unauthorized)
           (ok (shibbo-vals->study-rights shibbo-vals)))))
-    (POST "/vastaus" request (ok (process-registration request))))
+    (POST "/submit-registration" request (process-registration request)))
   (GET "/auth" {:keys [headers params body] :as request} 
     (ok 
      (:headers request)))  
