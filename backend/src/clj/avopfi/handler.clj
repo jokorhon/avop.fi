@@ -1,7 +1,8 @@
 (ns avopfi.handler
   (:require [compojure.core :refer [defroutes routes wrap-routes]]
             [avopfi.layout :refer [error-page]]
-            [avopfi.routes.api :refer [api-routes public-routes]]
+            [avopfi.routes.api :refer [api-routes]]
+            [avopfi.routes.public :refer [public-routes]]
             [avopfi.middleware :as middleware]
             [avopfi.db.migrations :as migrations]
             [clojure.tools.logging :as log]

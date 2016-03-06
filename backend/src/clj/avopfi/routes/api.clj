@@ -8,7 +8,6 @@
             [avopfi.db.core :as db]
             [config.core :refer [env]]
             [compojure.core :refer :all]
-            [compojure.route :as route]
             [ring.util.http-response :refer :all]
             [clojure.java.io :as io]))
 
@@ -17,15 +16,15 @@
    "home.html" {:docs (-> "docs/docs.md" io/resource slurp)}))
 
 (defn get-oppilaitos-code-by-domain [domain]
-  (let [mapping 
+  (let [mapping
         (db/get-mapping-by-domain {:domain domain})] (:code mapping)))
 
 (defn has-organization? [home-organization degree]
-  (let 
-      [code (get-oppilaitos-code-by-domain home-organization)] 
+  (let
+      [code (get-oppilaitos-code-by-domain home-organization)]
     (= code (-> degree :myontaja :koodi))))
 
-(defn degree->ui-map 
+(defn degree->ui-map
   [degree]
   (let [
         degree-id (:avain degree)
@@ -36,69 +35,70 @@
         lang (:koulutuskieli timespan)
         municipality (op/extract-metadata (op/get-municipality-data municipality-id))
         education (op/extract-metadata (op/get-education-data education-id))
-        education-type (virta/conclude-study-type 
-                        (degree :tyyppi) 
+        education-type (virta/conclude-study-type
+                        (degree :tyyppi)
                         (degree :aikuiskoulutus))
         school (op/extract-metadata (op/get-school-data org-id))]
     {
      :id degree-id
      :municipality {:id municipality-id :name  municipality}
-     :lang lang 
+     :lang lang
      :degree {:id education-id :name education}
      :type education-type
      :school {:id org-id :name school}
      }))
 
 (defn filter-degrees [virta-degrees home-organization]
-  (try 
+  (try
     (->>
      virta-degrees
      (filter (partial has-organization? home-organization))
      (map degree->ui-map))
-    (catch Exception e 
-      (let [msg (.getMessage e)] 
-        (println "caught exception: " msg) 
+    (catch Exception e
+      (let [msg (.getMessage e)]
+        (println "caught exception: " msg)
         (throw e)))))
 
 (defn get-virta-degrees [shibbo-vals]
   (match [shibbo-vals]
-         [{"learner-id" l}] 
+         [{"learner-id" l}]
            (virta/get-pending-degrees-by-oid l)
-         [(:or {"national-identification-number" n} {"unique-id" n})] 
+         [(:or {"national-identification-number" n} {"unique-id" n})]
            (virta/get-pending-degrees-by-pid n)
          :else nil))
 
 (defn shibbo-vals->study-rights [shibbo-vals]
   (let [virta-degrees (get-virta-degrees shibbo-vals)
-        valid-rights 
+        valid-rights
         (filter-degrees virta-degrees (shibbo-vals "home-organization"))]
     valid-rights))
 
-(defn process-registration [request]
-  (db/create-visitor! {:study_right_id (str (gensym)) :arvo_answer_hash "TK3HAK"})
-  (see-other "http://avopvastaustest.csc.fi/TK3HAK"))
+(defn process-registration [params {session :session}]
+  (if (some #(= % (:study-right-id params)) (:valid-srids session))
+    (db/create-visitor! {:study_right_id (str (gensym)) :arvo_answer_hash "TK3HAK"})
+    (see-other "http://avopvastaustest.csc.fi/TK3HAK")))
 
-(defn get-visitors [study-right-id]
-  (db/get-visitors-by-srid {:study_right_id study-right-id}))
+(defn study-rights [request]
+  (let [shibbo-vals (:identity request)]
+    (if (not (map? shibbo-vals))
+      (throw-unauthorized)
+      (let [session (:session request)
+            resp-data
+            (shibbo-vals->study-rights shibbo-vals)]
+        (-> (ok resp-data)
+            (assoc :session
+                   (assoc session :valid-srids
+                                  (map #(:id %) resp-data))))))))
 
 (defroutes api-routes
-  (context 
+  (context
       "/api" []
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
-      (let [shibbo-vals (:identity request)]
-        (if (not (map? shibbo-vals))
-          (throw-unauthorized)
-          (ok (shibbo-vals->study-rights shibbo-vals)))))
-    (POST "/submit-registration" request (process-registration request)))
-  (GET "/auth" {:keys [headers params body] :as request} 
-    (ok 
-     (:headers request)))  
+      (study-rights request))
+    (POST "/submit-registration" {:keys [params] :as request}
+      (process-registration params request)))
+  (GET "/auth"
+       {:keys [headers params body] :as request}
+    (ok (:headers request)))
   (GET "/" [] (found "/api")))
-
-(defroutes public-routes
-  (context "/public" []
-    (GET "/students/:study-right-id{.{0,100}}" [study-right-id :as {i :identity}]
-      (if (not (= "valid" i))
-        (throw-unauthorized)
-        (get-visitors study-right-id)))))
