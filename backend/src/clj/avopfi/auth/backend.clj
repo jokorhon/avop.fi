@@ -7,7 +7,8 @@
 (defn- handle-unauthorized-default
   "A default response constructor for an unathorized request."
   [_]
-  {:status 401 :headers {} :body "Unauthorized"})
+  {:status 401 :headers {"Content-Type" "application/json"}
+   :body "{\"status\": 401, \"msg\": \"Unauthorized\"}"})
 
 (defn shibbo-backend
   "Create an instance of the Shibbo backend."

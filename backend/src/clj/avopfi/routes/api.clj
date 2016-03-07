@@ -41,7 +41,7 @@
         school (op/extract-metadata (op/get-school-data org-id))]
     {
      :id degree-id
-     :municipality {:id municipality-id :name  municipality}
+     :municipality {:id municipality-id :name municipality}
      :lang lang
      :degree {:id education-id :name education}
      :type education-type
@@ -74,9 +74,13 @@
     valid-rights))
 
 (defn process-registration [params {session :session}]
-  (if (some #(= % (:study-right-id params)) (:valid-srids session))
-    (db/create-visitor! {:study_right_id (str (gensym)) :arvo_answer_hash "TK3HAK"})
-    (see-other "http://avopvastaustest.csc.fi/TK3HAK")))
+  (let [current-srid (:study-right-id params) valid-srids (:valid-srids session)]
+    (if (some #(= current-srid %) valid-srids)
+      (do
+
+        (db/create-visitor! {:study_right_id current-srid :arvo_answer_hash "TK3HAK"})
+        (ok {:questionnaire-url "http://avopvastaustest.csc.fi/TK3HAK"}))
+      (throw-unauthorized))))
 
 (defn study-rights [request]
   (let [shibbo-vals (:identity request)]
@@ -96,6 +100,8 @@
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
       (study-rights request))
+    (POST "/tst" request
+      (ok request))
     (POST "/submit-registration" {:keys [params] :as request}
       (process-registration params request)))
   (GET "/auth"
