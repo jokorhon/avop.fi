@@ -19,7 +19,7 @@ export default class Userprofile extends React.Component {
         return response.json();
       })
       .then(study_rights => cb(null, {study_rights}))
-      .catch(() => browserHistory.push('/error'));
+      .catch(e => window.location = '/error/' + e.message);
   }
 
   selectStudyRight(event) {
@@ -29,14 +29,36 @@ export default class Userprofile extends React.Component {
     });
   }
 
+  onSubmit(event) {
+    event.preventDefault();
+    let data = {study_right_id: this.state.selectedStudyRight.id};
+    fetch('/api/submit-registration', {
+      method: 'post',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(response => {
+      if (response.status == 401) {
+        throw Error(response.status);
+      }
+      return response.json();
+    }).then(registration => {
+      window.location = registration['questionnaire_url'];
+    }).catch(e => browserHistory.push('/error/' + e.message));
+  }
+
   render() {
     return (
       <div>
         <Translate component="h4" content="profiledata.header"/>
         <Translate component="p" content="profiledata.about"/>
-        <form method="post" action="/api/submit-registration">
+        <form onSubmit={this.onSubmit.bind(this)}>
           {(this.props.study_rights.length > 1) ?
-            <select name="study-right-id" onChange={this.selectStudyRight.bind(this)} value={this.state.selectedStudyRight.id}>
+            <select onChange={this.selectStudyRight.bind(this)}
+                    value={this.state.selectedStudyRight.id}>
               {
                 this.props.study_rights.map(sr =>
                   <TranslateProperty component="option"
@@ -46,7 +68,7 @@ export default class Userprofile extends React.Component {
                 )
               }
             </select>
-            : <input type="hidden" name="study-right-id" value={this.state.selectedStudyRight.id} />
+            : ''
           }
           <table>
             <tbody>

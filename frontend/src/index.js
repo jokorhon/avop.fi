@@ -14,7 +14,7 @@ ReactDOM.render(
     <Route path="/" component={Main}>
       <IndexRoute component={Home} />
       <Route path="user" component={Userprofile} />
-      <Route path="error" component={Error} />
+      <Route path="error/:status" component={Error} />
       <Route path="*" component={Error}/>
     </Route>
   </Router>,

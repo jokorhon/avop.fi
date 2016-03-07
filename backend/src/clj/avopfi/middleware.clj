@@ -14,6 +14,8 @@
             [buddy.auth :refer [authenticated?]])
   (:import [javax.servlet ServletContext]))
 
+(def ^:const one-hour (* 60 60))
+
 (defn wrap-context [handler]
   (fn [request]
     (binding [*app-context*
@@ -78,6 +80,6 @@
       (wrap-defaults
         (-> site-defaults
             (assoc-in [:security :anti-forgery] false)
-            (assoc-in  [:session :store] (ttl-memory-store (* 60 30)))))
+            (assoc-in  [:session :store] (ttl-memory-store one-hour))))
       wrap-context
       wrap-internal-error))

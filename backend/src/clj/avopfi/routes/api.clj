@@ -62,10 +62,10 @@
 
 (defn get-virta-degrees [shibbo-vals]
   (match [shibbo-vals]
-         [{"learner-id" l}]
-           (virta/get-pending-degrees-by-oid l)
-         [(:or {"national-identification-number" n} {"unique-id" n})]
-           (virta/get-pending-degrees-by-pid n)
+         [{"learner-id" lid}]
+           (virta/get-pending-degrees-by-oid lid)
+         [(:or {"national-identification-number" nin} {"unique-id" nin})]
+           (virta/get-pending-degrees-by-pid nin)
          :else nil))
 
 (defn shibbo-vals->study-rights [shibbo-vals]
@@ -75,18 +75,19 @@
     valid-rights))
 
 (defn process-registration [{params :body-params session :session}]
-  (let [current-srid (:study-right-id params) valid-srids (:valid-srids session)]
+  (let [current-srid (:study_right_id params) valid-srids (:valid-srids session)]
     (if (some #(= current-srid %) valid-srids)
       (let [res (db/get-visitor-by-srid {:study_right_id current-srid})]
         (if (nil? res)
           (let [arvo-hash (arvo/generate-questionnaire!)]
             (db/create-visitor! {:study_right_id current-srid
                                  :arvo_answer_hash arvo-hash})
-            (ok {:questionnaire-url (str (:arvo-answer-url env) arvo-hash)}))
+            (ok {:questionnaire_url (str (:arvo-answer-url env) arvo-hash)}))
             ;; No obviously obvious status code when entity is duplicate,
             ;; (mis)using 422 as some other application/frameworks here.
             (unprocessable-entity
-              {:status 422 :detail "Entity already exists"})))
+              {:status 422 :detail "Entity already exists" :questionnaire_url
+                       (str (:arvo-answer-url env) (:arvo_answer_hash res))})))
       (throw-unauthorized))))
 
 (defn study-rights [request]
