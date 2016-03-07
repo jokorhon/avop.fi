@@ -90,9 +90,9 @@
   copy:
     dest: "/etc/pki/tls/certs/local.avop.fi.cert"
     src: "cert/local.avop.fi.cert"
-    mode: 0600
-    owner: root
-    group: root
+    mode: 0640
+    owner: shibd
+    group: shibd
   when: environment_id == "dev"
   notify:
     - restart httpd service
@@ -101,9 +101,9 @@
   copy:
     dest: "/etc/pki/tls/private/local.avop.fi.key"
     src: "cert/local.avop.fi.key"
-    mode: 0600
-    owner: root
-    group: root
+    mode: 0640
+    owner: shibd
+    group: shibd
   when: environment_id == "dev"
   notify:
     - restart httpd service
