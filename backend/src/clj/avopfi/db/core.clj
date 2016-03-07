@@ -27,6 +27,9 @@
           :start (conman/connect! pool-spec)
           :stop (conman/disconnect! *db*))
 
+;;Without this driver was not found when uberwar is deployed to Tomcat 8
+(Class/forName "org.postgresql.Driver")
+
 (conman/bind-connection *db* "sql/queries.sql")
 
 (defn to-date [sql-date]
