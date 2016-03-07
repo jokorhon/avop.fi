@@ -4,7 +4,6 @@
             [clojure.tools.logging :as log]
             [config.core :refer [env]]
             [ring-ttl-session.core :refer [ttl-memory-store]]
-            [ring.middleware.webjars :refer [wrap-webjars]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
             [ring.middleware.format :refer [wrap-restful-format]]
@@ -61,7 +60,7 @@
   {:status  403
    :headers {"Content-Type" "application/json"}
    :body   {:status 403
-            :message  (str  "Access to " (:uri request) " is forbidden")}})
+            :message  (str "Access to " (:uri request) " is forbidden")}})
 
 (defn wrap-restricted [handler]
   (restrict handler {:handler authenticated?
@@ -73,7 +72,6 @@
 (defn wrap-base [handler]
   (-> ((:middleware defaults) handler)
       wrap-formats
-      wrap-webjars
       (wrap-authentication (shibbo-backend)
                            (token-backend {:authfn authenticate}))
       (wrap-authorization (authz-backend))
