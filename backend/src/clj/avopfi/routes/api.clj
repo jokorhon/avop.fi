@@ -75,11 +75,11 @@
     valid-rights))
 
 (defn process-registration [{params :body-params session :session}]
-  (let [current-srid (:study_right_id params) valid-srids (:valid-srids session)]
-    (if (some #(= current-srid %) valid-srids)
+  (let [current-srid (:study_right_id params) study-rights-data (:study-rights-data session)]
+    (if (some #(= current-srid (:id %)) study-rights-data)
       (let [res (db/get-visitor-by-srid {:study_right_id current-srid})]
         (if (nil? res)
-          (let [arvo-hash (arvo/generate-questionnaire!)]
+          (let [arvo-hash (arvo/generate-questionnaire! study-rights-data)]
             (db/create-visitor! {:study_right_id current-srid
                                  :arvo_answer_hash arvo-hash})
             (ok {:questionnaire_url (str (:arvo-answer-url env) arvo-hash)}))
@@ -99,8 +99,8 @@
             (shibbo-vals->study-rights shibbo-vals)]
         (-> (ok resp-data)
             (assoc :session
-                   (assoc session :valid-srids
-                                  (map #(:id %) resp-data))))))))
+                   (assoc session :study-rights-data
+                                  resp-data)))))))
 
 (defroutes api-routes
   (context
