@@ -8,7 +8,7 @@
   "A default response constructor for an unathorized request."
   [_]
   {:status 401 :headers {"Content-Type" "application/json"}
-   :body "{\"status\": 401, \"msg\": \"Unauthorized\"}"})
+   :body "{\"status\": 401, \"detail\": \"Unauthorized\"}"})
 
 (defn shibbo-backend
   "Create an instance of the Shibbo backend."

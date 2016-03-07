@@ -5,6 +5,7 @@
             [clojure.core.match :refer [match]]
             [avopfi.integration.virta :as virta]
             [avopfi.integration.opintopolku :as op]
+            [avopfi.integration.arvo :as arvo]
             [avopfi.db.core :as db]
             [config.core :refer [env]]
             [compojure.core :refer :all]
@@ -73,13 +74,19 @@
         (filter-degrees virta-degrees (shibbo-vals "home-organization"))]
     valid-rights))
 
-(defn process-registration [params {session :session}]
+(defn process-registration [{params :body-params session :session}]
   (let [current-srid (:study-right-id params) valid-srids (:valid-srids session)]
     (if (some #(= current-srid %) valid-srids)
-      (do
-
-        (db/create-visitor! {:study_right_id current-srid :arvo_answer_hash "TK3HAK"})
-        (ok {:questionnaire-url "http://avopvastaustest.csc.fi/TK3HAK"}))
+      (let [res (db/get-visitor-by-srid {:study_right_id current-srid})]
+        (if (nil? res)
+          (let [arvo-hash (arvo/generate-questionnaire!)]
+            (db/create-visitor! {:study_right_id current-srid
+                                 :arvo_answer_hash arvo-hash})
+            (ok {:questionnaire-url (str (:arvo-answer-url env) arvo-hash)}))
+            ;; No obviously obvious status code when entity is duplicate,
+            ;; (mis)using 422 as some other application/frameworks here.
+            (unprocessable-entity
+              {:status 422 :detail "Entity already exists"})))
       (throw-unauthorized))))
 
 (defn study-rights [request]
@@ -100,11 +107,9 @@
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
       (study-rights request))
-    (POST "/tst" request
-      (ok request))
-    (POST "/submit-registration" {:keys [params] :as request}
-      (process-registration params request)))
+    (POST "/submit-registration" request
+      (process-registration request)))
   (GET "/auth"
-       {:keys [headers params body] :as request}
-    (ok (:headers request)))
+       {:keys [headers]}
+    (ok headers))
   (GET "/" [] (found "/api")))

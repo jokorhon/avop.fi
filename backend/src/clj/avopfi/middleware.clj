@@ -60,7 +60,7 @@
   {:status  403
    :headers {"Content-Type" "application/json"}
    :body   {:status 403
-            :message  (str "Access to " (:uri request) " is forbidden")}})
+            :detail  (str "Access to " (:uri request) " is forbidden")}})
 
 (defn wrap-restricted [handler]
   (restrict handler {:handler authenticated?
