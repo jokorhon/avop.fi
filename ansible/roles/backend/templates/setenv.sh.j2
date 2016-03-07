@@ -1,0 +1,5 @@
+JAVA_OPTS="$JAVA_OPTS -Dvirta-tunnus=avopfi 
+-Dvirta-jarjestelma=avopfi -Dvirta-salaisuus=salaisuus 
+-Dvirta-url=http://virtawstesti.csc.fi/luku/opiskelijatiedot.wsdl 
+-Dopintopolku-base-url=https://testi.virkailija.opintopolku.fi/ 
+-Ddatabase-url='jdbc:postgresql://localhost/{{ postgresql_avop_database }}?user={{ postgresql_avop_user}}&password={{ postgresql_avop_password }}'"

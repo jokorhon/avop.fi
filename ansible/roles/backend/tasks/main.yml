@@ -77,7 +77,15 @@
   notify:
     - restart avop-tomcat service
 
-# setenv.sh
+- name: tomcat setenv.sh
+  template:
+    src: setenv.sh.j2
+    dest: "/home/{{ avop_service_user }}/tomcat/current/bin/setenv.sh"
+    mode: 0755
+    owner: "{{ avop_service_user }}"
+    group: "{{ avop_service_user }}"
+  notify:
+    - restart avop-tomcat service
 
 - name: tomcat unit file
   template:

@@ -7,5 +7,5 @@ postgresql_repo:
 # default user/password omitted so that default values don't leak to every environment by accident:
 #postgresql_avop_user: set this in environment specific vars
 #postgresql_avop_password: set this in environment specific vars
-postgresql_avop_database: "avop"
+#postgresql_avop_database: set this in environment specific vars
 postgresql_data_directory: "/var/lib/pgsql/{{ postgresql_version }}/data"

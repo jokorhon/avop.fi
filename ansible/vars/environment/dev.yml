@@ -4,5 +4,6 @@ apache:
   certificate: "local.avop.fi.cert"
   certificate_key: "local.avop.fi.key"
   appserver: "localhost"
+postgresql_avop_database: avop
 postgresql_avop_user: avop
 postgresql_avop_password: avop

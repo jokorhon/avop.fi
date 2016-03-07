@@ -4,6 +4,7 @@ apache:
   certificate: "63398491-avopfitest.csc.fi.cert"
   certificate_key: "63398491-avopfitest.csc.fi.key"
   appserver: "localhost"
+postgresql_avop_database: avop
 postgresql_avop_user: "{{ vault_postgresql_avop_user }}"
 postgresql_avop_password: "{{ vault_postgresql_avop_password }}"
 postgresql_data_directory: "/data/pgsql/{{ postgresql_version }}/data"
