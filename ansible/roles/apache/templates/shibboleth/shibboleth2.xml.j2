@@ -31,7 +31,7 @@
         <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
         <AttributeResolver type="Query" subjectMatch="true"/>
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
-        <CredentialResolver type="File" key="/etc/pki/tls/certs/local.avop.fi.key" certificate="/etc/pki/tls/certs/local.avop.fi.cert"/>
+        <CredentialResolver type="File" key="/etc/pki/tls/private/local.avop.fi.key" certificate="/etc/pki/tls/certs/local.avop.fi.cert"/>
     </ApplicationDefaults>
     <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
     <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
