@@ -4,6 +4,6 @@
    [avopfi.integration.opintopolku])
   (:require [environ.core :refer [env]]))
 
-;(facts "about OP integrations" :it
+;(facts :integration "about OP integrations"
 ;       (fact "Gets proper kind of stuff"
 ;         (get-koulutus-data "321902") => truthy))

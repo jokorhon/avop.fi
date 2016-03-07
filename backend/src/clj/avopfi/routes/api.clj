@@ -109,8 +109,9 @@
     (GET "/opiskeluoikeudet" request
       (study-rights request))
     (POST "/submit-registration" request
-      (process-registration request)))
-  (GET "/auth"
-       {:keys [headers]}
-    (ok headers))
+      (process-registration request))
+    (GET "/status"
+         {:keys [headers] :as request}
+      (let [shibbo-vals (:identity request)]
+        (ok {:headers headers :shibbo shibbo-vals}))))
   (GET "/" [] (found "/api")))

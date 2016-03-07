@@ -3,6 +3,7 @@
             [avopfi.db.migrations :as migrations]
             [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
+            [clojure.core.match :refer [match]]
             [config.core :refer [env]]
             [mount.core :as mount]))
 
@@ -16,19 +17,10 @@
 (deftest test-users
   (jdbc/with-db-transaction [t-conn *db*]
     (jdbc/db-set-rollback-only! t-conn)
-    (is (= 1 (db/create-user!
+    (is (= 1 (db/create-visitor!
                t-conn
-               {:id         "1"
-                :first_name "Sam"
-                :last_name  "Smith"
-                :email      "sam.smith@example.com"
-                :pass       "pass"})))
-    (is (= {:id         "1"
-            :first_name "Sam"
-            :last_name  "Smith"
-            :email      "sam.smith@example.com"
-            :pass       "pass"
-            :admin      nil
-            :last_login nil
-            :is_active  nil}
-           (db/get-user t-conn {:id "1"})))))
+               {:study_right_id "foo" :arvo_answer_hash "XXX"})))
+    (is (match
+           (db/get-visitor-by-srid t-conn {:study_right_id "foo"})
+           {:study_right_id "foo" :arvo_answer_hash "XXX"} true
+           ))))

@@ -19,7 +19,7 @@
       (shibbo/get-attributes request env))
     (-authenticate [_ request shib-attribs]
       (let [identity
-            (if (contains? shib-attribs "session-id") shib-attribs nil)]
+            (if (contains? shib-attribs "home-organization") shib-attribs nil)]
         identity))))
 
 (defn authz-backend
