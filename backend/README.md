@@ -1,4 +1,4 @@
-# avopfi backend
+# AVOP.fi backend
 
 ## Prerequisites
 
@@ -11,16 +11,14 @@ Running PostgreSQL is needed to host data.
 
 Before running application needs configuration. Create `profiles.clj` with proper database configuration. 
 Use `profiles_tpl.clj` as a starting point.
-
-After database if configured the database schema can be migrated by running:
-
-    lein run migrate
- 
+  
 To start a web server for the application, run:
 
     lein run
 
 You can also start application from REPL by running first `lein repl` and then `(start)` in the REPL.
+
+**Note:** database migrations are executed in ring handler's init at startup.
 
 ### Running uberjar
 
@@ -31,18 +29,32 @@ You can also start application from REPL by running first `lein repl` and then `
     -Ddatabase-url="jdbc:postgresql://192.168.99.100/avopfi?user=avopfi&password=avopfi" \
     -jar avopfi.jar
 
+## Testing
 
-## Development tips
+Run unit tests
 
-If the real apache Shibboleth NativeSP proxy is not used, there's a 
+    $ lein test
+    
+Run integration tests
+    
+    $ lein test :integration
+     
+Integration tests are marked with `^:integration` metadata.
+
+## About authentication
+
+Production setup is using Apache + Shibboleth NativeSP, uberwar deployed 
+to Tomcat and AJP protocol between Apache and Tomcat. 
+
+If the real Apache Shibboleth NativeSP proxy is not used, there's a 
 possibility to spoof Shibboleth auth headers in dev mode with browser 
 plugin.
 
 | Header | Example value |
-| ---- |---- |
-| shib-shib-session-id | whatever |
+| ---- | ---- |
 | shib-national-identification-number | 010280-123A |
-| shib-home-organization | yliopisto.fi |    
+| shib-home-organization | yliopisto.fi |  
+
 
 
 ## License
