@@ -123,13 +123,6 @@
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
 
-       	<Context>
-	  <Resource name="jdbc/avopfi" auth="Container"
-          type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
-          url="jdbc:postgresql://127.0.0.1:5432/{{postgresql_avop_database}}"
-          username="{{postgresql_avop_user}}" password="{{postgresql_avop_password}}" maxTotal="20" maxIdle="10" maxWaitMillis="-1"/>
-       	</Context>
-
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
              Note: The pattern used is equivalent to using pattern="common" -->
