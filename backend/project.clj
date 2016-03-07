@@ -44,6 +44,10 @@
             :destroy avopfi.handler/destroy
             :name "avopfi.war"}
 
+  :test-selectors {:default (complement :integration)
+                   :integration :integration
+                   :all (constantly true)}
+
   :plugins [[lein-environ "1.0.1"]
             [migratus-lein "0.2.6"]
             [lein-uberwar "0.2.0"]]

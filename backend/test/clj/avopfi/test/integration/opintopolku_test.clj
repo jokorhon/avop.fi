@@ -1,9 +1,9 @@
 (ns avopfi.test.integration.opintopolku-test
   (:use
-   [midje.sweet]
-   [avopfi.integration.opintopolku])
+    [clojure.test :refer :all]
+    [avopfi.integration.opintopolku])
   (:require [environ.core :refer [env]]))
 
-;(facts :integration "about OP integrations"
-;       (fact "Gets proper kind of stuff"
-;         (get-koulutus-data "321902") => truthy))
+(deftest ^:integration op-integrations
+  (testing "Gets some kind of stuff"
+    (is (not (nil? (get-education-data "321902"))))))
