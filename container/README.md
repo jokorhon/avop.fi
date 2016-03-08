@@ -29,7 +29,11 @@ Inside the virtual machine there is the following synced folder (home/vagrant/sy
   * sh ./deploybackend.sh - deploys the backend to the tomcat instance running in the guest machine
 
 Please note that packaging and compilation occurs in the host machine hence valid packages must exist before using the above scripts. Compilation and related tasks must be done in the host machine whereas the main task of the guest machine is to perform the deployment
- 
+
+Once the deployment is performed, open a browser with the following URL:
+
+https://192.168.50.62 
+
 
 ## License
 
