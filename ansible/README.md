@@ -49,11 +49,13 @@ muuttujatiedostojen salausavain.
 
 Ajaminen paikallisesti (esim. kehittäjän virtuaalikoneessa)
 
-    # tarvitsee ajaa vain kerran (tai kun middleware-asetuksiin on tehty muutoksia)
-    ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password setup.yml
-    # deployt, tarvitsee ajaa kun buildeja
-    ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password deploy-frontend.yml
-    ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password deploy-backend.yml
+```shell
+# tarvitsee ajaa vain kerran (tai kun middleware-asetuksiin on tehty muutoksia)
+ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password setup.yml
+# deployt, tarvitsee ajaa kun buildeja
+ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password deploy-frontend.yml
+ansible-playbook -i hosts/dev.txt --vault-password-file=vault.password deploy-backend.yml
+```
 
 Muissa ympäristöissä korvaa inventory (hosts/dev.txt) oikean ympäristön inventoryllä.
 
@@ -86,13 +88,14 @@ Muissa ympäristöissä korvaa inventory (hosts/dev.txt) oikean ympäristön inv
 
   vars/environment/[ympäristö].yml:
   
-      ---
-      apache:
-        server_name: "palvelimen ulos näkyvä nimi"
-        certificate: "foo.cert" # tätä etsitään /etc/pki/tls/certs/-hakemistosta
-        certificate_key: "foo.key" # tätä etsitään /etc/pki/tls/private/-hakemistosta
-        appserver: "localhost" # mistä osoitteesta Apache löytää backendin (ProxyPass)
-      postgresql_avop_user: "{{ vault_postgresql_avop_user }}"
-      postgresql_avop_password: "{{ vault_postgresql_avop_password }}"
-      
-  vault_-alkuiset määritellään [ympäristö]_vault.yml:ssä.
+```yaml
+---
+apache:
+  server_name: "palvelimen ulos näkyvä nimi"
+  certificate: "foo.cert" # tätä etsitään /etc/pki/tls/certs/-hakemistosta
+  certificate_key: "foo.key" # tätä etsitään /etc/pki/tls/private/-hakemistosta
+  appserver: "localhost" # mistä osoitteesta Apache löytää backendin (ProxyPass)
+postgresql_avop_user: "{{ vault_postgresql_avop_user }}"
+postgresql_avop_password: "{{ vault_postgresql_avop_password }}"
+```
+vault_-alkuiset määritellään [ympäristö]_vault.yml:ssä.
