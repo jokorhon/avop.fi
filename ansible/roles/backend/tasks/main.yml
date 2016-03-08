@@ -6,6 +6,9 @@
     password: "*"
     createhome: yes
 
+- name: set SELinux to permissive
+  selinux: policy=targeted state=permissive
+
 - name: install openjdk 
   yum:
     name: java-1.8.0-openjdk
