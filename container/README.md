@@ -28,7 +28,7 @@ Inside the virtual machine there is the following synced folder (home/vagrant/sy
   * sh ./deployfrontend.sh - deploys the frontend to the apache instance running in the guest machine
   * sh ./deploybackend.sh - deploys the backend to the tomcat instance running in the guest machine
 
-Please note that packaging and compilations occurs in the host machine and valid packages must exist before using the above scripts. Compilation and related tasks must be done in the host machine whereas the solely task of the guest machine is to perform the deployment
+Please note that packaging and compilation occurs in the host machine hence valid packages must exist before using the above scripts. Compilation and related tasks must be done in the host machine whereas the main task of the guest machine is to perform the deployment
  
 
 ## License
