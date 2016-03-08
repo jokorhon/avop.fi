@@ -6,7 +6,12 @@
     clockSkew="180">
     <ApplicationDefaults entityID="https://{{ apache.server_name }}/Shibboleth.sso"
                          REMOTE_USER="eppn persistent-id targeted-id"
-                         signing="front" encryption="true" attributePrefix="shib-">
+                         signing="front" encryption="true" 
+{% if environment_id == "dev" %}
+                        attributePrefix="shib-"
+{% else %}
+                        attributePrefix="AJP_"
+{% endif %}>
         <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
                   checkAddress="false" handlerSSL="true" cookieProps="https">
             <SSO discoveryProtocol="SAMLDS" target="/"
