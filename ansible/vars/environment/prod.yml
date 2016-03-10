@@ -1,8 +1,9 @@
 ---
 apache:
   server_name: "avop.fi"
-  certificate: "TODO.cert"
-  certificate_key: "TODO.key"
+  certificate: "star_avop_fi.pem"
+  certificate_key: "star_avop_fi.key"
+  chain_certificate: "star_avop_fi-chain.pem"
   appserver: "localhost"
 postgresql_avop_database: avop
 postgresql_avop_user: "{{ vault_postgresql_avop_user }}"

@@ -9,6 +9,9 @@
     SSLProtocol all -SSLv2 -SSLv3
     SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
     SSLCertificateFile /etc/pki/tls/certs/{{ apache.certificate }}
+{% if environment_id == "prod" %}
+    SSLCertificateChainFile /etc/pki/tls/certs/{{ apache.chain_certificate }}
+{% endif %}  
     SSLCertificateKeyFile /etc/pki/tls/private/{{ apache.certificate_key }}
     SetEnvIf User-Agent ".*MSIE.*" \
     nokeepalive ssl-unclean-shutdown \
