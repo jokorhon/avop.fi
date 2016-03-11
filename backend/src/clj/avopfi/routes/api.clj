@@ -25,23 +25,35 @@
       [code (get-oppilaitos-code-by-domain home-organization)]
     (= code (-> degree :myontaja :koodi))))
 
-(defn degree->ui-map
-  [degree]
+(def credit-threshold-min 180)
+(def credit-threshold-max 195)
+
+(defn has-enough-study-credits? [virta-attainments study-right]
+  (let [creds (->> virta-attainments
+      (filter #(and
+                (= (:opiskeluoikeusAvain %) (:avain study-right))
+                (= (:laji %) "2")
+                (empty? (:sisaltyvyys %))))
+      (reduce #(+ %1 (-> %2 :laajuus :opintopiste)) 0))]
+    (and (<= credit-threshold-min creds) (>= credit-threshold-max creds))))
+
+(defn study-right->ui-map
+  [study-right]
   (let [
-        degree-id (:avain degree)
-        timespan (virta/select-active-timespan (:jakso degree))
+        right-id (:avain study-right)
+        timespan (virta/select-active-timespan (:jakso study-right))
         municipality-id (:koulutuskunta timespan)
         education-id (:koulutuskoodi timespan)
-        org-id (-> degree :myontaja :koodi)
+        org-id (-> study-right :myontaja :koodi)
         lang (:koulutuskieli timespan)
         municipality (op/extract-metadata (op/get-municipality-data municipality-id))
         education (op/extract-metadata (op/get-education-data education-id))
         education-type (virta/conclude-study-type
-                        (degree :tyyppi)
-                        (degree :aikuiskoulutus))
+                        (study-right :tyyppi)
+                        (study-right :aikuiskoulutus))
         school (op/extract-metadata (op/get-school-data org-id))]
     {
-     :id degree-id
+     :id right-id
      :municipality {:id municipality-id :name municipality}
      :lang lang
      :degree {:id education-id :name education}
@@ -49,12 +61,13 @@
      :school {:id org-id :name school}
      }))
 
-(defn filter-degrees [virta-degrees home-organization]
+(defn filter-rights [virta-rights virta-attainments home-organization]
   (try
     (->>
-     virta-degrees
+      virta-rights
      (filter (partial has-organization? home-organization))
-     (map degree->ui-map))
+     (filter (partial has-enough-study-credits? virta-attainments))
+     (map study-right->ui-map))
     (catch Exception e
       (let [msg (.getMessage e)]
         (println "caught exception: " msg)
@@ -71,13 +84,14 @@
 (defn get-virta-attainments [shibbo-vals]
   (get-from-virta-with virta/get-study-attainments! shibbo-vals))
 
-(defn get-virta-degrees [shibbo-vals]
+(defn get-virta-rights [shibbo-vals]
   (get-from-virta-with  virta/get-study-rights! shibbo-vals))
 
 (defn shibbo-vals->study-rights [shibbo-vals]
-  (let [virta-degrees (get-virta-degrees shibbo-vals)
+  (let [virta-rights (get-virta-rights shibbo-vals)
+        virta-attainments (get-virta-attainments shibbo-vals)
         valid-rights
-        (filter-degrees virta-degrees (shibbo-vals "home-organization"))]
+        (filter-rights virta-rights virta-attainments (shibbo-vals "home-organization"))]
     valid-rights))
 
 (defn process-registration [{params :body-params session :session}]
@@ -108,20 +122,12 @@
                    (assoc session :study-rights-data
                                   resp-data)))))))
 
-(defn study-attainments [request]
-  (let [shibbo-vals (:identity request)]
-    (if (not (map? shibbo-vals))
-      (throw-unauthorized)
-      (ok (get-virta-attainments shibbo-vals)))))
-
 (defroutes api-routes
   (context
       "/api" []
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
       (study-rights request))
-    (GET "/suoritukset" request
-      (study-attainments request))
     (POST "/submit-registration" request
       (process-registration request))
     (GET "/status"
