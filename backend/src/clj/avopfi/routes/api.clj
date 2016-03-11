@@ -60,13 +60,19 @@
         (println "caught exception: " msg)
         (throw e)))))
 
-(defn get-virta-degrees [shibbo-vals]
+(defn get-from-virta-with [virta-fetcher shibbo-vals]
   (match [shibbo-vals]
          [{"learner-id" lid}]
-           (virta/get-pending-degrees-by-oid lid)
+         (virta/get-from-virta-by-oid lid virta-fetcher)
          [(:or {"national-identification-number" nin} {"unique-id" nin})]
-           (virta/get-pending-degrees-by-pid nin)
+         (virta/get-from-virta-by-pid nin virta-fetcher)
          :else nil))
+
+(defn get-virta-attainments [shibbo-vals]
+  (get-from-virta-with virta/get-study-attainments! shibbo-vals))
+
+(defn get-virta-degrees [shibbo-vals]
+  (get-from-virta-with  virta/get-study-rights! shibbo-vals))
 
 (defn shibbo-vals->study-rights [shibbo-vals]
   (let [virta-degrees (get-virta-degrees shibbo-vals)
@@ -102,12 +108,20 @@
                    (assoc session :study-rights-data
                                   resp-data)))))))
 
+(defn study-attainments [request]
+  (let [shibbo-vals (:identity request)]
+    (if (not (map? shibbo-vals))
+      (throw-unauthorized)
+      (ok (get-virta-attainments shibbo-vals)))))
+
 (defroutes api-routes
   (context
       "/api" []
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
       (study-rights request))
+    (GET "/suoritukset" request
+      (study-attainments request))
     (POST "/submit-registration" request
       (process-registration request))
     (GET "/status"

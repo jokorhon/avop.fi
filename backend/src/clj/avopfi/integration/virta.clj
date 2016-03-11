@@ -6,15 +6,29 @@
    [java-time :refer [local-date]])
   (:import
    (java.net URL)
-   (fi.csc.virta OpiskelijanTiedotService OpiskeluoikeudetRequest OpiskeluoikeudetResponse HakuEhdotOrganisaatioVapaa Kutsuja)))
+   (fi.csc.virta OpiskelijanTiedotService OpiskeluoikeudetRequest
+                 OpiskeluoikeudetResponse OpintosuorituksetRequest
+                 OpintosuorituksetResponse HakuEhdotOrganisaatioVapaa
+                 Kutsuja)))
 
-(defn extract-study-right-data
+(defn extract-study-attainments-data
   "Note: Confusingly one opiskeluoikeudetLaajennettuTyyppi instance 
   is returned with .getOpiskeluoikeudet and multiple OpiskeluoikeusTyyppis
   with getOpiskeluoikeus"
+  [^OpintosuorituksetResponse opintosuoritukset-response]
+  (let [results (-> opintosuoritukset-response
+                    (.getOpintosuoritukset)
+                    (.getOpintosuoritus))]
+    (map #(from-java %) results)))
+
+(defn extract-study-right-data
+  "Note: Confusingly one opiskeluoikeudetLaajennettuTyyppi instance
+  is returned with .getOpiskeluoikeudet and multiple OpiskeluoikeusTyyppis
+  with getOpiskeluoikeus"
   [^OpiskeluoikeudetResponse opiskeluoikeudet-response]
-  (let [results (.getOpiskeluoikeus
-                 (.getOpiskeluoikeudet opiskeluoikeudet-response))] 
+  (let [results (-> opiskeluoikeudet-response
+                    (.getOpiskeluoikeudet)
+                    (.getOpiskeluoikeus))]
     (map #(from-java %) results)))
 
 (defn ^:private to-local-date [date-map]
@@ -39,29 +53,43 @@
   [study-type adult-studies]
   (if (and (= study-type "1") adult-studies) 1 0))
 
-(defn get-study-rights!
-  "Use Java source generated from wsdl"
-  [set-id-query]
-  (let [port (-> (OpiskelijanTiedotService. (URL. (env :virta-url)))
-                 (.getOpiskelijanTiedotSoap11))
-        request (doto (OpiskeluoikeudetRequest.)
-                  (.setKutsuja
-                   (doto (Kutsuja.)
-                     (.setAvain (:virta-salaisuus env))
-                     (.setJarjestelma (:virta-jarjestelma env))
-                     (.setTunnus (:virta-tunnus env))))
-                  (.setHakuehdot
-                   (doto (HakuEhdotOrganisaatioVapaa.)
-                     set-id-query
-                     )))]
-    (extract-study-right-data (.opiskeluoikeudet port request))))
+(defn get-caller-obj
+  "Object to include VIRTA credentials in WS call"
+  []
+  (doto (Kutsuja.)
+    (.setAvain (:virta-salaisuus env))
+    (.setJarjestelma (:virta-jarjestelma env))
+    (.setTunnus (:virta-tunnus env))))
 
-(defn get-pending-degrees-by-pid [person-id]
+(defn get-ws-service []
+  (-> (OpiskelijanTiedotService. (URL. (env :virta-url)))
+      (.getOpiskelijanTiedotSoap11)))
+
+(defn build-ws-request-from [request-inst set-id-query]
+  (doto request-inst
+    (.setKutsuja (get-caller-obj))
+    (.setHakuehdot
+      (doto (HakuEhdotOrganisaatioVapaa.)
+        set-id-query))))
+
+(defn get-study-attainments!
+  [set-id-query]
+  (let [service (get-ws-service)
+        request (build-ws-request-from (OpintosuorituksetRequest.) set-id-query)]
+    (extract-study-attainments-data (.opintosuoritukset service request))))
+
+(defn get-study-rights!
+  [set-id-query]
+  (let [service (get-ws-service)
+            request (build-ws-request-from (OpiskeluoikeudetRequest.) set-id-query)]
+    (extract-study-right-data (.opiskeluoikeudet service request))))
+
+(defn get-from-virta-by-pid [person-id virta-fetcher]
   (log/debug "fetching VIRTA by pid: " person-id)
-  (let [study-rights (get-study-rights! #(.setHenkilotunnus % person-id))]
+  (let [study-rights (virta-fetcher #(.setHenkilotunnus % person-id))]
     study-rights))
 
-(defn get-pending-degrees-by-oid [oid]
+(defn get-from-virta-by-oid [oid virta-fetcher]
   (log/debug "fetching VIRTA by oid: " oid)
-  (let [study-rights (get-study-rights! #(.setKansallinenOppijanumero % oid))]
+  (let [study-rights (virta-fetcher #(.setKansallinenOppijanumero % oid))]
     study-rights))
