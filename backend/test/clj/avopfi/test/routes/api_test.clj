@@ -19,15 +19,16 @@
   (testing "Checking VIRTA study credits when there's not enough credits"
     (is (not (has-enough-study-credits? (rest attainments-fixture) (first study-rights-fixture))))))
 
-(comment
-  (deftest filtering-rights
-    (testing "Filters rights and converts to json structure"
-      (with-redefs [has-organization? (fn [x] (= "yliopisto.fi" x))
-                    virta/select-active-timespan (constantly {:loppuPvm nil})
-                    virta/conclude-study-type (constantly 0)
-                    op/extract-metadata (constantly "metadata")
-                    op/get-municipality-data (constantly nil)
-                    op/get-education-data (constantly nil)
-                    op/get-school-data (constantly nil)]
-        (is (nil? (println (filter-rights study-rights-fixture attainments-fixture "yliopisto.fi"))))
-        (is true)))))
+
+;(deftest filtering-rights
+;  (testing "Filters rights and converts to json structure"
+;    (with-redefs [has-organization? (fn [x y] (= "yliopisto.fi" x))
+;                  virta/select-active-timespan (constantly {:loppuPvm nil})
+;                  virta/conclude-study-type (constantly 0)
+;                  op/extract-metadata (constantly "metadata")
+;                  op/get-municipality-data (constantly nil)
+;                  op/get-education-data (constantly nil)
+;                  op/get-school-data (constantly nil)]
+;      (is (nil? (println
+;                  (filter-rights study-rights-fixture attainments-fixture "yliopisto.fi"))))
+;      (is true))))

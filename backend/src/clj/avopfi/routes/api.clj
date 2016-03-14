@@ -20,10 +20,10 @@
   (let [mapping
         (db/get-mapping-by-domain {:domain domain})] (:code mapping)))
 
-(defn has-organization? [home-organization degree]
+(defn has-organization? [home-organization study-right]
   (let
       [code (get-oppilaitos-code-by-domain home-organization)]
-    (= code (-> degree :myontaja :koodi))))
+    (= code (-> study-right :myontaja :koodi))))
 
 (def credit-threshold-min 180)
 (def credit-threshold-max 195)
@@ -66,7 +66,7 @@
     (->>
       virta-rights
      (filter (partial has-organization? home-organization))
-     (filter (partial has-enough-study-credits? virta-attainments))
+      ;;(filter (partial has-enough-study-credits? virta-attainments))
      (map study-right->ui-map))
     (catch Exception e
       (let [msg (.getMessage e)]
