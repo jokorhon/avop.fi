@@ -4,4 +4,4 @@
   "Generate Arvo questionnaire with given data"
   [study-rights-data]
   (println study-rights-data)
-  "TK3HAK")
+  "THLJWM")
