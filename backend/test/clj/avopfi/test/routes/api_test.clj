@@ -7,7 +7,7 @@
             [avopfi.integration.virta :as virta]))
 
 
-(def study-rights-fixture [{:avain "FOO" :tyyppi 0 :myontaja {:koodi "123"}}])
+(def study-rights-fixture [{:avain "FOO" :myontaja {:koodi "123"}}])
 (def attainments-fixture [
                           {:opiskeluoikeusAvain "FOO" :laji "2" :sisaltyvyys [] :laajuus {:opintopiste 100}}
                           {:opiskeluoikeusAvain "FOO" :laji "2" :sisaltyvyys [] :laajuus {:opintopiste 90}}
@@ -23,7 +23,7 @@
   (testing "Filters rights and converts to json structure"
     (with-redefs [has-organization? (fn [x y] (= "yliopisto.fi" x))
                   virta/select-active-timespan (constantly {:loppuPvm nil})
-                  virta/conclude-study-type (constantly )
+                  virta/conclude-study-type (constantly 0)
                   op/extract-metadata (constantly {:fi "suomeksi" :sv "ruotsiksi"})
                   op/get-kunta-data (constantly nil)
                   op/get-koulutus-data (constantly nil)
