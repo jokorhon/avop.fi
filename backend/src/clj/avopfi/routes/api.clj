@@ -99,7 +99,7 @@
     (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
       (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)
-          (let [arvo-hash (arvo/generate-questionnaire! opiskeluoikeudet-data)]
+          (let [arvo-hash (arvo/generate-questionnaire-credentials! opiskeluoikeudet-data)]
             (db/create-visitor! {:opiskeluoikeus_id current-srid
                                  :arvo_answer_hash arvo-hash})
             (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))

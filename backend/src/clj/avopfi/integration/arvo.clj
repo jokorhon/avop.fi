@@ -7,8 +7,8 @@
 (defn clean-opiskeluoikeus-data [data]
   data)
 
-(defn generate-questionnaire!
-  "Generate Arvo questionnaire with given data"
+(defn generate-questionnaire-credentials!
+  "Generate Arvo questionnaire credentials with given data"
   [opiskeluoikeus-data]
   (let [resp
         (:body

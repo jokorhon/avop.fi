@@ -14,4 +14,4 @@
                                     (re-matches #"Bearer ([A-Za-z0-9-_=.]+)"
                                                 (-> req :headers :Authorization)))
                                   {:body {:foo ""}}))]
-      (is (= "THLJWM" (generate-questionnaire! {:data "foo"}))))))
+      (is (= "THLJWM" (generate-questionnaire-credentials! {:data "foo"}))))))
