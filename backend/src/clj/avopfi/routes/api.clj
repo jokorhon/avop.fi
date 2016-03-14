@@ -66,7 +66,7 @@
     (->>
       virta-rights
      (filter (partial has-organization? home-organization))
-      ;;(filter (partial has-enough-study-credits? virta-attainments))
+     (filter (partial has-enough-study-credits? virta-attainments))
      (map study-right->ui-map))
     (catch Exception e
       (let [msg (.getMessage e)]
