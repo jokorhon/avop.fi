@@ -21,7 +21,7 @@
                     (.getOpintosuoritus))]
     (map #(from-java %) results)))
 
-(defn extract-study-right-data
+(defn extract-opiskeluoikeus-data
   "Note: Confusingly one opiskeluoikeudetLaajennettuTyyppi instance
   is returned with .getOpiskeluoikeudet and multiple OpiskeluoikeusTyyppis
   with getOpiskeluoikeus"
@@ -72,24 +72,24 @@
       (doto (HakuEhdotOrganisaatioVapaa.)
         set-id-query))))
 
-(defn get-study-attainments!
+(defn get-opintosuoritukset!
   [set-id-query]
   (let [service (get-ws-service)
         request (build-ws-request-from (OpintosuorituksetRequest.) set-id-query)]
     (extract-study-attainments-data (.opintosuoritukset service request))))
 
-(defn get-study-rights!
+(defn get-opiskeluoikeudet!
   [set-id-query]
   (let [service (get-ws-service)
             request (build-ws-request-from (OpiskeluoikeudetRequest.) set-id-query)]
-    (extract-study-right-data (.opiskeluoikeudet service request))))
+    (extract-opiskeluoikeus-data (.opiskeluoikeudet service request))))
 
 (defn get-from-virta-by-pid [person-id virta-fetcher]
   (log/debug "fetching VIRTA by pid: " person-id)
-  (let [study-rights (virta-fetcher #(.setHenkilotunnus % person-id))]
-    study-rights))
+  (let [opiskeluoikeudet (virta-fetcher #(.setHenkilotunnus % person-id))]
+    opiskeluoikeudet))
 
 (defn get-from-virta-by-oid [oid virta-fetcher]
   (log/debug "fetching VIRTA by oid: " oid)
-  (let [study-rights (virta-fetcher #(.setKansallinenOppijanumero % oid))]
-    study-rights))
+  (let [opiskeluoikeudet (virta-fetcher #(.setKansallinenOppijanumero % oid))]
+    opiskeluoikeudet))

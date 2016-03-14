@@ -1,13 +1,13 @@
 -- :name create-visitor! :! :n
 -- :doc creates a new visitor record
 INSERT INTO visitors
-(study_right_id, arvo_answer_hash, login_time)
-VALUES (:study_right_id, :arvo_answer_hash, now())
+(opiskeluoikeus_id, arvo_answer_hash, login_time)
+VALUES (:opiskeluoikeus_id, :arvo_answer_hash, now())
 
 -- :name get-visitor-by-srid :? :1
 -- :doc retrieve visitor for certan study right id
 SELECT * FROM visitors
-WHERE study_right_id = :study_right_id
+WHERE opiskeluoikeus_id = :opiskeluoikeus_id
 
 -- :name get-mapping-by-domain :? :1
 -- :doc get Haka to VIRTA organization mapping by domain

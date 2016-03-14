@@ -25,49 +25,49 @@
       [code (get-oppilaitos-code-by-domain home-organization)]
     (= code (-> study-right :myontaja :koodi))))
 
-(def credit-threshold-min 180)
-(def credit-threshold-max 195)
+(def opintopisteet-threshold-min 180)
+(def opintopisteet-threshold-max 195)
 
-(defn has-enough-study-credits? [virta-attainments study-right]
-  (let [creds (->> virta-attainments
+(defn has-enough-opintosuoritus? [virta-suoritukset opiskeluoikeudet]
+  (let [pisteet (->> virta-suoritukset
       (filter #(and
-                (= (:opiskeluoikeusAvain %) (:avain study-right))
+                (= (:opiskeluoikeusAvain %) (:avain opiskeluoikeudet))
                 (= (:laji %) "2")
                 (empty? (:sisaltyvyys %))))
       (reduce #(+ %1 (-> %2 :laajuus :opintopiste)) 0))]
-    (and (<= credit-threshold-min creds) (>= credit-threshold-max creds))))
+    (and (<= opintopisteet-threshold-min pisteet) (>= opintopisteet-threshold-max pisteet))))
 
-(defn study-right->ui-map
-  [study-right]
+(defn opiskeluoikeus->ui-map
+  [opiskeluoikeus]
   (let [
-        right-id (:avain study-right)
-        timespan (virta/select-active-timespan (:jakso study-right))
-        municipality-id (:koulutuskunta timespan)
-        education-id (:koulutuskoodi timespan)
-        org-id (-> study-right :myontaja :koodi)
-        lang (:koulutuskieli timespan)
-        municipality (op/extract-metadata (op/get-municipality-data municipality-id))
-        education (op/extract-metadata (op/get-education-data education-id))
-        education-type (virta/conclude-study-type
-                        (study-right :tyyppi)
-                        (study-right :aikuiskoulutus))
-        school (op/extract-metadata (op/get-school-data org-id))]
+        oikeus-id (:avain opiskeluoikeus)
+        timespan (virta/select-active-timespan (:jakso opiskeluoikeus))
+        kunta-id (:koulutuskunta timespan)
+        koulutus-id (:koulutuskoodi timespan)
+        org-id (-> opiskeluoikeus :myontaja :koodi)
+        kieli (:koulutuskieli timespan)
+        kunta (op/extract-metadata (op/get-kunta-data kunta-id))
+        koulutus (op/extract-metadata (op/get-koulutus-data koulutus-id))
+        koulutustyyppi (virta/conclude-study-type
+                        (opiskeluoikeus :tyyppi)
+                        (opiskeluoikeus :aikuiskoulutus))
+        oppilaitos (op/extract-metadata (op/get-oppilaitos-data org-id))]
     {
-     :id right-id
-     :municipality {:id municipality-id :name municipality}
-     :lang lang
-     :degree {:id education-id :name education}
-     :type education-type
-     :school {:id org-id :name school}
+     :id oikeus-id
+     :kunta {:id kunta-id :nimi kunta}
+     :kieli kieli
+     :tutkinto {:id koulutus-id :nimi koulutus}
+     :tyyppi koulutustyyppi
+     :oppilaitos {:id org-id :nimi oppilaitos}
      }))
 
-(defn filter-rights [virta-rights virta-attainments home-organization]
+(defn filter-oikeudet [virta-oikeudet virta-suoritukset home-organization]
   (try
     (->>
-      virta-rights
-     (filter (partial has-organization? home-organization))
-     (filter (partial has-enough-study-credits? virta-attainments))
-     (map study-right->ui-map))
+      virta-oikeudet
+      (filter (partial has-organization? home-organization))
+      (filter (partial has-enough-opintosuoritus? virta-suoritukset))
+      (map opiskeluoikeus->ui-map))
     (catch Exception e
       (let [msg (.getMessage e)]
         (println "caught exception: " msg)
@@ -81,45 +81,45 @@
          (virta/get-from-virta-by-pid nin virta-fetcher)
          :else nil))
 
-(defn get-virta-attainments [shibbo-vals]
-  (get-from-virta-with virta/get-study-attainments! shibbo-vals))
+(defn get-virta-suoritukset [shibbo-vals]
+  (get-from-virta-with virta/get-opintosuoritukset! shibbo-vals))
 
-(defn get-virta-rights [shibbo-vals]
-  (get-from-virta-with  virta/get-study-rights! shibbo-vals))
+(defn get-virta-opiskeluoikeudet [shibbo-vals]
+  (get-from-virta-with virta/get-opiskeluoikeudet! shibbo-vals))
 
-(defn shibbo-vals->study-rights [shibbo-vals]
-  (let [virta-rights (get-virta-rights shibbo-vals)
-        virta-attainments (get-virta-attainments shibbo-vals)
-        valid-rights
-        (filter-rights virta-rights virta-attainments (shibbo-vals "home-organization"))]
-    valid-rights))
+(defn shibbo-vals->opiskeluoikeudet [shibbo-vals]
+  (let [virta-oikeudet (get-virta-opiskeluoikeudet shibbo-vals)
+        virta-suoritukset (get-virta-suoritukset shibbo-vals)
+        valid-oikeudet
+        (filter-oikeudet virta-oikeudet virta-suoritukset (shibbo-vals "home-organization"))]
+    valid-oikeudet))
 
 (defn process-registration [{params :body-params session :session}]
-  (let [current-srid (:study_right_id params) study-rights-data (:study-rights-data session)]
-    (if (some #(= current-srid (:id %)) study-rights-data)
+  (let [current-srid (:study_right_id params) opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
+    (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
       (let [res (db/get-visitor-by-srid {:study_right_id current-srid})]
         (if (nil? res)
-          (let [arvo-hash (arvo/generate-questionnaire! study-rights-data)]
+          (let [arvo-hash (arvo/generate-questionnaire! opiskeluoikeudet-data)]
             (db/create-visitor! {:study_right_id current-srid
                                  :arvo_answer_hash arvo-hash})
-            (ok {:questionnaire_url (str (:arvo-answer-url env) arvo-hash)}))
+            (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
             ;; No obviously obvious status code when entity is duplicate,
             ;; (mis)using 422 as some other application/frameworks here.
             (unprocessable-entity
-              {:status 422 :detail "Entity already exists" :questionnaire_url
+              {:status 422 :detail "Entity already exists" :kysely_url
                        (str (:arvo-answer-url env) (:arvo_answer_hash res))})))
       (throw-unauthorized))))
 
-(defn study-rights [request]
+(defn opiskeluoikeudet [request]
   (let [shibbo-vals (:identity request)]
     (if (not (map? shibbo-vals))
       (throw-unauthorized)
       (let [session (:session request)
             resp-data
-            (shibbo-vals->study-rights shibbo-vals)]
+            (shibbo-vals->opiskeluoikeudet shibbo-vals)]
         (-> (ok resp-data)
             (assoc :session
-                   (assoc session :study-rights-data
+                   (assoc session :opiskeluoikeudet-data
                                   resp-data)))))))
 
 (defroutes api-routes
@@ -127,8 +127,8 @@
       "/api" []
     (GET "/" [] (home-page))
     (GET "/opiskeluoikeudet" request
-      (study-rights request))
-    (POST "/submit-registration" request
+      (opiskeluoikeudet request))
+    (POST "/rekisteroidy" request
       (process-registration request))
     (GET "/status"
          {:keys [headers] :as request}

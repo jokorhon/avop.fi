@@ -8,9 +8,9 @@
 (defn get-visitor [identity study-right-id]
   (if (not (= "valid" identity))
     (throw-unauthorized)
-    (ok (db/get-visitor-by-srid {:study_right_id study-right-id}))))
+    (ok (db/get-visitor-by-srid {:opiskeluoikeus-id study-right-id}))))
 
 (defroutes public-routes
   (context "/public" []
-   (GET "/students/:study-right-id{.{0,100}}" [study-right-id :as {i :identity}]
-     (get-visitor i study-right-id))))
+   (GET "/students/:opiskeluoikeus-id{.{0,100}}" [opiskeluoikeus-id :as {i :identity}]
+     (get-visitor i opiskeluoikeus-id))))

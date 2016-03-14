@@ -6,4 +6,4 @@
 
 (deftest ^:integration op-integrations
   (testing "Gets some kind of stuff"
-    (is (not (nil? (get-education-data "321902"))))))
+    (is (not (nil? (get-koulutus-data "321902"))))))
