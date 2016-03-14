@@ -100,7 +100,7 @@
       (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)
           (let [arvo-hash (arvo/generate-questionnaire! opiskeluoikeudet-data)]
-            (db/create-visitor! {:opiskeluoikeus_id  current-srid
+            (db/create-visitor! {:opiskeluoikeus_id current-srid
                                  :arvo_answer_hash arvo-hash})
             (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
             ;; No obviously obvious status code when entity is duplicate,
