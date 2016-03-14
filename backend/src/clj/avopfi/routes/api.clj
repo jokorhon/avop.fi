@@ -95,12 +95,12 @@
     valid-oikeudet))
 
 (defn process-registration [{params :body-params session :session}]
-  (let [current-srid (:study_right_id params) opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
+  (let [current-srid (:opiskeluoikeus_id params) opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
     (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
-      (let [res (db/get-visitor-by-srid {:study_right_id current-srid})]
+      (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)
           (let [arvo-hash (arvo/generate-questionnaire! opiskeluoikeudet-data)]
-            (db/create-visitor! {:study_right_id current-srid
+            (db/create-visitor! {:opiskeluoikeus_id  current-srid
                                  :arvo_answer_hash arvo-hash})
             (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
             ;; No obviously obvious status code when entity is duplicate,

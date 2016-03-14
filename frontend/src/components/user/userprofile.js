@@ -31,8 +31,8 @@ export default class Userprofile extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    let data = {study_right_id: this.state.selectedStudyRight.id};
-    fetch('/api/submit-registration', {
+    let data = {opiskeluoikeus_id: this.state.selectedStudyRight.id};
+    fetch('/api/rekisteroidy', {
       method: 'post',
       credentials: 'same-origin',
       headers: {
@@ -46,7 +46,7 @@ export default class Userprofile extends React.Component {
       }
       return response.json();
     }).then(registration => {
-      window.location = registration['questionnaire_url'];
+      window.location = registration['kysely_url'];
     }).catch(e => browserHistory.push('/error/' + e.message));
   }
 
@@ -63,7 +63,7 @@ export default class Userprofile extends React.Component {
                 this.props.study_rights.map(sr =>
                   <TranslateProperty component="option"
                                      value={sr.id}
-                                     data={sr.degree.name}>
+                                     data={sr.tutkinto.nimi}>
                   </TranslateProperty>
                 )
               }
@@ -75,29 +75,29 @@ export default class Userprofile extends React.Component {
             <tr>
               <Translate component="td" content="profiledata.education"></Translate>
               <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.degree.name}>
+                                 data={this.state.selectedStudyRight.tutkinto.nimi}>
               </TranslateProperty>
             </tr>
             <tr>
               <Translate component="td" content="profiledata.school"></Translate>
               <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.school.name}>
+                                 data={this.state.selectedStudyRight.oppilaitos.nimi}>
               </TranslateProperty>
             </tr>
             <tr>
               <Translate component="td" content="profiledata.municipality"></Translate>
               <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.municipality.name}>
+                                 data={this.state.selectedStudyRight.kunta.nimi}>
               </TranslateProperty>
             </tr>
             <tr>
               <Translate component="td" content="profiledata.language"></Translate>
-              <td>{this.state.selectedStudyRight.lang}</td>
+              <td>{this.state.selectedStudyRight.kieli}</td>
             </tr>
             <tr>
               <Translate component="td" content="profiledata.form_of_education"></Translate>
               <Translate component="td"
-                         content={this.state.selectedStudyRight.type == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
+                         content={this.state.selectedStudyRight.tyyppi == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
             </tr>
             </tbody>
           </table>
