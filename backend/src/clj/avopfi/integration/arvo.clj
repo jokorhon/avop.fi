@@ -4,8 +4,17 @@
     [buddy.sign.jws :as jws]
     [clj-http.client :as client]))
 
-(defn clean-opiskeluoikeus-data [data]
-  data)
+(defn clean-opiskeluoikeus-data
+  [{:keys [kieli tyyppi]
+    {oppilaitos-id :id} :oppilaitos
+    {koulutus-id :id} :koulutus
+    {kunta-id :id} :kunta}]
+  {
+   :oppilaitos oppilaitos-id
+   :koulutus koulutus-id
+   :kunta kunta-id
+   :tyyppi tyyppi
+   :kieli kieli})
 
 (defn generate-questionnaire-credentials!
   "Generate Arvo questionnaire credentials with given data"
