@@ -56,7 +56,7 @@
      :id oikeus-id
      :kunta {:id kunta-id :nimi kunta}
      :kieli kieli
-     :tutkinto {:id koulutus-id :nimi koulutus}
+     :koulutus {:id koulutus-id :nimi koulutus}
      :tyyppi koulutustyyppi
      :oppilaitos {:id org-id :nimi oppilaitos}
      }))

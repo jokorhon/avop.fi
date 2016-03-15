@@ -63,7 +63,7 @@ export default class Userprofile extends React.Component {
                 this.props.study_rights.map(sr =>
                   <TranslateProperty component="option"
                                      value={sr.id}
-                                     data={sr.tutkinto.nimi}>
+                                     data={sr.koulutus.nimi}>
                   </TranslateProperty>
                 )
               }
@@ -75,7 +75,7 @@ export default class Userprofile extends React.Component {
             <tr>
               <Translate component="td" content="profiledata.education"></Translate>
               <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.tutkinto.nimi}>
+                                 data={this.state.selectedStudyRight.koulutus.nimi}>
               </TranslateProperty>
             </tr>
             <tr>
