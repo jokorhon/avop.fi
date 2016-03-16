@@ -1,13 +1,17 @@
 (ns avopfi.test.routes.api-test
-  (:use
-    [clojure.test :refer :all]
-    [avopfi.routes.api])
   (:require [config.core :refer [env]]
+            [avopfi.consts :refer :all]
+            [clojure.test :refer :all]
+            [avopfi.routes.api :refer :all]
             [avopfi.integration.opintopolku :as op]
             [avopfi.integration.virta :as virta]))
 
 
-(def study-rights-fixture [{:avain "FOO" :myontaja {:koodi "123"}}])
+(def study-rights-fixture [{:avain "FOO"
+                            :myontaja {:koodi "123"}
+                            :laajuus {:opintopiste 200}
+                            :tyyppi 1
+                            }])
 (def attainments-fixture [
                           {:opiskeluoikeusAvain "FOO" :laji "2" :sisaltyvyys [] :laajuus {:opintopiste 100}}
                           {:opiskeluoikeusAvain "FOO" :laji "2" :sisaltyvyys [] :laajuus {:opintopiste 90}}

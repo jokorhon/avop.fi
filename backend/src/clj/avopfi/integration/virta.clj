@@ -1,15 +1,16 @@
 (ns avopfi.integration.virta
   (:require
-   [config.core :refer [env]]
-   [clojure.java.data :refer [from-java]]
-   [clojure.tools.logging :as log]
-   [java-time :refer [local-date]])
+    [avopfi.consts :refer :all]
+    [config.core :refer [env]]
+    [clojure.java.data :refer [from-java]]
+    [clojure.tools.logging :as log]
+    [java-time :refer [local-date]])
   (:import
-   (java.net URL)
-   (fi.csc.virta OpiskelijanTiedotService OpiskeluoikeudetRequest
-                 OpiskeluoikeudetResponse OpintosuorituksetRequest
-                 OpintosuorituksetResponse HakuEhdotOrganisaatioVapaa
-                 Kutsuja)))
+    (java.net URL)
+    (fi.csc.virta OpiskelijanTiedotService OpiskeluoikeudetRequest
+                  OpiskeluoikeudetResponse OpintosuorituksetRequest
+                  OpintosuorituksetResponse HakuEhdotOrganisaatioVapaa
+                  Kutsuja)))
 
 (defn extract-study-attainments-data
   "Note: Confusingly one opiskeluoikeudetLaajennettuTyyppi instance 

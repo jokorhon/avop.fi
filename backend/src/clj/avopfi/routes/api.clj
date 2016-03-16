@@ -3,6 +3,7 @@
             [buddy.auth :refer [throw-unauthorized]]
             [clojure.java.data :refer :all]
             [clojure.core.match :refer [match]]
+            [avopfi.consts :refer :all]
             [avopfi.integration.virta :as virta]
             [avopfi.integration.opintopolku :as op]
             [avopfi.integration.arvo :as arvo]
@@ -18,45 +19,48 @@
 
 (defn get-oppilaitos-code-by-domain [domain]
   (let [mapping
-        (db/get-mapping-by-domain {:domain domain})] (:code mapping)))
+        (db/get-mapping-by-domain {:domain domain})]
+    (:code mapping)))
 
-(defn has-organization? [home-organization study-right]
+(defn has-organization? [home-organization {{org-koodi :koodi} :myontaja}]
   (let
-      [code (get-oppilaitos-code-by-domain home-organization)]
-    (= code (-> study-right :myontaja :koodi))))
+    [code (get-oppilaitos-code-by-domain home-organization)]
+    (= code org-koodi)))
 
-(def opintopisteet-threshold-min 180)
-(def opintopisteet-threshold-max 195)
+(defn vals->pct [f s] (int (* (float (/ f s)) 100)))
 
-(defn has-enough-opintosuoritus? [virta-suoritukset opiskeluoikeudet]
-  (let [pisteet (->> virta-suoritukset
-      (filter #(and
-                (= (:opiskeluoikeusAvain %) (:avain opiskeluoikeudet))
-                (= (:laji %) "2")
-                (empty? (:sisaltyvyys %))))
-      (reduce #(+ %1 (-> %2 :laajuus :opintopiste)) 0))]
-    (and (<= opintopisteet-threshold-min pisteet) (>= opintopisteet-threshold-max pisteet))))
+(defn has-enough-opintosuoritus?
+  [virta-suoritukset {oo-tyyppi :tyyppi oo-avain :avain
+                      {oo-laajuus :opintopiste} :laajuus}]
+  (let [pisteet
+        (->> virta-suoritukset
+             (filter #(and
+                       (= (:opiskeluoikeusAvain %) oo-avain)
+                       (= (:laji %) opintosuoritus-muu-laji)
+                       (empty? (:sisaltyvyys %))))
+             (reduce #(+ %1 (int (-> %2 :laajuus :opintopiste))) 0))]
+    (cond
+      (= oo-tyyppi amk-alempi-tyyppi)
+        (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-alempi-min-pct)
+      (= oo-tyyppi amk-ylempi-tyyppi)
+        (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-ylempi-min-pct)
+      :else false)))
 
 (defn opiskeluoikeus->ui-map
-  [opiskeluoikeus]
+  [{:keys [avain jakso myontaja tyyppi aikuiskoulutus]}]
   (let [
-        oikeus-id (:avain opiskeluoikeus)
-        timespan (virta/select-active-timespan (:jakso opiskeluoikeus))
-        kunta-id (:koulutuskunta timespan)
-        koulutus-id (:koulutuskoodi timespan)
-        org-id (-> opiskeluoikeus :myontaja :koodi)
-        kieli (:koulutuskieli timespan)
+        {kunta-id :koulutuskunta :keys [koulutuskoodi koulutuskieli]}
+          (virta/select-active-timespan jakso)
+        org-id (:koodi myontaja)
         kunta (op/extract-metadata (op/get-kunta-data kunta-id))
-        koulutus (op/extract-metadata (op/get-koulutus-data koulutus-id))
-        koulutustyyppi (virta/conclude-study-type
-                        (opiskeluoikeus :tyyppi)
-                        (opiskeluoikeus :aikuiskoulutus))
+        koulutus (op/extract-metadata (op/get-koulutus-data koulutuskoodi))
+        koulutustyyppi (virta/conclude-study-type tyyppi aikuiskoulutus)
         oppilaitos (op/extract-metadata (op/get-oppilaitos-data org-id))]
     {
-     :id oikeus-id
+     :id avain
      :kunta {:id kunta-id :nimi kunta}
-     :kieli kieli
-     :koulutus {:id koulutus-id :nimi koulutus}
+     :kieli koulutuskieli
+     :koulutus {:id koulutuskoodi :nimi koulutus}
      :tyyppi koulutustyyppi
      :oppilaitos {:id org-id :nimi oppilaitos}
      }))
