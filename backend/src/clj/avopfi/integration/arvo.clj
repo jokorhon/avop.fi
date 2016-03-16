@@ -22,10 +22,10 @@
   (let [resp
         (:body
           (client/post
-            (str (:arvo-api-url env) "public/luo-vastaajatunnus")
+            (:arvo-api-url env)
             {:form-params (clean-opiskeluoikeus-data opiskeluoikeus-data)
              :headers {:Authorization
-                       (str "Bearer " (jws/sign {:userid 1} "secret"))}
+                       (str "Bearer " (jws/sign {:userid 1} (:arvo-jwt-secret env)))}
              :content-type   :json
              :socket-timeout 2000
              :conn-timeout   1000}))]
