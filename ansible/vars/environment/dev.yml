@@ -7,3 +7,9 @@ apache:
 postgresql_avop_database: avop
 postgresql_avop_user: avop
 postgresql_avop_password: avop
+opintopolku_base_url: "https://testi.virkailija.opintopolku.fi/"
+virta_url: "http://virtawstesti.csc.fi/luku/opiskelijatiedot.wsdl"
+virta_secret: "salaisuus"
+arvo_api_url: "http://avoptest.csc.fi/api/public/luo-vastaajatunnus"
+arvo_answer_url: "http://avopvastaustest.csc.fi/"
+arvo_jwt_secret: "secret"
