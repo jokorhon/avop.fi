@@ -11,10 +11,13 @@
     {kunta-id :id} :kunta}]
   {
    :oppilaitos oppilaitos-id
-   :koulutus koulutus-id
-   :kunta kunta-id
-   :tyyppi tyyppi
-   :kieli kieli})
+   :koulutus   koulutus-id
+   :kunta      kunta-id
+   :tyyppi     (cond
+                 (= tyyppi 0) "paivaopiskelu"
+                 (= tyyppi 1) "monimuoto"
+                 :else nil)
+   :kieli      kieli})
 
 (defn generate-questionnaire-credentials!
   "Generate Arvo questionnaire credentials with given data"
