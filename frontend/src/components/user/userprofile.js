@@ -97,7 +97,7 @@ export default class Userprofile extends React.Component {
             <tr>
               <Translate component="td" content="profiledata.form_of_education"></Translate>
               <Translate component="td"
-                         content={this.state.selectedStudyRight.tyyppi == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
+                         content={this.state.selectedStudyRight.koulutusmuoto == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
             </tr>
             </tbody>
           </table>
