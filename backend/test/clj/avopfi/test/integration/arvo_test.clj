@@ -3,6 +3,7 @@
     [clojure.test :refer :all]
     [avopfi.integration.arvo])
   (:require
+    [java-time :refer [as local-date]]
     [environ.core :refer [env]]
     [clj-http.client :as client]))
 
@@ -11,7 +12,9 @@
    :koulutus   {:id 321}
    :kunta      {:id 675}
    :oppilaitos {:id 123}
-   :tyyppi     0
+   :koulutusmuoto 0
+   :opiskeluoikeustyyppi "1"
+   :laajuus 260
    :kieli      "fi"})
 
 (deftest cleanup
@@ -21,8 +24,12 @@
           {:koulutus   (-> fixture :koulutus :id)
            :kunta      (-> fixture :kunta :id)
            :oppilaitos (-> fixture :oppilaitos :id)
-           :tyyppi     (:tyyppi fixture)
-           :kieli      (:kieli fixture)}))))
+           :koulutusmuoto "paivaopiskelu"
+           :laajuus 260
+           :kieli      (:kieli fixture)
+           :opiskeluoikeustyyppi "1"
+           :kyselykerran_nimi (str "AMK" (as (local-date) :year))
+           }))))
 
 (deftest cleanup-fail
   (testing "cleaning of empty data"

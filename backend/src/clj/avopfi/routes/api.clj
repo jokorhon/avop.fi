@@ -39,15 +39,15 @@
                        (= (:laji %) opintosuoritus-muu-laji)
                        (empty? (:sisaltyvyys %))))
              (reduce #(+ %1 (int (-> %2 :laajuus :opintopiste))) 0))]
-    (cond
-      (= oo-tyyppi amk-alempi-tyyppi)
+    (match oo-tyyppi
+      amk-alempi-tyyppi
         (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-alempi-min-pct)
-      (= oo-tyyppi amk-ylempi-tyyppi)
+      amk-ylempi-tyyppi
         (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-ylempi-min-pct)
       :else false)))
 
 (defn opiskeluoikeus->ui-map
-  [{:keys [avain jakso myontaja tyyppi aikuiskoulutus]}]
+  [{:keys [avain jakso myontaja tyyppi aikuiskoulutus] {laajuus :opintopiste} :laajuus}]
   (let [
         {kunta-id :koulutuskunta :keys [koulutuskoodi koulutuskieli]}
           (virta/select-active-timespan jakso)
@@ -61,7 +61,9 @@
      :kunta {:id kunta-id :nimi kunta}
      :kieli koulutuskieli
      :koulutus {:id koulutuskoodi :nimi koulutus}
-     :tyyppi koulutustyyppi
+     :koulutusmuoto koulutustyyppi
+     :opiskeluoikeustyyppi tyyppi
+     :laajuus laajuus
      :oppilaitos {:id org-id :nimi oppilaitos}
      }))
 
@@ -70,7 +72,7 @@
     (->>
       virta-oikeudet
       (filter (partial has-organization? home-organization))
-      (filter (partial has-enough-opintosuoritus? virta-suoritukset))
+      ;;(filter (partial has-enough-opintosuoritus? virta-suoritukset))
       (map opiskeluoikeus->ui-map))
     (catch Exception e
       (let [msg (.getMessage e)]
@@ -99,7 +101,9 @@
     valid-oikeudet))
 
 (defn process-registration [{params :body-params session :session}]
-  (let [current-srid (:opiskeluoikeus_id params) opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
+  (let 
+      [current-srid (:opiskeluoikeus_id params) 
+       opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
     (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
       (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)

@@ -9,7 +9,7 @@
 
 (def study-rights-fixture [{:avain "FOO"
                             :myontaja {:koodi "123"}
-                            :laajuus {:opintopiste 200}
+                            :laajuus {:opintopiste 235}
                             :tyyppi 1
                             }])
 (def attainments-fixture [
@@ -19,7 +19,8 @@
 
 (deftest study-credit-checks
   (testing "Checking VIRTA study credits when there's enough credits"
-    (is (has-enough-opintosuoritus? attainments-fixture (first study-rights-fixture))))
+    (with-redefs [opintopisteet-amk-alempi-min-pct 80]
+      (is (has-enough-opintosuoritus? attainments-fixture (first study-rights-fixture)))))
   (testing "Checking VIRTA study credits when there's not enough credits"
     (is (not (has-enough-opintosuoritus? (rest attainments-fixture) (first study-rights-fixture))))))
 
