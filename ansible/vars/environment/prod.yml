@@ -5,6 +5,8 @@ apache:
   certificate_key: "star_avop_fi.key"
   chain_certificate: "star_avop_fi-chain.pem"
   appserver: "localhost"
+shibboleth_credentialresolver_key: "/etc/pki/tls/private/avop.fi.key"
+shibboleth_credentialresolver_certificate: "/etc/pki/tls/certs/avop.fi.cert"
 postgresql_avop_database: avop
 postgresql_avop_user: "{{ vault_postgresql_avop_user }}"
 postgresql_avop_password: "{{ vault_postgresql_avop_password }}"

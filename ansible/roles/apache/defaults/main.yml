@@ -5,3 +5,5 @@ haka_cert_url: "https://confluence.csc.fi/download/attachments/31195585/haka_tes
 # haka_metadata_file: /etc/shibboleth/ path prefix will be appended, just the filename, please
 haka_metadata_file: "haka_test_metadata_signed.xml"
 haka_metadata_url: "https://haka.funet.fi/metadata/haka_test_metadata_signed.xml"
+shibboleth_credentialresolver_key: "/etc/pki/tls/private/local.avop.fi.key"
+shibboleth_credentialresolver_certificate: "/etc/pki/tls/certs/local.avop.fi.cert"
