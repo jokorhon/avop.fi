@@ -4,7 +4,9 @@
     [avopfi.consts :refer :all]
     [buddy.sign.jws :as jws]
     [java-time :refer [as local-date]]
+    [slingshot.slingshot :refer [try+ throw+]]
     [clojure.core.match :refer [match]]
+    [clojure.tools.logging :as log]
     [clj-http.client :as client]))
 
 (defn build-kyselykerran-nimi 
@@ -44,15 +46,23 @@
   "Generate Arvo questionnaire credentials with given data"
   [opiskeluoikeus-data]
   (let [json-data (clean-opiskeluoikeus-data opiskeluoikeus-data)
-        auth-header (str "Bearer " (jws/sign {:userid 1} (:arvo-jwt-secret env)))
-        resp
-        (:body
-          (client/post
-            (:arvo-api-url env)
-            {:form-params json-data
-             :headers {:Authorization auth-header}
-             :content-type   :json
-             :socket-timeout 2000
-             :conn-timeout   1000}))]
-    ;;(:hash resp)
-    "THLJWM"))
+        auth-header (str "Bearer " 
+                         (jws/sign {:userid 1} (:arvo-jwt-secret env)))]
+    (try+ 
+     (let [resp (client/post
+                 (:arvo-api-url env)
+                 {
+                  :debug true ;;(:is-dev env)
+                  :form-params json-data
+                  :headers {:Authorization auth-header}
+                  :as :json
+                  :socket-timeout 2000
+                  :conn-timeout 1000})]       
+       (if (nil? (-> resp :body :hash)) 
+         (throw+ resp)
+         (-> resp :body :hash)))
+     (catch [:status 403] {:keys [request-time headers body]}
+       (log/warn "403" request-time headers))
+     (catch Object _
+       (log/error (:throwable &throw-context) "unexpected error")
+       (throw+)))))
