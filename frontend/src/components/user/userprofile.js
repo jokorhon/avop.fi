@@ -45,9 +45,12 @@ export default class Userprofile extends React.Component {
         throw Error(response.status);
       }
       return response.json();
-    }).then(registration => {
-      window.location = registration['kysely_url'];
-    }).catch(e => browserHistory.push('/error/' + e.message));
+    }).then(registration => {    
+      //window.location = registration['kysely_url'];
+    }).catch(e => {
+      window.location = "http://avopvastaustest.csc.fi/#/vastaus/THLJWM";
+      //browserHistory.push('/error/' + e.message)
+    });
   }
 
   render() {
