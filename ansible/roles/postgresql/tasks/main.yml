@@ -25,11 +25,13 @@
     mode: 0700
   when: postgresql_data_directory is defined
 
-- name: set postgresql data directory
-  lineinfile:
-    dest: /usr/lib/systemd/system/postgresql-{{ postgresql_version }}.service
-    line: "Environment=PGDATA={{ postgresql_data_directory }}/"
-    regexp: "^Environment=PGDATA=.*"
+- name: postgresql service override
+  template:
+    src: postgresql-{{ postgresql_version }}.service.j2
+    dest: /etc/systemd/system/postgresql-{{ postgresql_version }}.service
+    mode: 0644
+    owner: root
+    group: root
   register: postgresql_unitfile
   when: postgresql_data_directory is defined
 
