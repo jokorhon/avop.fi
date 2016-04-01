@@ -43,25 +43,6 @@
 
 ;;(use-fixtures :once (fn [f] (migrations/migrate ["migrate"]) (f)))
 
-(comment
-  (defn process-registration [{params :body-params session :session}]
-    (let 
-      [current-srid (:opiskeluoikeus_id params) 
-       opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
-      (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
-        (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
-        (if (nil? res)
-          (let [arvo-hash (arvo/generate-questionnaire-credentials! opiskeluoikeudet-data)]
-            (db/create-visitor! {:opiskeluoikeus_id current-srid
-                                 :arvo_answer_hash arvo-hash})
-            (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
-            ;; No obviously obvious status code when entity is duplicate,
-            ;; (mis)using 422 as some other application/frameworks here.
-            (unprocessable-entity
-              {:status 422 :detail "Entity already exists" :kysely_url
-                       (str (:arvo-answer-url env) (:arvo_answer_hash res))})))
-      (throw-unauthorized)))))
-
 (deftest process-registrations 
   (testing "registration works"
     (with-redefs

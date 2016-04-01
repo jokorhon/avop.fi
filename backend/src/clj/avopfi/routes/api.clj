@@ -100,14 +100,22 @@
         (filter-oikeudet virta-oikeudet virta-suoritukset (shibbo-vals "home-organization"))]
     valid-oikeudet))
 
+(defn debug-status [{:keys [session headers identity] :as request}]
+    (let [shibbo-vals identity]
+        (ok {
+          :headers headers 
+          :shibbo shibbo-vals
+          :oo (:opiskeluoikeudet-data session)})))
+
 (defn process-registration [{params :body-params session :session}]
-  (let 
-      [current-srid (:opiskeluoikeus_id params) 
-       opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
-    (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
+  (let
+    [current-srid (:opiskeluoikeus_id params)
+    opiskeluoikeudet-data (:opiskeluoikeudet-data session)
+    opiskeluoikeus (some #(when (= current-srid (:id %)) %) opiskeluoikeudet-data)]
+    (if opiskeluoikeus
       (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)
-          (let [arvo-hash (arvo/generate-questionnaire-credentials! opiskeluoikeudet-data)]
+          (let [arvo-hash (arvo/generate-questionnaire-credentials! opiskeluoikeus)]
             (db/create-visitor! {:opiskeluoikeus_id current-srid
                                  :arvo_answer_hash arvo-hash})
             (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
@@ -138,8 +146,6 @@
       (opiskeluoikeudet request))
     (POST "/rekisteroidy" request
       (process-registration request))
-    (GET "/status"
-         {:keys [headers] :as request}
-      (let [shibbo-vals (:identity request)]
-        (ok {:headers headers :shibbo shibbo-vals}))))
+    (GET "/status" request
+      (debug-status request)))
   (GET "/" [] (found "/api")))
