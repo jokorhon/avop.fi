@@ -3,32 +3,23 @@
     [clojure.test :refer :all]
     [avopfi.integration.arvo])
   (:require
+    [avopfi.test.fixtures :refer [opiskeluoikeus-data-fixture]]
     [clj-http.fake :as fake]
     [java-time :refer [as local-date]]
     [environ.core :refer [env]]
     [clj-http.client :as client]))
 
-(def fixture
-  {
-   :koulutus   {:id 321}
-   :kunta      {:id 675}
-   :oppilaitos {:id 123}
-   :koulutusmuoto 0
-   :opiskeluoikeustyyppi "1"
-   :laajuus 260
-   :kieli      "fi"})
-
 (deftest cleanup
   (testing "cleaning of data"
     (is (=
-          (clean-opiskeluoikeus-data fixture)
-          {:koulutus   (-> fixture :koulutus :id)
-           :kunta      (-> fixture :kunta :id)
-           :oppilaitos (-> fixture :oppilaitos :id)
+          (clean-opiskeluoikeus-data opiskeluoikeus-data-fixture)
+          {:koulutus   (-> opiskeluoikeus-data-fixture :koulutus :id)
+           :kunta      (-> opiskeluoikeus-data-fixture :kunta :id)
+           :oppilaitos (-> opiskeluoikeus-data-fixture :oppilaitos :id)
            :koulutusmuoto "paivaopiskelu"
-           :laajuus 260
-           :kieli      (:kieli fixture)
-           :opiskeluoikeustyyppi "1"
+           :laajuus (:laajuus opiskeluoikeus-data-fixture)
+           :kieli (:kieli opiskeluoikeus-data-fixture)
+           :opiskeluoikeustyyppi (:opiskeluoikeustyyppi opiskeluoikeus-data-fixture)
            :kyselykerran_nimi (str "AMK" (as (local-date) :year))
            }))))
 
@@ -38,7 +29,7 @@
       (is (every? nil? (vals cleaned))))))
 
 (def arvo-api-endpoint
-  "http://avoptest.csc.fi/api/public/luo-vastaajatunnus")
+  "http://avoptest.csc.fi/api/public/luovastaajatunnus")
 (def arvo-hash "THLJWM")
 
 (deftest succesful-arvo-call
@@ -53,7 +44,7 @@
         {:status 200 :headers {} :body (str "{\"hash\": \"" arvo-hash "\"}")}))
       }        
       (is (= arvo-hash (generate-questionnaire-credentials!
-       fixture))))))
+       opiskeluoikeus-data-fixture))))))
 
 (deftest erroneous-arvo-call
   (testing "Call to Arvo throws exception when wrong body"
@@ -64,5 +55,5 @@
         {:status 200 :headers {} :body "{}"})
       }        
       (is (thrown? clojure.lang.ExceptionInfo (generate-questionnaire-credentials!
-       fixture))))))
+       opiskeluoikeus-data-fixture))))))
 

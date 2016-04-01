@@ -4,8 +4,11 @@
             [clojure.test :refer :all]
             [avopfi.routes.api :refer :all]
             [avopfi.integration.opintopolku :as op]
-            [avopfi.integration.virta :as virta]))
-
+            [avopfi.integration.arvo :as arvo]
+            [avopfi.db.core :as db]
+            [avopfi.test.fixtures :refer [opiskeluoikeus-data-fixture]]
+            [avopfi.integration.virta :as virta]
+            [avopfi.db.migrations :as migrations]))
 
 (def study-rights-fixture [{:avain "FOO"
                             :myontaja {:koodi "123"}
@@ -37,3 +40,50 @@
         (is (= (:id results) (-> study-rights-fixture :avain)))
         (is (= (:type results) (-> study-rights-fixture :avain)))
         ))))
+
+;;(use-fixtures :once (fn [f] (migrations/migrate ["migrate"]) (f)))
+
+(comment
+  (defn process-registration [{params :body-params session :session}]
+    (let 
+      [current-srid (:opiskeluoikeus_id params) 
+       opiskeluoikeudet-data (:opiskeluoikeudet-data session)]
+      (if (some #(= current-srid (:id %)) opiskeluoikeudet-data)
+        (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
+        (if (nil? res)
+          (let [arvo-hash (arvo/generate-questionnaire-credentials! opiskeluoikeudet-data)]
+            (db/create-visitor! {:opiskeluoikeus_id current-srid
+                                 :arvo_answer_hash arvo-hash})
+            (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
+            ;; No obviously obvious status code when entity is duplicate,
+            ;; (mis)using 422 as some other application/frameworks here.
+            (unprocessable-entity
+              {:status 422 :detail "Entity already exists" :kysely_url
+                       (str (:arvo-answer-url env) (:arvo_answer_hash res))})))
+      (throw-unauthorized)))))
+
+(deftest process-registrations 
+  (testing "registration works"
+    (with-redefs
+      ;;do not hit Arvo nor db atm
+      [
+        arvo/generate-questionnaire-credentials! (constantly "FOO")
+        db/get-visitor-by-srid (constantly nil)
+        db/create-visitor! (constantly nil)
+      ]
+      (let [attribs {:body-params {:opiskeluoikeus_id "avopOa1"}
+        :session {:opiskeluoikeudet-data [opiskeluoikeus-data-fixture]}}]
+        (is (= (:kysely_url (:body (process-registration attribs))) "http://avopvastaustest.csc.fi/FOO"))))))
+
+
+
+
+
+
+
+
+
+
+
+
+
