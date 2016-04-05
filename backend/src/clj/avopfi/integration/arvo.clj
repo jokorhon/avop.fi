@@ -47,12 +47,13 @@
   [opiskeluoikeus-data]
   (let [json-data (clean-opiskeluoikeus-data opiskeluoikeus-data)
         auth-header (str "Bearer " 
-                         (jws/sign {:userid 1} (:arvo-jwt-secret env)))]
+                         (jws/sign {:caller "avopfi"} (:arvo-jwt-secret env)))]
+    (println json-data)
     (try+ 
      (let [resp (client/post
                  (:arvo-api-url env)
                  {
-                  :debug true ;;(:is-dev env)
+                  :debug (:is-dev env)
                   :form-params json-data
                   :headers {:Authorization auth-header}
                   :as :json
