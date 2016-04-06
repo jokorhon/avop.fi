@@ -46,10 +46,9 @@ export default class Userprofile extends React.Component {
       }
       return response.json();
     }).then(registration => {
-      //window.location = registration['kysely_url'];
+      window.location = registration['kysely_url'];
     }).catch(e => {
-      window.location = "http://avopvastaustest.csc.fi/PPC4PJ";
-      //browserHistory.push('/error/' + e.message)
+      browserHistory.push('/error/' + e.message)
     });
   }
 
