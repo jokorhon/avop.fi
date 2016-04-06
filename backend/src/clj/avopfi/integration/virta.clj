@@ -40,7 +40,6 @@
     (if (> (.compareTo ld1 ld2) 0) first-timespan second-timespan)))
 
 (defn select-active-timespan 
-  "Todo: simplify"
   [timespans]
   (let [nonending
         (reduce 
@@ -87,10 +86,8 @@
 
 (defn get-from-virta-by-pid [person-id virta-fetcher]
   (log/debug "fetching VIRTA by pid: " person-id)
-  (let [opiskeluoikeudet (virta-fetcher #(.setHenkilotunnus % person-id))]
-    opiskeluoikeudet))
+  (virta-fetcher #(.setHenkilotunnus % person-id))
 
 (defn get-from-virta-by-oid [oid virta-fetcher]
   (log/debug "fetching VIRTA by oid: " oid)
-  (let [opiskeluoikeudet (virta-fetcher #(.setKansallinenOppijanumero % oid))]
-    opiskeluoikeudet))
+  (virta-fetcher #(.setHenkilotunnus % person-id))

@@ -15,11 +15,11 @@
   [opiskeluoikeustyyppi vuosi]
   (if (nil? opiskeluoikeustyyppi)
       nil
-      (str
+      (str "AUTOMAATTI AVOP-"
         (match opiskeluoikeustyyppi
           amk-alempi-tyyppi "AMK" 
           amk-ylempi-tyyppi "YAMK"
-          :else "") vuosi)
+          :else "") " " vuosi)
       ))
 
 (defn clean-opiskeluoikeus-data
