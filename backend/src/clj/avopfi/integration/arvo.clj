@@ -48,7 +48,6 @@
   (let [json-data (clean-opiskeluoikeus-data opiskeluoikeus-data)
         auth-header (str "Bearer " 
                          (jws/sign {:caller "avopfi"} (:arvo-jwt-secret env)))]
-    (println json-data)
     (try+ 
      (let [resp (client/post
                  (:arvo-api-url env)
@@ -58,10 +57,10 @@
                   :headers {:Authorization auth-header}
                   :as :json
                   :socket-timeout 2000
-                  :conn-timeout 1000})]       
-       (if (nil? (-> resp :body :hash)) 
-         (throw+ resp)
-         (-> resp :body :hash)))
+                  :conn-timeout 1000})
+              hash (-> resp :body :tunnus)]       
+       (if (nil? hash) 
+         (throw+ resp) hash))
      (catch [:status 403] {:keys [request-time headers body]}
        (log/warn "403" request-time headers))
      (catch Object _

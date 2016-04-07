@@ -115,10 +115,12 @@
     (if opiskeluoikeus
       (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)
-          (let [arvo-hash (arvo/generate-questionnaire-credentials! opiskeluoikeus)]
+          (let [arvo-hash 
+            (arvo/generate-questionnaire-credentials! opiskeluoikeus)]
             (db/create-visitor! {:opiskeluoikeus_id current-srid
                                  :arvo_answer_hash arvo-hash})
-            (ok {:kysely_url (str (:arvo-answer-url env) arvo-hash)}))
+            (ok {:kysely_url (str 
+              (:arvo-answer-url env) arvo-hash)}))
             ;; No obviously obvious status code when entity is duplicate,
             ;; (mis)using 422 as some other application/frameworks here.
             (unprocessable-entity
