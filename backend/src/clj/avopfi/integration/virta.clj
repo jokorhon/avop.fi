@@ -90,4 +90,4 @@
 
 (defn get-from-virta-by-oid [oid virta-fetcher]
   (log/debug "fetching VIRTA by oid: " oid)
-  (virta-fetcher #(.setHenkilotunnus % person-id)))
+  (virta-fetcher #(.setKansallinenOppijanumero % oid)))
