@@ -17,7 +17,7 @@
   is returned with .getOpiskeluoikeudet and multiple OpiskeluoikeusTyyppis
   with getOpiskeluoikeus"
   [^OpintosuorituksetResponse opintosuoritukset-response]
-  (let [results (-> opintosuoritukset-response
+  (let [results (some-> opintosuoritukset-response
                     (.getOpintosuoritukset)
                     (.getOpintosuoritus))]
     (map #(from-java %) results)))
@@ -27,7 +27,7 @@
   is returned with .getOpiskeluoikeudet and multiple OpiskeluoikeusTyyppis
   with getOpiskeluoikeus"
   [^OpiskeluoikeudetResponse opiskeluoikeudet-response]
-  (let [results (-> opiskeluoikeudet-response
+  (let [results (some-> opiskeluoikeudet-response
                     (.getOpiskeluoikeudet)
                     (.getOpiskeluoikeus))]
     (map #(from-java %) results)))
