@@ -55,6 +55,7 @@
                   :debug (:is-dev env)
                   :form-params json-data
                   :headers {:Authorization auth-header}
+                  :content-type :json
                   :as :json
                   :socket-timeout 2000
                   :conn-timeout 1000})
