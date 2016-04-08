@@ -49,13 +49,13 @@
 - name: download tomcat
   get_url:
     url: "{{ tomcat_url }}"
-    dest: "/home/{{ avop_service_user }}/download/tomcat.tar.gz"
+    dest: "/home/{{ avop_service_user }}/download/tomcat_{{ tomcat_version }}.tar.gz"
   become: yes
   become_user: "{{ avop_service_user }}"
 
 - name: unpack tomcat
   unarchive:
-    src: "/home/{{ avop_service_user }}/download/tomcat.tar.gz"
+    src: "/home/{{ avop_service_user }}/download/tomcat_{{ tomcat_version}}.tar.gz"
     dest: "/home/{{ avop_service_user }}/tomcat"
     copy: no
     creates: "/home/{{ avop_service_user }}/tomcat/apache-tomcat-{{ tomcat_version}}/bin/catalina.sh"
