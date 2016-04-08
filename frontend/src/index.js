@@ -10,7 +10,9 @@ import Home from './components/home/Home';
 
 // Render the main component into the dom
 ReactDOM.render(
-  <Router history={browserHistory} render={(props) => <AsyncProps {...props}/>}>
+  <Router history={browserHistory} render={(props) =>
+   <AsyncProps {...props}
+    renderLoading={() => <div>Loading...</div>}/>}>
     <Route path="/" component={Main}>
       <IndexRoute component={Home} />
       <Route path="user" component={Userprofile} />
