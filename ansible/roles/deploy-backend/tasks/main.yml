@@ -23,14 +23,6 @@
     - webapps
     - work
 
-- name: tomcat setenv.sh
-  template:
-    src: setenv.sh.j2
-    dest: "/home/{{ avop_service_user }}/tomcat/current/bin/setenv.sh"
-    mode: 0755
-    owner: "{{ avop_service_user }}"
-    group: "{{ avop_service_user }}"
-
 - name: copy war
   copy:
     src: "../backend/target/{{ backend_war_name }}"
