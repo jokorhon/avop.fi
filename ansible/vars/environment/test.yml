@@ -14,4 +14,3 @@ virta_secret: "{{ vault_virta_secret }}"
 arvo_api_url: "http://avoptest.csc.fi/api/public/luovastaajatunnus"
 arvo_answer_url: "http://avopvastaustest.csc.fi/"
 arvo_jwt_secret: "secret"
-is_dev: true
