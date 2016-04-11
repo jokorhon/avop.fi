@@ -20,17 +20,14 @@ let localizations_fi = {
     }
   },
   footer: {
-    header: 'Yhteystiedot',
+    header: 'Yhteistyössä:',
     arene: {
-      contribution: 'Kyselyn sisältö ja kehittäminen',
       description: 'Ammattikorkeakoulujen rehtorineuvosto Arene ry'
     },
     okm: {
-      contribution: 'Kyselyn toteuttaminen',
       description: 'Opetus- ja kulttuuriministeriö'
     },
     csc: {
-      contribution: 'Tekninen toteutus ja käytön tuki:',
       description: 'CSC - Tieteen tietotekniikan keskus Oy'
     }
   },

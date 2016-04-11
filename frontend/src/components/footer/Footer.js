@@ -18,19 +18,16 @@ let Footer = () =>
       </div>
       <div className="row">
         <div className="one-third column organization">
-          <Translate className="bold" component="p" content="footer.arene.contribution" />
           <img src={arene_logo} alt="Arene Ry"/>
           <Translate component="p" content="footer.arene.description" />
         </div>
 
         <div className="one-third column organization">
-          <Translate className="bold" component="p" content="footer.okm.contribution" />
           <img src={okm_logo} alt="Opetus- ja kulttuuriministeriö"/>
           <Translate component="p" content="footer.okm.description" />
         </div>
 
         <div className="one-third column organization">
-          <Translate className="bold" component="p" content="footer.csc.contribution" />
           <img src={csc_logo} alt="CSC - Tieteen tietotekniikan keskus Oy"/>
           <Translate component="p" content="footer.csc.description" />
           <address>avop@postit.csc.fi</address>
