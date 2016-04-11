@@ -5,7 +5,6 @@ import config from 'config';
 import Translate from 'react-translate-component';
 import Opintopolku from './tulokset/opintopolku';
 import Vipunen from './tulokset/vipunen';
-import Tietoarkisto from './tulokset/tietoarkisto';
 import Arvo from './tulokset/arvo';
 
 let hakaLoginImage = require('../../images/haka_landscape_large.gif');
@@ -73,10 +72,6 @@ export default class Content extends React.Component {
           </div>
 
           <div className="row organization-row">
-            <div className="one-half column">
-              <Tietoarkisto></Tietoarkisto>
-            </div>
-
             <div className="one-half column">
               <Arvo></Arvo>
             </div>

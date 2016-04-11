@@ -16,7 +16,6 @@ let localizations_sv = {
       header: 'Kyselyn tulokset',
       vipunen: 'Kyselyn tuloksista johdettuja tilastoraportteja on avoimesti saatavilla opetushallinnon tilastopalvelu Vipusessa:',
       opintopolku: 'Katseluoikeudet (Arvo-katselija) voi anoa Opintopolun virkailijantyöpöydän kautta (Omat tiedot)',
-      tietoarkisto: 'Koko kyselyaineisto on saatavissa tutkimuskäyttöön yhteiskuntatieteellisestä tietoarkistosta',
       arvo: 'Ammattikorkeakoulujen henkilökunta voi tarkastella kyselyn tuloksia reaaliaikaisesti Arvo - opetushallinnon vaikuttavuustietopalvelun avulla'
     }
   },
