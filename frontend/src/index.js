@@ -10,18 +10,21 @@ import Home from './components/home/Home';
 import Spinner from 'react-spin';
 
 let browserLanguage = window.navigator.userLanguage || window.navigator.language;
+if (browserLanguage.startsWith('en')) {
+  browserLanguage = 'en';
+}
 
 // Render the main component into the dom
 ReactDOM.render(
   <Router history={browserHistory} render={props =>
    <AsyncProps {...props}
     renderLoading={() => <Spinner/>} />}>
-    <Redirect from="/" to={'/' + browserLanguage} />
+    <Redirect from="/" to={'/' + browserLanguage}/>
     <Route path="/:lang" component={Main}>
-      <IndexRoute component={Home} />
-      <Route path="user" component={Userprofile} />
-      <Route path="error/:status" component={Error} />
-      <Route path="*" component={Error} />
+      <IndexRoute component={Home}/>
+      <Route path="user" component={Userprofile}/>
+      <Route path="error/:status" component={Error}/>
+      <Route path="*" component={Error}/>
     </Route>
   </Router>,
   document.getElementById('container')

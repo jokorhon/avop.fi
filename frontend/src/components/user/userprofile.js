@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import Translate from 'react-translate-component';
 import TranslateProperty from '../common/translateproperty';
 
@@ -16,10 +16,11 @@ export default class Userprofile extends React.Component {
         if (response.status >= 400 || response.status === 302) {
           throw Error(response.status);
         }
+        throw Error(response.status);
         return response.json();
       })
       .then(study_rights => cb(null, {study_rights}))
-      .catch(e => window.location = '/error/' + e.message);
+      .catch(e => window.location = '/' + params.params.lang + '/error/' + e.message);
   }
 
   selectStudyRight(event) {
@@ -41,13 +42,13 @@ export default class Userprofile extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(response => {
-      if (response.status == 401) {
-        throw Error(response.status);
-      }
-      return response.json();
-    })
+        if (response.status == 401) {
+          throw Error(response.status);
+        }
+        return response.json();
+      })
       .then(registration => window.location = registration['kysely_url'])
-      .catch(e => browserHistory.push('/error/' + e.message));
+      .catch(e => browserHistory.push(`/${this.props.params.lang}/error/` + e.message));
   }
 
   render() {
