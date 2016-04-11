@@ -23,9 +23,8 @@
     ProxyIOBufferSize 65536
 
     RewriteEngine On
-    RewriteRule    "^/([a-zA-Z_]+)/user(.*)$"  "/index.html"
-    RewriteRule    "^/([a-zA-Z_]+)/error(.*)$"  "/index.html"
-
+    RewriteRule    "^/(fi|en|sv)(.*)$"  "/index.html"
+   
     # Shibboleth config
     <Location />
         AuthType shibboleth

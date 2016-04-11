@@ -12,6 +12,10 @@ import Spinner from 'react-spin';
 let browserLanguage = window.navigator.userLanguage || window.navigator.language;
 if (browserLanguage.startsWith('en')) {
   browserLanguage = 'en';
+} else if (browserLanguage.startsWith('sv')) {
+  browserLanguage = 'sv';
+} else {
+  browserLanguage = 'fi';
 }
 
 // Render the main component into the dom
