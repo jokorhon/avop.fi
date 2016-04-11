@@ -12,8 +12,8 @@ let hakaLoginImage = require('../../images/haka_landscape_large.gif');
 
 export default class Content extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   extractCurrentDomain() {
@@ -32,7 +32,7 @@ export default class Content extends React.Component {
                 <Translate component="h4" content="content.login.header"/>
                 <Translate component="p" content="content.login.description"/>
                 <div id="haka" onClick={this.login}>
-                  <a href={config.hakaLoginUrl(this.extractCurrentDomain())}>
+                  <a href={config.hakaLoginUrl(this.extractCurrentDomain(), this.props.params.lang)}>
                     <img src={hakaLoginImage} alt="haka-login"/>
                   </a>
                 </div>

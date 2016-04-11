@@ -13,22 +13,26 @@ import localizations_sv from '../localizations/localizations_sv';
 
 class AppComponent extends React.Component {
 
-  constructor() {
-    super();
-
-    let browserLanguage = window.navigator.userLanguage || window.navigator.language;
+  constructor(props) {
+    super(props);
     counterpart.registerTranslations('fi', localizations_fi);
     counterpart.registerTranslations('en', localizations_en);
     counterpart.registerTranslations('sv', localizations_sv);
+    this.setLocale();
+  }
 
-    if(browserLanguage.startsWith('fi')) {
+  setLocale() {
+    if(this.props.params.lang.startsWith('fi')) {
       counterpart.setLocale('fi');
-    } else if(browserLanguage.startsWith('sv')) {
+    } else if(this.props.params.lang.startsWith('sv')) {
       counterpart.setLocale('sv');
     } else {
       counterpart.setLocale('en');
     }
+  }
 
+  componentDidUpdate() {
+    this.setLocale();
   }
 
   render() {

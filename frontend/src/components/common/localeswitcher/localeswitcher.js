@@ -1,21 +1,15 @@
 require('./localeswitcher.scss');
 
 import React from 'react';
-import counterpart from 'counterpart';
-
+import {Link} from 'react-router';
 
 export default class LocaleSwitcher extends React.Component {
-
-  setLocale(code) {
-    counterpart.setLocale(code);
-  }
-
   render () {
     return (
         <div id="languages">
-          <span className="language-selection" onClick={this.setLocale.bind(this, 'fi')}>Suomeksi</span>
-          <span className="language-selection" onClick={this.setLocale.bind(this, 'sv')}>På Svenska</span>
-          <span className="language-selection" onClick={this.setLocale.bind(this, 'en')}>In English</span>
+          <Link className="language-selection" to="/fi">Suomeksi</Link>
+          <Link className="language-selection" to="/sv">På Svenska</Link>
+          <Link className="language-selection" to="/en">In English</Link>
         </div>
     );
   }
