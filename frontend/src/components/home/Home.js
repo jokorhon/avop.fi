@@ -3,9 +3,6 @@ require('./content.scss');
 import React from 'react';
 import config from 'config';
 import Translate from 'react-translate-component';
-import Opintopolku from './tulokset/opintopolku';
-import Vipunen from './tulokset/vipunen';
-import Arvo from './tulokset/arvo';
 
 let hakaLoginImage = require('../../images/haka_landscape_large.gif');
 
@@ -58,24 +55,27 @@ export default class Content extends React.Component {
 
         <div className="content-section">
           <div className="u-full-width ">
-            <Translate component="h4" content="content.tulokset.header"></Translate>
+            <Translate component="h4" content="content.tulokset.header" />
           </div>
 
-          <div className="row organization-row">
-            <div className="one-half column">
-              <Vipunen></Vipunen>
-            </div>
-
-            <div className="one-half column">
-              <Opintopolku></Opintopolku>
+          <div className="row">
+            <div className="column">
+              <Translate component="p" content="content.tulokset.results1" />
             </div>
           </div>
 
-          <div className="row organization-row">
-            <div className="one-half column">
-              <Arvo></Arvo>
+          <div className="row">
+            <div className="column">
+              <Translate component="p" content="content.tulokset.results2" />
             </div>
           </div>
+
+          <div className="row">
+            <div className="column">
+              <Translate component="p" content="content.tulokset.results3" />
+            </div>
+          </div>
+
         </div>
 
       </section>
