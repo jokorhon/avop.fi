@@ -3,6 +3,7 @@
     [avopfi.consts :refer :all]
     [config.core :refer [env]]
     [clojure.java.data :refer [from-java]]
+    [clojure.core.match :refer [match]]
     [clojure.tools.logging :as log]
     [java-time :refer [local-date]])
   (:import
@@ -91,3 +92,18 @@
 (defn get-from-virta-by-oid [oid virta-fetcher]
   (log/debug "fetching VIRTA by oid: " oid)
   (virta-fetcher #(.setKansallinenOppijanumero % oid)))
+
+(defn get-from-virta-with [virta-fetcher user-data]
+  (match [user-data]
+         [{"learner-id" lid}]
+         (get-from-virta-by-oid lid virta-fetcher)
+         [(:or {"national-identification-number" nin} {"unique-id" nin})]
+         (get-from-virta-by-pid nin virta-fetcher)
+         :else nil))
+
+(defn get-virta-suoritukset [user-data]
+  (get-from-virta-with get-opintosuoritukset! user-data))
+
+(defn get-virta-opiskeluoikeudet [user-data]
+  (get-from-virta-with get-opiskeluoikeudet! user-data))
+

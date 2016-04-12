@@ -79,33 +79,21 @@
         (println "caught exception: " msg)
         (throw e)))))
 
-(defn get-from-virta-with [virta-fetcher shibbo-vals]
-  (match [shibbo-vals]
-         [{"learner-id" lid}]
-         (virta/get-from-virta-by-oid lid virta-fetcher)
-         [(:or {"national-identification-number" nin} {"unique-id" nin})]
-         (virta/get-from-virta-by-pid nin virta-fetcher)
-         :else nil))
-
-(defn get-virta-suoritukset [shibbo-vals]
-  (get-from-virta-with virta/get-opintosuoritukset! shibbo-vals))
-
-(defn get-virta-opiskeluoikeudet [shibbo-vals]
-  (get-from-virta-with virta/get-opiskeluoikeudet! shibbo-vals))
-
 (defn shibbo-vals->opiskeluoikeudet [shibbo-vals]
-  (let [virta-oikeudet (get-virta-opiskeluoikeudet shibbo-vals)
-        virta-suoritukset (get-virta-suoritukset shibbo-vals)
+  (let [virta-oikeudet (virta/get-virta-opiskeluoikeudet shibbo-vals)
+        virta-suoritukset 
+          (virta/get-virta-suoritukset shibbo-vals)
         valid-oikeudet
-        (filter-oikeudet virta-oikeudet virta-suoritukset (shibbo-vals "home-organization"))]
+          (filter-oikeudet virta-oikeudet virta-suoritukset (shibbo-vals "home-organization"))]
     valid-oikeudet))
 
 (defn debug-status [{:keys [session headers identity] :as request}]
-    (let [shibbo-vals identity]
-        (ok {
-          :headers headers 
-          :shibbo shibbo-vals
-          :oo (:opiskeluoikeudet-data session)})))
+  (if (:is-dev env)
+    (ok {
+         :headers headers 
+         :shibbo identity
+         :oo (:opiskeluoikeudet-data session)})
+    (not-found {})))
 
 (defn process-registration [{params :body-params session :session}]
   (let

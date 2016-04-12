@@ -20,7 +20,7 @@
            :laajuus (:laajuus opiskeluoikeus-data-fixture)
            :kieli (:kieli opiskeluoikeus-data-fixture)
            :opiskeluoikeustyyppi (:opiskeluoikeustyyppi opiskeluoikeus-data-fixture)
-           :kyselykerran_nimi (str "AMK" (as (local-date) :year))
+           :kyselykerran_nimi (str "AUTOMAATTI AVOP-AMK " (as (local-date) :year))
            }))))
 
 (deftest cleanup-fail
@@ -28,8 +28,7 @@
     (let [cleaned (clean-opiskeluoikeus-data {})]
       (is (every? nil? (vals cleaned))))))
 
-(def arvo-api-endpoint
-  "http://avoptest.csc.fi/api/public/luovastaajatunnus")
+(def arvo-api-endpoint (:arvo-api-url env))
 (def arvo-hash "THLJWM")
 
 (deftest succesful-arvo-call
@@ -41,7 +40,7 @@
         (do (is
           (re-matches #"Bearer ([A-Za-z0-9-_=.]+)"
             (-> req :headers :Authorization)))
-        {:status 200 :headers {} :body (str "{\"hash\": \"" arvo-hash "\"}")}))
+        {:status 200 :headers {} :body (str "{\"tunnus\": \"" arvo-hash "\"}")}))
       }        
       (is (= arvo-hash (generate-questionnaire-credentials!
        opiskeluoikeus-data-fixture))))))

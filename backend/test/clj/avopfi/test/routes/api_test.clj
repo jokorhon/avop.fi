@@ -54,7 +54,7 @@
       ]
       (let [attribs {:body-params {:opiskeluoikeus_id "avopOa1"}
         :session {:opiskeluoikeudet-data [opiskeluoikeus-data-fixture]}}]
-        (is (= (:kysely_url (:body (process-registration attribs))) "http://avopvastaustest.csc.fi/FOO"))))))
+        (is (= (:kysely_url (:body (process-registration attribs))) (str (:arvo-answer-url env) "FOO")))))))
 
 
 
