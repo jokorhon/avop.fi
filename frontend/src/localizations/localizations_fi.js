@@ -47,6 +47,9 @@ let localizations_fi = {
       multi: 'Monimuoto-opiskelu'
     },
     submit: 'Siirry palautekyselyyn'
+  },
+  errors: {
+    missing_rights: 'Opiskeluoikeuksia ei löydy.'
   }
 };
 

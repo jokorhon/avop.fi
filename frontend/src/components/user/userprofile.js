@@ -18,7 +18,9 @@ export default class Userprofile extends React.Component {
         }
         return response.json();
       })
-      .then(study_rights => cb(null, {study_rights}))
+      .then(study_rights => {
+        cb(null, {study_rights})
+      })
       .catch(e => window.location = '/' + params.params.lang + '/error/' + e.message);
   }
 
@@ -51,6 +53,11 @@ export default class Userprofile extends React.Component {
   }
 
   render() {
+    if (this.props.study_rights.length === 0) {
+      return <div>
+        <Translate component="p" content="errors.missing_rights"/>
+      </div>;
+    }
     return (
       <div>
         <Translate component="h4" content="profiledata.header"/>
