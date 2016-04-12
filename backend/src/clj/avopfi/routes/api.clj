@@ -9,9 +9,13 @@
             [avopfi.integration.arvo :as arvo]
             [avopfi.db.core :as db]
             [config.core :refer [env]]
+            [validateur.validation :refer :all]
             [compojure.core :refer :all]
             [ring.util.http-response :refer :all]
             [clojure.java.io :as io]))
+
+(def opiskeluoikeus-validator (validation-set
+                               (presence-of :laajuus)))
 
 (defn home-page []
   (layout/render
@@ -71,9 +75,9 @@
   (try
     (->>
       virta-oikeudet
+      (filter #(valid? opiskeluoikeus-validator %))
       (filter (partial has-organization? home-organization))
-      (filter (partial has-enough-opintosuoritus? virta-suoritukset))
-      (map opiskeluoikeus->ui-map))
+      (filter (partial has-enough-opintosuoritus? virta-suoritukset)))
     (catch Exception e
       (let [msg (.getMessage e)]
         (println "caught exception: " msg)
@@ -85,7 +89,7 @@
           (virta/get-virta-suoritukset shibbo-vals)
         valid-oikeudet
           (filter-oikeudet virta-oikeudet virta-suoritukset (shibbo-vals "home-organization"))]
-    valid-oikeudet))
+    (map opiskeluoikeus->ui-map valid-oikeudet)))
 
 (defn debug-status [{:keys [session headers identity] :as request}]
   (if (:is-dev env)

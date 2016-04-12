@@ -2,6 +2,7 @@
   (:require
     [avopfi.consts :refer :all]
     [config.core :refer [env]]
+    [clojure.string :refer [trim]]
     [clojure.java.data :refer [from-java]]
     [clojure.core.match :refer [match]]
     [clojure.tools.logging :as log]
@@ -87,7 +88,7 @@
 
 (defn get-from-virta-by-pid [person-id virta-fetcher]
   (log/debug "fetching VIRTA by pid: " person-id)
-  (virta-fetcher #(.setHenkilotunnus % person-id)))
+  (virta-fetcher #(.setHenkilotunnus % (trim person-id))))
 
 (defn get-from-virta-by-oid [oid virta-fetcher]
   (log/debug "fetching VIRTA by oid: " oid)
