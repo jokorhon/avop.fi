@@ -50,6 +50,28 @@
   notify:
     - restart shibboleth service
 
+- name: copy ssl certificate
+  copy:
+    dest: "/etc/pki/tls/certs/local.avop.fi.cert"
+    src: "cert/local.avop.fi.cert"
+    mode: 0640
+    owner: shibd
+    group: shibd
+  when: environment_id != "prod"
+  notify:
+    - restart httpd service
+
+- name: copy ssl certificate key
+  copy:
+    dest: "/etc/pki/tls/private/local.avop.fi.key"
+    src: "cert/local.avop.fi.key"
+    mode: 0640
+    owner: shibd
+    group: shibd
+  when: environment_id != "prod"
+  notify:
+    - restart httpd service
+
 - name: shibboleth configuration templates
   template:
     dest: "/etc/shibboleth/shibboleth2.xml"
@@ -83,28 +105,6 @@
     mode: 0644
     owner: root
     group: root
-  notify:
-    - restart httpd service
-
-- name: copy ssl certificate
-  copy:
-    dest: "/etc/pki/tls/certs/local.avop.fi.cert"
-    src: "cert/local.avop.fi.cert"
-    mode: 0640
-    owner: shibd
-    group: shibd
-  when: environment_id != "prod"
-  notify:
-    - restart httpd service
-
-- name: copy ssl certificate key
-  copy:
-    dest: "/etc/pki/tls/private/local.avop.fi.key"
-    src: "cert/local.avop.fi.key"
-    mode: 0640
-    owner: shibd
-    group: shibd
-  when: environment_id != "prod"
   notify:
     - restart httpd service
 
