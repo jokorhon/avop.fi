@@ -72,7 +72,7 @@
     (->>
       virta-oikeudet
       (filter (partial has-organization? home-organization))
-      ;;(filter (partial has-enough-opintosuoritus? virta-suoritukset))
+      (filter (partial has-enough-opintosuoritus? virta-suoritukset))
       (map opiskeluoikeus->ui-map))
     (catch Exception e
       (let [msg (.getMessage e)]
