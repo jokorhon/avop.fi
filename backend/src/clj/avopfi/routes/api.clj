@@ -109,7 +109,9 @@
         (if (nil? res)
           (let [arvo-hash 
             (arvo/generate-questionnaire-credentials! opiskeluoikeus)]
-            (db/create-visitor! {:opiskeluoikeus_id current-srid
+            (db/create-visitor! {                                 
+                                 :opiskeluoikeus_id current-srid
+                                 :oppilaitos_id (-> opiskeluoikeus :oppilaitos :id)
                                  :arvo_answer_hash arvo-hash})
             (ok {:kysely_url (str 
               (:arvo-answer-url env) arvo-hash)}))

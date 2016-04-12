@@ -14,7 +14,7 @@
                   OpintosuorituksetResponse HakuEhdotOrganisaatioVapaa
                   Kutsuja)))
 
-(defn extract-study-attainments-data
+(defn extract-opintosuoritukset-data
   "Note: Confusingly one opiskeluoikeudetLaajennettuTyyppi instance 
   is returned with .getOpiskeluoikeudet and multiple OpiskeluoikeusTyyppis
   with getOpiskeluoikeus"
@@ -78,7 +78,7 @@
   [set-id-query]
   (let [service (get-ws-service)
         request (build-ws-request-from (OpintosuorituksetRequest.) set-id-query)]
-    (extract-study-attainments-data (.opintosuoritukset service request))))
+    (extract-opintosuoritukset-data (.opintosuoritukset service request))))
 
 (defn get-opiskeluoikeudet!
   [set-id-query]
