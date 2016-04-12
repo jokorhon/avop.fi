@@ -16,7 +16,6 @@ export default class Userprofile extends React.Component {
         if (response.status >= 400 || response.status === 302) {
           throw Error(response.status);
         }
-        throw Error(response.status);
         return response.json();
       })
       .then(study_rights => cb(null, {study_rights}))
