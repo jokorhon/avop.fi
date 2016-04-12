@@ -2,7 +2,6 @@
   (:require [avopfi.layout :as layout]
             [buddy.auth :refer [throw-unauthorized]]
             [clojure.java.data :refer :all]
-            [clojure.core.match :refer [match]]
             [avopfi.consts :refer :all]
             [avopfi.integration.virta :as virta]
             [avopfi.integration.opintopolku :as op]
@@ -43,11 +42,11 @@
                        (= (:laji %) opintosuoritus-muu-laji)
                        (empty? (:sisaltyvyys %))))
              (reduce #(+ %1 (int (-> %2 :laajuus :opintopiste))) 0))]
-    (match oo-tyyppi
+    (condp = oo-tyyppi
       amk-alempi-tyyppi
-        (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-alempi-min-pct)
+      (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-alempi-min-pct)
       amk-ylempi-tyyppi
-        (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-ylempi-min-pct)
+      (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-ylempi-min-pct)
       :else false)))
 
 (defn opiskeluoikeus->ui-map
