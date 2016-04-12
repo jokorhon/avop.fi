@@ -69,7 +69,8 @@
                                  [pjstadig/humane-test-output "0.7.1"]
                                  [mvxcvi/puget "1.0.0"]
                                  [midje "1.8.3"]]
-                  :plugins [[lein-midje "3.2"]]
+                  :plugins [[lein-midje "3.2"]
+                            [lein-test-out "0.3.1"]]
                   :source-paths ["env/dev/clj" "test/clj"]
                   :resource-paths ["env/dev/resources"]
                   :repl-options {:init-ns user}

@@ -7,20 +7,21 @@
             [config.core :refer [env]]
             [mount.core :as mount]))
 
-(use-fixtures
-  :once
-  (fn [f]
-    (mount/start #'avopfi.db.core/*db*)
-    (migrations/migrate ["migrate"])
-    (f)))
+(comment 
+  (use-fixtures
+    :once
+    (fn [f]
+      (mount/start #'avopfi.db.core/*db*)
+      (migrations/migrate ["migrate"])
+      (f)))
 
-(deftest ^:integration test-users
-  (jdbc/with-db-transaction [t-conn *db*]
-    (jdbc/db-set-rollback-only! t-conn)
-    (is (= 1 (db/create-visitor!
-               t-conn
-               {:study_right_id "foo" :arvo_answer_hash "XXX"})))
-    (is (match
+  (deftest ^:integration test-users
+    (jdbc/with-db-transaction [t-conn *db*]
+      (jdbc/db-set-rollback-only! t-conn)
+      (is (= 1 (db/create-visitor!
+                t-conn
+                {:study_right_id "foo" :arvo_answer_hash "XXX"})))
+      (is (match
            (db/get-visitor-by-srid t-conn {:study_right_id "foo"})
            {:study_right_id "foo" :arvo_answer_hash "XXX"} true
-           ))))
+           )))))
