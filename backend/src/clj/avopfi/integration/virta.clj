@@ -93,12 +93,21 @@
   (log/debug "fetching VIRTA by oid: " oid)
   (virta-fetcher #(.setKansallinenOppijanumero % oid)))
 
+(defn extract-hetu-from-shibbo 
+  "This format of personal id is prepended by
+  somethig like 'urn:schac:personalUniqueID:fi:FIC:'.
+  Rude way to extract hetu is find last colon."
+  [shibbo-uid]
+  (subs shibbo-uid (+ (.lastIndexOf shibbo-uid (int \:)) 1)))
+
 (defn get-from-virta-with [virta-fetcher user-data]
   (match [user-data]
          [{"learner-id" lid}]
          (get-from-virta-by-oid lid virta-fetcher)
-         [(:or {"national-identification-number" nin} {"unique-id" nin})]
+         [{"national-identification-number" nin}]
          (get-from-virta-by-pid nin virta-fetcher)
+         [{"unique-id" uid}]
+         (get-from-virta-by-pid (extract-hetu-from-shibbo uid) virta-fetcher)
          :else nil))
 
 (defn get-virta-suoritukset [user-data]
