@@ -93,7 +93,7 @@
     mode: 0640
     owner: shibd
     group: shibd
-  when: environment_id == "dev"
+  when: environment_id != "prod"
   notify:
     - restart httpd service
 
@@ -104,7 +104,7 @@
     mode: 0640
     owner: shibd
     group: shibd
-  when: environment_id == "dev"
+  when: environment_id != "prod"
   notify:
     - restart httpd service
 
