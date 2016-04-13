@@ -52,7 +52,7 @@
         db/get-visitor-by-srid (constantly nil)
         db/create-visitor! (constantly nil)
       ]
-      (let [attribs {:body-params {:opiskeluoikeus_id "avopOa1"}
+      (let [attribs {:body-params {:opiskeluoikeus_id "avopOa1" :kieli "fi"}
         :session {:opiskeluoikeudet-data [opiskeluoikeus-data-fixture]}}]
         (is (= (:kysely_url (:body (process-registration attribs))) (str (:arvo-answer-url env) "FOO")))))))
 

@@ -18,7 +18,6 @@
            :oppilaitos (-> opiskeluoikeus-data-fixture :oppilaitos :id)
            :koulutusmuoto "paivaopiskelu"
            :laajuus (:laajuus opiskeluoikeus-data-fixture)
-           :kieli (:kieli opiskeluoikeus-data-fixture)
            :opiskeluoikeustyyppi (:opiskeluoikeustyyppi opiskeluoikeus-data-fixture)
            :kyselykerran_nimi (str "AUTOMAATTI AVOP-AMK " (as (local-date) :year))
            }))))
@@ -43,7 +42,7 @@
         {:status 200 :headers {} :body (str "{\"tunnus\": \"" arvo-hash "\"}")}))
       }        
       (is (= arvo-hash (generate-questionnaire-credentials!
-       opiskeluoikeus-data-fixture))))))
+       opiskeluoikeus-data-fixture (:kieli opiskeluoikeus-data-fixture)))))))
 
 (deftest erroneous-arvo-call
   (testing "Call to Arvo throws exception when wrong body"
@@ -54,5 +53,5 @@
         {:status 200 :headers {} :body "{}"})
       }        
       (is (thrown? clojure.lang.ExceptionInfo (generate-questionnaire-credentials!
-       opiskeluoikeus-data-fixture))))))
+       opiskeluoikeus-data-fixture (:kieli opiskeluoikeus-data-fixture)))))))
 

@@ -47,7 +47,7 @@
       (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-alempi-min-pct)
       amk-ylempi-tyyppi
       (>= (vals->pct pisteet (int oo-laajuus)) opintopisteet-amk-ylempi-min-pct)
-      :else false)))
+      false)))
 
 (defn opiskeluoikeus->ui-map
   [{:keys [avain jakso myontaja tyyppi aikuiskoulutus] {laajuus :opintopiste} :laajuus}]
@@ -99,26 +99,27 @@
     (not-found {})))
 
 (defn process-registration [{params :body-params session :session}]
-  (let
-    [current-srid (:opiskeluoikeus_id params)
-    opiskeluoikeudet-data (:opiskeluoikeudet-data session)
-    opiskeluoikeus (some #(when (= current-srid (:id %)) %) opiskeluoikeudet-data)]
+  (let [
+        current-srid (:opiskeluoikeus_id params)
+        kieli (:kieli params)
+        opiskeluoikeudet-data (:opiskeluoikeudet-data session)
+        opiskeluoikeus (some #(when (= current-srid (:id %)) %) opiskeluoikeudet-data)]
     (if opiskeluoikeus
       (let [res (db/get-visitor-by-srid {:opiskeluoikeus_id current-srid})]
         (if (nil? res)
           (let [arvo-hash 
-            (arvo/generate-questionnaire-credentials! opiskeluoikeus)]
+                (arvo/generate-questionnaire-credentials! opiskeluoikeus kieli)]
             (db/create-visitor! {                                 
                                  :opiskeluoikeus_id current-srid
                                  :oppilaitos_id (-> opiskeluoikeus :oppilaitos :id)
                                  :arvo_answer_hash arvo-hash})
             (ok {:kysely_url (str 
-              (:arvo-answer-url env) arvo-hash)}))
-            ;; No obviously obvious status code when entity is duplicate,
-            ;; (mis)using 422 as some other application/frameworks here.
-            (unprocessable-entity
-              {:status 422 :detail "Entity already exists" :kysely_url
-                       (str (:arvo-answer-url env) (:arvo_answer_hash res))})))
+                              (:arvo-answer-url env) arvo-hash)}))
+          ;; No obviously obvious status code when entity is duplicate,
+          ;; (mis)using 422 as some other application/frameworks here.
+          (unprocessable-entity
+           {:status 422 :detail "Entity already exists" :kysely_url
+            (str (:arvo-answer-url env) (:arvo_answer_hash res))})))
       (throw-unauthorized))))
 
 (defn opiskeluoikeudet [request]

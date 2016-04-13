@@ -33,7 +33,10 @@ export default class Userprofile extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    let data = {opiskeluoikeus_id: this.state.selectedStudyRight.id};
+    let data = {
+      opiskeluoikeus_id: this.state.selectedStudyRight.id,
+      kieli: this.props.params.lang
+    };
     fetch('/api/rekisteroidy', {
       method: 'post',
       credentials: 'same-origin',

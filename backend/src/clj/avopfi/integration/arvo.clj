@@ -5,7 +5,6 @@
     [buddy.sign.jws :as jws]
     [java-time :refer [as local-date]]
     [slingshot.slingshot :refer [try+ throw+]]
-    [clojure.core.match :refer [match]]
     [clojure.tools.logging :as log]
     [clj-http.client :as client]))
 
@@ -16,11 +15,10 @@
   (if (nil? opiskeluoikeustyyppi)
       nil
       (str "AUTOMAATTI AVOP-"
-        (match opiskeluoikeustyyppi
+        (condp = opiskeluoikeustyyppi
           amk-alempi-tyyppi "AMK" 
           amk-ylempi-tyyppi "YAMK"
-          :else "") " " vuosi)
-      ))
+          "") " " vuosi)))
 
 (defn clean-opiskeluoikeus-data
   [{:keys [kieli koulutusmuoto opiskeluoikeustyyppi laajuus]
@@ -31,20 +29,20 @@
    :oppilaitos oppilaitos-id
    :koulutus   koulutus-id
    :kunta      kunta-id
-   :kieli      kieli
-   :koulutusmuoto (match koulutusmuoto
+   :koulutusmuoto (condp = koulutusmuoto
                     0 "paivaopiskelu"
                     1 "monimuoto"
-                    :else nil)
+                    nil)
    :opiskeluoikeustyyppi opiskeluoikeustyyppi
    :laajuus laajuus
-   :kyselykerran_nimi (build-kyselykerran-nimi opiskeluoikeustyyppi 
-    (as (local-date) :year))
+   :kyselykerran_nimi 
+   (build-kyselykerran-nimi opiskeluoikeustyyppi 
+                            (as (local-date) :year))
    })
 
 (defn generate-questionnaire-credentials!
   "Generate Arvo questionnaire credentials with given data"
-  [opiskeluoikeus-data]
+  [opiskeluoikeus-data kieli]
   (let [json-data (clean-opiskeluoikeus-data opiskeluoikeus-data)
         auth-header (str "Bearer " 
                          (jws/sign {:caller "avopfi"} (:arvo-jwt-secret env)))]
@@ -53,7 +51,7 @@
                  (:arvo-api-url env)
                  {
                   :debug (:is-dev env)
-                  :form-params json-data
+                  :form-params (assoc json-data :kieli kieli)
                   :headers {:Authorization auth-header}
                   :content-type :json
                   :as :json
