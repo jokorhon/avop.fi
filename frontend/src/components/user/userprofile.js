@@ -2,7 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import Translate from 'react-translate-component';
 import TranslateProperty from '../common/translateproperty';
-let logo = require('../../images/logo.png');
+let logo = require('../../images/logo-fi.png');
 
 export default class Userprofile extends React.Component {
   constructor(props) {

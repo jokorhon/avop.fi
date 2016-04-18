@@ -5,7 +5,8 @@ import config from 'config';
 import Translate from 'react-translate-component';
 
 let hakaLoginImage = require('../../images/haka_landscape_large.gif');
-let logo = require('../../images/logo.png');
+let logo = require('../../images/logo-fi.png');
+let vipunenImg = require('../../images/vipunen.png');
 
 export default class Content extends React.Component {
 
@@ -55,14 +56,15 @@ export default class Content extends React.Component {
         <section id="main_content">
           <div className="container">
              <div className="row">
-
               <div className="u-full-width"><Translate component="h4" content="content.kysely.information"/></div>
               <div className="u-full-width"><Translate component="p" content="content.kysely.about1"/></div>
               <div className="u-full-width"><Translate component="p" content="content.kysely.about2"/></div>
               <div className="u-full-width"><Translate component="h4" content="content.tulokset.header"/></div>
               <div className="u-full-width"><Translate component="p" content="content.tulokset.results1"/></div>
               <div className="u-full-width"><Translate component="p" content="content.tulokset.results2"/></div>
-              <div className="u-full-width"><Translate component="p" content="content.tulokset.results3"/></div>
+              <div className="u-full-width">
+                <a href="https://vipunen.fi/" className="vipunen"><img src={vipunenImg} /></a>
+              </div>
 
             </div>
           </div>
