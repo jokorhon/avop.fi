@@ -26,11 +26,14 @@
             helpLocation="/about.html"
             styleSheet="/shibboleth-sp/main.css"/>
 {% if environment_id != "dev" %}
-	<MetadataProvider type="XML" uri="{{ haka_metadata_url }}" backingFilePath="/etc/shibboleth/{{ haka_metadata_file }}" reloadInterval="7200">
-            <MetadataFilter type="Signature" certificate="{{ haka_cert_file }}"/>
-	</MetadataProvider>
+        <MetadataProvider type="Chaining">
+            <MetadataProvider type="Folder" path="partners"/>
+            <MetadataProvider type="XML" uri="{{ haka_metadata_url }}" backingFilePath="/etc/shibboleth/{{ haka_metadata_file }}" reloadInterval="7200">
+                <MetadataFilter type="Signature" certificate="{{ haka_cert_file }}"/>
+            </MetadataProvider>
+        </MetadataProvider>
 {% else %}
-	<MetadataProvider type="XML" path="/etc/shibboleth/{{ haka_metadata_file }}">
+        <MetadataProvider type="XML" path="/etc/shibboleth/{{ haka_metadata_file }}">
         </MetadataProvider>
 {% endif %}
         <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>

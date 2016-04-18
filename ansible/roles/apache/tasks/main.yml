@@ -23,6 +23,12 @@
     state: present
     update_cache: yes
 
+- name: shibboleth configuration directory
+  file: path=/etc/shibboleth state=directory owner=shibd group=shibd mode=0755
+
+- name: shibboleth metadata partners directory
+  file: path=/etc/shibboleth/partners state=directory owner=shibd group=shibd mode=0755
+
 - name: fetch haka test certificate
   get_url:
     dest: "/etc/shibboleth/{{ haka_cert_file }}"
