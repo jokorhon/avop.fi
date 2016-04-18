@@ -1,6 +1,6 @@
 let localizations_en = {
   header: {
-    logotext: 'IN ENGLISH - Ammattikorkeakoulujen valmistumisvaiheen opiskelijapalaute'
+    logotext: 'Ammattikorkeakoulujen valmistumisvaiheen opiskelijapalaute'
   },
   content: {
     kysely: {

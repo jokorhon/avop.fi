@@ -1,10 +1,18 @@
 
-$theme-blue: #134F5C;
-$theme-blue-hover: #023F4B;
+$theme-color: #00B5E2;
+$theme-color-hover: #023F4B;
 
-$font-body: "Open Sans", "Arial", sans-serif;
-$font-heading: "Open Sans Condensed", "Arial", sans-serif;
-$font-heading-light: "Open Sans Condensed", "Arial", sans-serif;
+$font-body: "Open Sans", Verdana, Arial, sans-serif;
+$font-heading:  "Open Sans",Verdana, Arial, sans-serif;
+$font-heading-light:  "Open Sans", Verdana, Arial, sans-serif;
 $font-size-body: 14px;
 
+h4 {
+  color: $theme-color;
+  font-size: 20px;
+}
 
+
+@media (max-width: 750px) {
+  font-size: 0.8em;
+}

@@ -5,6 +5,7 @@ import config from 'config';
 import Translate from 'react-translate-component';
 
 let hakaLoginImage = require('../../images/haka_landscape_large.gif');
+let logo = require('../../images/logo.png');
 
 export default class Content extends React.Component {
 
@@ -20,65 +21,53 @@ export default class Content extends React.Component {
 
   render() {
     return (
-      <section>
-        <div className="row">
-          <div className="u-full-width">
-            <div id="themeimage">
-              <div id="haka-login">
-                <Translate component="h4" content="content.login.header"/>
-                <Translate component="p" content="content.login.description"/>
-                <div id="haka" onClick={this.login}>
-                  <a href={config.hakaLoginUrl(this.extractCurrentDomain(), this.props.params.lang)}>
-                    <img src={hakaLoginImage} alt="haka-login"/>
-                  </a>
+      <div>
+        <section id="theme">
+          <div className="container">
+            <div className="row">
+
+              <div className="six columns">
+                <div className="u-full-width">
+                  <div id="logo">
+                    <img src={logo} alt="Avop"/>
+                  </div>
                 </div>
               </div>
+
+              <div className="six columns">
+                <div className="u-full-width">
+                  <div id="haka-login">
+                    <Translate component="h4" content="content.login.header"/>
+                    <Translate component="p" content="content.login.description"/>
+                    <div id="haka" onClick={this.login}>
+                      <a href={config.hakaLoginUrl(this.extractCurrentDomain(), this.props.params.lang)}>
+                        <img src={hakaLoginImage} alt="haka-login"/>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="row content-section">
-          <div className="u-full-width">
-            <Translate component="h4" content="content.kysely.information"/>
-          </div>
-        </div>
+        <section id="main_content">
+          <div className="container">
+             <div className="row">
 
-        <div className="row content-section">
-          <div className="one-half column">
-            <Translate component="p" content="content.kysely.about1"/>
-          </div>
+              <div className="u-full-width"><Translate component="h4" content="content.kysely.information"/></div>
+              <div className="u-full-width"><Translate component="p" content="content.kysely.about1"/></div>
+              <div className="u-full-width"><Translate component="p" content="content.kysely.about2"/></div>
+              <div className="u-full-width"><Translate component="h4" content="content.tulokset.header"/></div>
+              <div className="u-full-width"><Translate component="p" content="content.tulokset.results1"/></div>
+              <div className="u-full-width"><Translate component="p" content="content.tulokset.results2"/></div>
+              <div className="u-full-width"><Translate component="p" content="content.tulokset.results3"/></div>
 
-          <div className="one-half column">
-            <Translate component="p" content="content.kysely.about2"/>
-          </div>
-        </div>
-
-        <div className="content-section">
-          <div className="u-full-width ">
-            <Translate component="h4" content="content.tulokset.header" />
-          </div>
-
-          <div className="row">
-            <div className="column">
-              <Translate component="p" content="content.tulokset.results1" />
             </div>
           </div>
-
-          <div className="row">
-            <div className="column">
-              <Translate component="p" content="content.tulokset.results2" />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="column">
-              <Translate component="p" content="content.tulokset.results3" />
-            </div>
-          </div>
-
-        </div>
-
-      </section>
+        </section>
+      </div>
     );
   }
 }

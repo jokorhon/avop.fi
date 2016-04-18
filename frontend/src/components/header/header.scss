@@ -2,21 +2,14 @@
 @import '../../styles/globals';
 
 header {
-  background-color: $theme-blue;
-  position: relative;
-  color: white;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 
 
-  #logo {
+@media (max-width: 750px) {
+  header {
     margin-top: 5px;
-    margin-bottom: 0;
+    margin-bottom: 5px;
   }
-
-  #logotext {
-    margin-bottom: 10px;
-  }
-
-
-
-
 }

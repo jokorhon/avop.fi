@@ -2,7 +2,6 @@ require('./header.scss');
 
 import React from 'react';
 import LocaleSwitcher from './../common/localeswitcher/localeswitcher';
-import Translate from 'react-translate-component';
 
 export default class Header extends React.Component {
 
@@ -11,12 +10,7 @@ export default class Header extends React.Component {
       <header>
         <div className="container">
           <div className="row">
-            <div className="one-half column">
-              <h3 id="logo">AVOP</h3>
-              <Translate id="logotext" component="p" content="header.logotext" />
-            </div>
-
-            <div className="one-half column">
+            <div className="u-full-width">
               <LocaleSwitcher></LocaleSwitcher>
             </div>
           </div>
@@ -24,5 +18,4 @@ export default class Header extends React.Component {
       </header>
     );
   }
-
 }

@@ -31,5 +31,5 @@ ReactDOM.render(
       <Route path="*" component={Error}/>
     </Route>
   </Router>,
-  document.getElementById('container')
+  document.getElementById('app')
 );

@@ -39,10 +39,8 @@ class AppComponent extends React.Component {
     return (
       <div>
         <Header></Header>
-        <div className="container">
-          {this.props.children}
-          <Footer></Footer>
-        </div>
+        <div>{this.props.children}</div>
+        <Footer></Footer>
       </div>
     )
   }

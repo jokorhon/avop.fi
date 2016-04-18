@@ -1,6 +1,6 @@
 let localizations_sv = {
   header: {
-    logotext: 'PÅ SVENSKA - Ammattikorkeakoulujen valmistumisvaiheen opiskelijapalaute'
+    logotext: 'Ammattikorkeakoulujen valmistumisvaiheen opiskelijapalaute'
   },
   content: {
     kysely: {
