@@ -2,6 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import Translate from 'react-translate-component';
 import TranslateProperty from '../common/translateproperty';
+let logo = require('../../images/logo.png');
 
 export default class Userprofile extends React.Component {
   constructor(props) {
@@ -63,59 +64,85 @@ export default class Userprofile extends React.Component {
     }
     return (
       <div>
-        <Translate component="h4" content="profiledata.header"/>
-        <Translate component="p" content="profiledata.about"/>
-        <form onSubmit={this.onSubmit.bind(this)}>
-          {(this.props.study_rights.length > 1) ?
-            <select onChange={this.selectStudyRight.bind(this)}
-                    value={this.state.selectedStudyRight.id}>
-              {
-                this.props.study_rights.map(sr =>
-                  <TranslateProperty component="option"
-                                     value={sr.id}
-                                     data={sr.koulutus.nimi}>
-                  </TranslateProperty>
-                )
-              }
-            </select>
-            : ''
-          }
-          <table>
-            <tbody>
-            <tr>
-              <Translate component="td" content="profiledata.education"></Translate>
-              <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.koulutus.nimi}>
-              </TranslateProperty>
-            </tr>
-            <tr>
-              <Translate component="td" content="profiledata.school"></Translate>
-              <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.oppilaitos.nimi}>
-              </TranslateProperty>
-            </tr>
-            <tr>
-              <Translate component="td" content="profiledata.municipality"></Translate>
-              <TranslateProperty component="td"
-                                 data={this.state.selectedStudyRight.kunta.nimi}>
-              </TranslateProperty>
-            </tr>
-            <tr>
-              <Translate component="td" content="profiledata.language"></Translate>
-              <td>{this.state.selectedStudyRight.kieli}</td>
-            </tr>
-            <tr>
-              <Translate component="td" content="profiledata.form_of_education"></Translate>
-              <Translate component="td"
-                         content={this.state.selectedStudyRight.koulutusmuoto == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
-            </tr>
-            </tbody>
-          </table>
-          <Translate component="p" content="profiledata.reminder"></Translate>
-          <button type="submit">
-            <Translate component="span" content="profiledata.submit"></Translate>
-          </button>
-        </form>
+        <section id="theme">
+          <div className="container">
+            <div className="row">
+
+              <div className="six columns">
+                <div className="u-full-width">
+                  <div id="logo">
+                    <img src={logo} alt="Avop"/>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+        <section id="userprofile">
+          <div className="container">
+            <div className="row">
+              <div className="u-full-width"><Translate component="h4" content="profiledata.header"/></div>
+              <div className="u-full-width"><Translate component="p" content="profiledata.about"/></div>
+
+              <form onSubmit={this.onSubmit.bind(this)}>
+                {(this.props.study_rights.length > 1) ?
+                  <select onChange={this.selectStudyRight.bind(this)}
+                          value={this.state.selectedStudyRight.id}>
+                    {
+                      this.props.study_rights.map(sr =>
+                        <TranslateProperty component="option"
+                                           value={sr.id}
+                                           data={sr.koulutus.nimi}>
+                        </TranslateProperty>
+                      )
+                    }
+                  </select>
+                  : ''
+                }
+                <div className="u-full-width">
+                  <table>
+                    <tbody>
+                    <tr>
+                      <Translate component="td" content="profiledata.education"></Translate>
+                      <TranslateProperty component="td"
+                                         data={this.state.selectedStudyRight.koulutus.nimi}>
+                      </TranslateProperty>
+                    </tr>
+                    <tr>
+                      <Translate component="td" content="profiledata.school"></Translate>
+                      <TranslateProperty component="td"
+                                         data={this.state.selectedStudyRight.oppilaitos.nimi}>
+                      </TranslateProperty>
+                    </tr>
+                    <tr>
+                      <Translate component="td" content="profiledata.municipality"></Translate>
+                      <TranslateProperty component="td"
+                                         data={this.state.selectedStudyRight.kunta.nimi}>
+                      </TranslateProperty>
+                    </tr>
+                    <tr>
+                      <Translate component="td" content="profiledata.language"></Translate>
+                      <td>{this.state.selectedStudyRight.kieli}</td>
+                    </tr>
+                    <tr>
+                      <Translate component="td" content="profiledata.form_of_education"></Translate>
+                      <Translate component="td"
+                                 content={this.state.selectedStudyRight.koulutusmuoto == 0 ? 'profiledata.type.day' : 'profiledata.type.multi'}></Translate>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="u-full-width"><Translate component="p" content="profiledata.reminder"></Translate></div>
+                <div className="u-full-width">
+                  <button type="submit">
+                    <Translate component="span" content="profiledata.submit"></Translate>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
       </div>
     )
   }
