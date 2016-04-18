@@ -48,8 +48,8 @@
     dest: "/etc/shibboleth/{{ item }}"
     src: "shibboleth/{{ item }}"
     mode: 0644
-    owner: root
-    group: root
+    owner: shibd
+    group: shibd
   with_items:
     - attribute-map.xml
     - attribute-policy.xml
@@ -83,8 +83,8 @@
     dest: "/etc/shibboleth/shibboleth2.xml"
     src: "shibboleth/shibboleth2.xml.j2"
     mode: 0644
-    owner: root
-    group: root
+    owner: shibd
+    group: shibd
   notify:
     - restart shibboleth service
 
