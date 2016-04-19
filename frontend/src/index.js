@@ -10,9 +10,9 @@ import Home from './components/home/Home';
 import Spinner from 'react-spin';
 
 let browserLanguage = window.navigator.userLanguage || window.navigator.language;
-if (browserLanguage.startsWith('en')) {
+if (browserLanguage.indexOf('en') === 0) {
   browserLanguage = 'en';
-} else if (browserLanguage.startsWith('sv')) {
+} else if (browserLanguage.indexOf('sv') === 0) {
   browserLanguage = 'sv';
 } else {
   browserLanguage = 'fi';
